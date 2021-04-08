@@ -1,0 +1,26 @@
+	<!-- Modal -->
+<div class="modal fade bs-example-modal-lg" id="editar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<h4 class="modal-title" id="myModalLabel">Editar Producto</h4>
+	  </div>
+	  <div class="modal-body">
+		<form class="form-horizontal">
+		  <div class="form-group">
+			<div class="col-sm-6">
+			  <h4></h4>
+			</div>
+		  </div>
+		</form>
+		<div id="carga" style="position: absolute;	text-align: center;	top: 55px;	width: 100%;display:none;"></div><!-- Carga gif animado -->
+		<div class="edit" ></div><!-- Datos ajax Final -->
+	  </div>
+	  <div class="modal-footer">
+	  <br><br><br>
+		
+	  </div>
+	</div>
+  </div>
+</div>

@@ -1,0 +1,72 @@
+[22-Mar-2021 21:38:46 UTC] PHP Fatal error:  Uncaught Error: Cannot use object of type mysqli_result as array in /home/mecicama/public_html/mecicaa/sistema/pdf/documentos/ver_notasalida.php:30
+Stack trace:
+#0 {main}
+  thrown in /home/mecicama/public_html/mecicaa/sistema/pdf/documentos/ver_notasalida.php on line 30
+[22-Mar-2021 21:39:38 UTC] PHP Fatal error:  Uncaught Error: Cannot use object of type mysqli_result as array in /home/mecicama/public_html/mecicaa/sistema/pdf/documentos/ver_notasalida.php:30
+Stack trace:
+#0 {main}
+  thrown in /home/mecicama/public_html/mecicaa/sistema/pdf/documentos/ver_notasalida.php on line 30
+[22-Mar-2021 21:40:32 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[22-Mar-2021 21:40:32 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[22-Mar-2021 21:40:38 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[22-Mar-2021 21:40:38 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[22-Mar-2021 21:44:02 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[22-Mar-2021 21:44:02 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 13:37:30 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 13:37:30 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 13:38:06 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 13:38:06 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 13:44:00 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 13:44:00 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 13:44:29 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 13:44:29 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 14:02:43 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 14:02:43 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 14:12:11 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 14:12:11 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 14:12:49 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 14:12:49 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 14:28:06 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 14:28:06 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 14:28:25 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 14:28:25 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 14:28:41 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 14:28:41 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 14:30:21 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 14:30:21 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 14:56:13 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 14:56:13 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 15:02:26 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 15:02:26 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 15:05:57 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 15:05:57 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 15:21:32 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 15:21:32 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 15:21:43 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 15:21:43 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 15:24:20 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 15:24:20 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 15:24:37 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 15:24:37 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 15:28:03 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 15:28:03 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 15:35:01 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 15:35:01 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 15:41:55 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 15:41:55 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 15:43:35 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 15:43:35 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 15:44:10 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 15:44:10 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 16:06:26 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 16:06:26 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 16:09:25 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 16:09:25 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 16:10:07 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 16:10:07 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 17:08:31 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 17:08:31 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 17:09:21 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 17:09:21 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 17:09:57 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68
+[23-Mar-2021 17:09:57 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/mecicama/public_html/mecicaa/sistema/pdf/_class/locale.class.php on line 68

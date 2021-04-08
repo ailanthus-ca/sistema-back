@@ -1,0 +1,12 @@
+img {
+	height: auto;
+	max-width: 100%;
+}
+
+#contenedor {
+	width: 20%;
+	height: 20%;
+	top: 25%;
+	left: 20%;
+	position: absolute;
+}

@@ -1,0 +1,6 @@
+[29-Sep-2020 13:27:46 UTC] PHP Warning:  mysqli_real_escape_string() expects parameter 1 to be mysqli, null given in /home/mecicama/public_html/mecicamanufactura/sistema/ajax/cotizacion/crear_producto.php on line 6
+[09-Oct-2020 12:27:52 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/mecicama/public_html/mecicaa/sistema/ajax/cotizacion/productos_cotizacion.php on line 37
+[05-Nov-2020 12:45:18 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/mecicama/public_html/mecicaa/sistema/ajax/cotizacion/productos_cotizacion.php on line 37
+[18-Nov-2020 12:58:54 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/mecicama/public_html/mecicaa/sistema/ajax/cotizacion/productos_cotizacion.php on line 37
+[28-Jan-2021 18:35:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home2/mecicama/public_html/mecicaa/sistema/ajax/cotizacion/productos_cotizacion.php on line 37
+[12-Feb-2021 12:47:03 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home2/mecicama/public_html/mecicaa/sistema/ajax/cotizacion/productos_cotizacion.php on line 37
