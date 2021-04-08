@@ -28,7 +28,7 @@ class conexion {
 
     public function postArray($data) {
         $detalles = (isset($_REQUEST[$data]) && $_REQUEST[$data] != null) ? $_REQUEST[$data] : '';
-        return json_decode($detalles);        
+        return json_decode($detalles);
     }
 
     protected function getNotFount($msn = '') {
@@ -66,7 +66,7 @@ class conexion {
         $this->con->close();
     }
 
-    public function getResponse($response) {
+    public function getResponse($response = '') {
         if ($this->response < 300) {
             header("HTTP/1.0 $this->response Success");
             return $response;
