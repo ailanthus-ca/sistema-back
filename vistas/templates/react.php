@@ -13,8 +13,8 @@
     </head>
     <body class="sidebar-mini wysihtml5-supported sidebar-collapse skin-green-light">
         <div id="root" class="wrapper"></div>
-        <script src="http://localhost:3000/static/js/bundle.js"></script>
-        <script src="http://localhost:3000//static/js/vendors~main.chunk.js"></script>
-        <script src="http://localhost:3000/static/js/main.chunk.js"></script>
+        <script src="http://193.168.1.50:3000/static/js/bundle.js"></script>
+        <script src="http://193.168.1.50:3000//static/js/vendors~main.chunk.js"></script>
+        <script src="http://193.168.1.50:3000/static/js/main.chunk.js"></script>
     </body>
 </html>

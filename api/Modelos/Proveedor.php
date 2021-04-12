@@ -26,7 +26,7 @@ class Proveedor extends \Prototipo\Entidades {
                 'correo' => $row['correo'],
                 'contacto' => $row['contacto'],
                 'direccion' => $row['direccion'],
-                'estatus' => $row['estatus']);
+                'estatus' =>(int) $row['estatus']);
         }
         return $this->getResponse($cl);
     }
@@ -61,6 +61,23 @@ class Proveedor extends \Prototipo\Entidades {
                     . "1)");
             return $this->detalles($this->codigo);
         }
+    }
+
+    function actualizar($id) {
+        $sql = $this->con->query("SELECT * from proveedor WHERE codigo = '$id' ");
+        if ($row = $sql->fetch_array()) {      
+            $this->query("UPDATE proveedor SET ".               
+                "nombre = UPPER('$this->nombre'),".
+                "correo = UPPER('$this->email'),".
+                "direccion = UPPER('$this->direccion'),".
+                "contacto = UPPER('$this->contacto'),".
+                "telefono = '$this->telefono' ".
+            "WHERE codigo = '$id'  ");
+            
+            return $this->getResponse($this->detalles($id));            
+        }
+        $this->getNotFount();
+        return $this->getResponse();
     }
 
 }

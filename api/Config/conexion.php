@@ -8,7 +8,7 @@ class conexion {
 
     protected $con;
     //trasa de errores para devolucion
-    protected $response = 200;
+    public $response = 200;
     private $errores = array();
 
     public function postString($data) {
@@ -31,7 +31,7 @@ class conexion {
         return json_decode($detalles);
     }
 
-    protected function getNotFount($msn = '') {
+    protected function getNotFount() {
         $this->response = 400;
     }
 

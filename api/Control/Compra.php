@@ -55,6 +55,30 @@ class Compra {
         } else {
             $compras->etatus = 2;
         }
+
+        // Validar que exista el cod_proveedor
+        if ($compras->cod_proveedor == '') {
+            $compras->setError('Debe mandar un proveedor');
+            return  $compras->getResponse();
+        }
+        // Validar proveedor
+        $proveedor = new \Modelos\Proveedor();
+        $proveedor->detalles($compras->cod_proveedor);
+        if ($proveedor->response == 400) {
+            $compras->setError('El proveedor mandado no existe');
+            return  $compras->getResponse();
+        }
+        // Validar si existe al menos un item(producto)
+        if (count($compras->detalles)==0) {
+            $compras->setError('No se mandaron productos');
+            return  $compras->getResponse();
+        }
+        // Validar total
+        if ($compras->total == 0) {
+            $compras->setError('No se mando el total');
+            return  $compras->getResponse();
+        }
+
         return json_encode($compras->nuevo());
     }
 

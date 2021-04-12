@@ -38,6 +38,29 @@ class Factura extends \conexion {
             $Factura->user = $_SESSION['id_usuario'];
         }
 
+        // Validar que exista el cliente
+        if ($Factura->cod_cliente == '') {
+            $Factura->setError('Debe mandar un cliente');
+            return  $Factura->getResponse();
+        }
+        // Validar cliente
+        $Cliente=new \Modelos\Cliente();
+        $Cliente->detalles($Factura->cod_cliente);
+        if($Cliente->response==400){
+            $Factura->setError('El cliente mandado no existe');
+            return  $Factura->getResponse();            
+        }
+        // Validar si existe al menos un item(producto)
+        if (count($Factura->detalles)==0) {
+            $Factura->setError('No se mandaron productos');
+            return  $Factura->getResponse();
+        }
+        // Validar total
+        if ($Factura->total == 0) {
+            $Factura->setError('No se mando el total');
+            return  $Factura->getResponse();
+        }
+
         return json_encode($Factura->nuevo());
     }
 

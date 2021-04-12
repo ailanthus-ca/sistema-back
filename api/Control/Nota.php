@@ -38,6 +38,30 @@ class Nota extends \conexion {
         } else {
             $Nota->user = $_SESSION['id_usuario'];
         }
+
+        // Validar que exista el cliente
+        if ($Nota->cod_cliente == '') {
+            $Nota->setError('Debe mandar un cliente');
+            return  $Nota->getResponse();
+        }
+        // Validar cliente
+        $Cliente=new \Modelos\Cliente();
+        $Cliente->detalles($Nota->cod_cliente);
+        if($Cliente->response==400){
+            $Nota->setError('El cliente mandado no existe');
+            return  $Nota->getResponse();            
+        }
+        // Validar si existe al menos un item(producto)
+        if (count($Nota->detalles)==0) {
+            $Nota->setError('No se mandaron productos');
+            return  $Nota->getResponse();
+        }
+        // Validar total
+        if ($Nota->total == 0) {
+            $Nota->setError('No se mando el total');
+            return  $Nota->getResponse();
+        }
+
         return json_encode($Nota->nuevo());
     }
 

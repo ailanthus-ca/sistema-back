@@ -25,6 +25,29 @@ class Cotizacion {
         $Cotizacion->subtotal = $Cotizacion->postFloat("subtotal");
         $Cotizacion->total = $Cotizacion->postFloat("total");
         $Cotizacion->detalles = $Cotizacion->postArray("detalles");
+        
+        //validaciones para cod_cliente 
+        if ($Cotizacion->cod_cliente == '') {
+            $Cotizacion->setError('Debe mandar un cliente');
+            return  $Cotizacion->getResponse();
+        }
+        // Validar cliente
+        $Cliente=new \Modelos\Cliente();
+        $Cliente->detalles($Cotizacion->cod_cliente);
+        if($Cliente->response==400){
+            $Cotizacion->setError('El cliente mandado no existe');
+            return  $Cotizacion->getResponse();            
+        }
+        // Validar total
+        if ($Cotizacion->total == 0) {
+            $Cotizacion->setError('No se mando el total');
+            return  $Cotizacion->getResponse();
+        }
+        // Validar si existe al menos un item(producto)
+        if (count($Cotizacion->detalles)==0) {
+            $Cotizacion->setError('No se mandaron productos');
+            return  $Cotizacion->getResponse();
+        }
         return json_encode($Cotizacion->nuevo());
     }
 

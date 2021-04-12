@@ -29,7 +29,9 @@ class Cliente extends \conexion {
                 'correo' => $row['correo'],
                 'contacto' => $row['contacto'],
                 'direccion' => $row['direccion'],
-                'estatus' => $row['estatus']);
+                'tipo_contribuyente' => $row['tipo_contribuyente'],
+                'retencion' => (float) $row['retencion'],
+                'estatus' =>(int) $row['estatus']);
         }
         return $this->getResponse($cl);
     }
@@ -44,13 +46,13 @@ class Cliente extends \conexion {
                 'correo' => $row['correo'],
                 'contacto' => $row['contacto'],
                 'direccion' => $row['direccion'],
-                'estatus' => $row['estatus'],
                 'tipo_contribuyente' => $row['tipo_contribuyente'],
                 'retencion' => $row['retencion'],
                 'estatus' => $row['estatus'],
             );
             return $this->getResponse($data);
         } else {
+            $this->getNotFount();
             return $this->getResponse(array());
         }
     }
@@ -72,6 +74,25 @@ class Cliente extends \conexion {
                     . "1)");
             return $this->getResponse($this->detalles($this->codigo));
         }
+    }
+
+    public function actualizar($id) {
+        $sql = $this->con->query("SELECT * from cliente WHERE codigo = '$id' ");
+        if ($row = $sql->fetch_array()) {
+            $this->query("UPDATE cliente SET ".
+                "nombre = UPPER('$this->nombre'), ".
+                "correo = UPPER('$this->email'),".
+                "direccion = UPPER('$this->direccion'),".
+                "contacto = UPPER('$this->contacto'),".
+                "telefono = '$this->telefono',".
+                "tipo_contribuyente = UPPER('$this->tipo_contribuyente'),".
+                "retencion = $this->retencion ".
+            "WHERE codigo = '$id'  ");
+
+            return $this->getResponse($this->detalles($id));
+        }
+        $this->getNotFount();
+        return $this->getResponse();
     }
 
 }

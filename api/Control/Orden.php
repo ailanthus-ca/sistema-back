@@ -25,6 +25,30 @@ class Orden {
         $Orden->subtotal = $Orden->postFloat("subtotal");
         $Orden->total = $Orden->postFloat("total");
         $Orden->detalles = $Orden->postArray("detalles");
+
+        // Validar que exista el cod_proveedor
+        if ($Orden->cod_proveedor == '') {
+            $Orden->setError('Debe mandar un proveedor');
+            return  $Orden->getResponse();
+        }
+        // Validar proveedor
+        $proveedor = new \Modelos\Proveedor();
+        $proveedor->detalles($Orden->cod_proveedor);
+        if ($proveedor->response == 400) {
+            $Orden->setError('El proveedor mandado no existe');
+            return  $Orden->getResponse();
+        }
+        // Validar si existe al menos un item(producto)
+        if (count($Orden->detalles)==0) {
+            $Orden->setError('No se mandaron productos');
+            return  $Orden->getResponse();
+        }
+        // Validar total
+        if ($Orden->total == 0) {
+            $Orden->setError('No se mando el total');
+            return  $Orden->getResponse();
+        }
+
         return json_encode($Orden->nuevo());
     }
 

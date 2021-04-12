@@ -19,7 +19,7 @@ if ($row = $sql->fetch_array()) {
     $ult_factura = 0;
 }
 $query = $con->query("select * from dolares order by id desc limit 1");
-$data = $query->fetch_array();
+if($data = $query->fetch_array())
 $valor = (float) $data['valor'];
 ?>
 <div id="page-wrapper">
