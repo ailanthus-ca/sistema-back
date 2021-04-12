@@ -29,8 +29,9 @@ class Nota extends \conexion {
         $Nota = new \Modelos\Nota();
         $Nota->cod_cliente = $Nota->postString('cod_cliente');
         $Nota->id_cotizacion = $Nota->postString('id_cotizacion');
-        $this->nota = $this->postString("nota");
-        $this->total = $this->postFloat("total");
+        $Nota->nota = $Nota->postString("nota");
+        $Nota->total = $Nota->postFloat("total");
+        $Nota->detalles = $Nota->postArray("detalles");
         if ($Nota->id_cotizacion > 0) {
             $cotizacion = new Cotizacion();
             $Nota->user = $cotizacion->procesar($Nota->id_cotizacion);

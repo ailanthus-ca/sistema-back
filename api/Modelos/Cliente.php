@@ -13,13 +13,14 @@ namespace Modelos;
  *
  * @author Ailanthus
  */
-class Cliente extends \conexion
-{
+class Cliente extends \conexion {
 
-    public function lista()
-    {
+    var $tipo_contribuyente = 'ORDINARIO';
+    var $retencion = 0;
+
+    public function lista() {
         $cl = array();
-        $sql = $this->con->query('SELECT * FROM cliente WHERE estatus = 1');
+        $sql = $this->query('SELECT * FROM cliente WHERE estatus = 1');
         while ($row = $sql->fetch_array()) {
             $cl[] = array(
                 'codigo' => $row['codigo'],
@@ -30,12 +31,11 @@ class Cliente extends \conexion
                 'direccion' => $row['direccion'],
                 'estatus' => $row['estatus']);
         }
-        return $cl;
+        return $this->getResponse($cl);
     }
 
-    public function detalles($id)
-    {
-        $sql = $this->con->query("SELECT *from cliente where codigo = '$id' ");
+    public function detalles($id) {
+        $sql = $this->query("SELECT *from cliente where codigo = '$id' ");
         if ($row = $sql->fetch_array()) {
             $data = array(
                 'codigo' => $row['codigo'],
@@ -48,35 +48,29 @@ class Cliente extends \conexion
                 'tipo_contribuyente' => $row['tipo_contribuyente'],
                 'retencion' => $row['retencion'],
                 'estatus' => $row['estatus'],
-
             );
+            return $this->getResponse($data);
+        } else {
+            return $this->getResponse(array());
         }
-        return $data;
     }
 
-    public function nuevo()
-    {
-        $codigo = mysqli_real_escape_string($this->con, (strip_tags($_POST["codigo"], ENT_QUOTES)));
-        $nombre = mysqli_real_escape_string($this->con, (strip_tags($_POST["nombre"], ENT_QUOTES)));
-        $telefono = mysqli_real_escape_string($this->con, (strip_tags($_POST["telefono"], ENT_QUOTES)));
-        $email = mysqli_real_escape_string($this->con, (strip_tags($_POST["email"], ENT_QUOTES)));
-        $tipo_contribuyente = mysqli_real_escape_string($this->con, (strip_tags($_POST["tipo_contribuyente"], ENT_QUOTES)));
-        $contacto = mysqli_real_escape_string($this->con, (strip_tags($_POST["contacto"], ENT_QUOTES)));
-        $direccion = mysqli_real_escape_string($this->con, (strip_tags($_POST["direccion"], ENT_QUOTES)));
-        $estado = intval($_POST['estado']);
-        $retencion = intval($_POST['retencion']);
-        
-
-        $sql = $this->con->query("SELECT *from cliente WHERE codigo = '$codigo'") or die(json_encode(array('error' => 1, 'msn' => $this->con->error)));
+    public function nuevo() {
+        $sql = $this->con->query("SELECT * from cliente WHERE codigo = '$this->codigo'");
         if ($row = $sql->fetch_array()) {
-            return array('error' => 1, 'msn' => "Ya existe un Cliente con el mismo RIF/CI.");
+            return $this->getResponse($this->detalles($this->codigo));
         } else {
-            $sql = "INSERT INTO cliente (codigo,nombre,correo,direccion,contacto,telefono,tipo_contribuyente, retencion, estatus) VALUES (UPPER('$codigo'),UPPER('$nombre'), UPPER('$email'),UPPER('$direccion'),UPPER('$contacto'),'$telefono',
-					UPPER('$tipo_contribuyente'),$retencion,$estado)";
-            $query = $this->con->query($sql) or die(json_encode(array('error' => 1, 'msn' => $this->con->error)));
-            if ($query) {
-                return array('error' => 0, 'msn' => 'Cliente registrado satisfactoriamente.');
-            }
+            $this->query("INSERT INTO cliente (codigo,nombre,correo,direccion,contacto,telefono,tipo_contribuyente, retencion, estatus) VALUES ("
+                    . "UPPER('$this->codigo'),"
+                    . "UPPER('$this->nombre'),"
+                    . " UPPER('$this->email'),"
+                    . "UPPER('$this->direccion'),"
+                    . "UPPER('$this->contacto'),"
+                    . "'$this->telefono',"
+                    . "UPPER('$this->tipo_contribuyente'),"
+                    . "$this->retencion,"
+                    . "1)");
+            return $this->getResponse($this->detalles($this->codigo));
         }
     }
 

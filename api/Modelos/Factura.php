@@ -44,8 +44,8 @@ class Factura extends \Prototipo\Operaciones {
         if ($row = $query->fetch_array()) {
             //datos del cliente
             $cliente = new Cliente();
-            $cotizacion = $cliente->detalles($row['cod_cliente']);
-            $cotizacion['cod_cliente'] = $row['cod_cliente'];
+            $factura = $cliente->detalles($row['cod_cliente']);
+            $factura['cod_cliente'] = $row['cod_cliente'];
 
             $factura['codigo'] = $row['codigo'];
             $factura['cod_cliente'] = $row['cod_cliente'];
@@ -88,7 +88,7 @@ class Factura extends \Prototipo\Operaciones {
             $this->user = $_SESSION['id_usuario'];
         }
 
-        $sql = $this->query('SELECT COUNT(*) as cant FROM `factura`');
+        $sql = $this->query('SELECT MAX(codigo) AS cant FROM factura');
         $row = $sql->fetch_array();
         $num_factura = $row['cant'] + 1;
         $sql = $this->query("INSERT into factura values("
@@ -112,9 +112,10 @@ class Factura extends \Prototipo\Operaciones {
                     "('$num_factura',"
                     . "'$pro->codigo',"
                     . "$pro->unidades,"
-                    . "$pro->precio),"
-                    . "$monto ");
-            $producto->salida($pro->codigo, $pro->unidades);
+                    . "$pro->precio,"
+                    . "$monto )");
+            if ($this->nota === 0)
+                $producto->salida($pro->codigo, $pro->unidades);
         }
         return $this->getResponse($num_factura);
     }
@@ -123,10 +124,11 @@ class Factura extends \Prototipo\Operaciones {
         $sql = "UPDATE `factura` SET `estatus`= 0 WHERE codigo = $id";
         $query = $this->query($sql);
         $sql2 = $this->query("select * from detallefactura where codFactura = '$id' ");
+        $producto = new Producto();
         while ($row = $sql2->fetch_array()) {
             $cod = $row['codProducto'];
             $cantidad = intval($row['cantidad']);
-            $this->query("UPDATE producto set cantidad = cantidad + $cantidad WHERE codigo = '$cod' ");
+            $producto->entrada($cod, $cantidad);
         }
         return $this->getResponse(1);
     }

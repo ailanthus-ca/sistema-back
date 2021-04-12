@@ -38,7 +38,7 @@ class Compra {
     function nuevo() {
         $compras = new \Modelos\Compra();
         $compras->id_orden = $compras->postIntenger('id_orden');
-        $compras->cod_proveedor = $compras->postIntenger('cod_proveedor');
+        $compras->cod_proveedor = $compras->postString('cod_proveedor');
         $compras->nota = $compras->postString("nota");
         $compras->impuesto = $compras->postFloat("impuesto");
         $compras->subtotal = $compras->postFloat("subtotal");

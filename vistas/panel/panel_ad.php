@@ -18,6 +18,9 @@ if ($row = $sql->fetch_array()) {
 } else {
     $ult_factura = 0;
 }
+$query = $con->query("select * from dolares order by id desc limit 1");
+$data = $query->fetch_array();
+$valor = (float) $data['valor'];
 ?>
 <div id="page-wrapper">
     <div class="container-fluid">
@@ -49,9 +52,10 @@ if ($row = $sql->fetch_array()) {
                         </a>    
                     </div>
                     <div class="panel-footer">
-                        <span class="pull-left"><?php echo $num_productos;
-echo " ";
-?> Productos registrados</span>
+                        <span class="pull-left"><?php
+                            echo $num_productos;
+                            echo " ";
+                            ?> Productos registrados</span>
                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                         <div class="clearfix"></div>
                     </div>
@@ -70,9 +74,10 @@ echo " ";
                         </a>
                     </div>
                     <div class="panel-footer">
-                        <span class="pull-left"><?php echo $num_cotizaciones;
-echo " ";
-?> Cotizaciones</span>
+                        <span class="pull-left"><?php
+                            echo $num_cotizaciones;
+                            echo " ";
+                            ?> Cotizaciones</span>
                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                         <div class="clearfix"></div>
                     </div>
@@ -123,6 +128,30 @@ echo " ";
             </div>
             <!--Fin tabla-->
         </div>
+        <br><br>
+        <div class="col-md-6">
+            <h2>Cambios del Dolar</h2>
+        </div>
+        <div class="col-md-6">
+            <div style= "width: 100%" class="mb-3 input-group">
+                <span style=" width: 100px; position: relative; background-color: #eee" class="form-control">
+                    Tasa actual
+                </span>
+                <span style=" width: calc(50% - 150px); position: relative; background-color: #eee" class="form-control">
+                    <?php echo $valor; ?>
+                </span>
+                <span style=" width: 100px; position: relative; background-color: #eee" class="form-control">
+                    Actualizar a 
+                </span>
+                <input style=" width: calc(50% - 150px); position: relative;" class="form-control" type="number" step="0.01" id='nuevaTasaDolar' value="<?php echo $valor; ?>" />
+                <button style="width: 100px" style="border-top-left-radius: 0;border-bottom-left-radius: 0"
+                        class="btn btn-primary" onclick="setDolar()">
+                    Actualizar
+                </button>
+            </div>
+        </div>
+        <br><br>
+        <div class="col-md-10"><canvas id="dolar"></canvas></div>
         <br><br>
         <div class="col-md-6">
             <h2>Ventas del mes</h2>

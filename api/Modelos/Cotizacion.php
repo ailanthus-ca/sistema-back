@@ -68,7 +68,7 @@ class Cotizacion extends \Prototipo\Operaciones {
                 $detalle = $producto->ver($row['codProducto']);
                 $detalle['unidades'] = (float) $row['cantidad'];
                 $detalle['precio'] = (float) $row['precio_unit'];
-                $detalle['comentario'] =  $row['comentario'];
+                $detalle['comentario'] = $row['comentario'];
                 $cotizacion['detalles'][] = $detalle;
             }
         }
@@ -80,6 +80,8 @@ class Cotizacion extends \Prototipo\Operaciones {
         $this->cod_cliente = $this->postString('cod_cliente');
         $plantilla_id = $this->postIntenger('plantilla');
         $id_usuario = $_SESSION['id_usuario'];
+        $dolar = new \Modelos\Dolares();
+        $tasa = $dolar->valor();
         $query = $this->query("INSERT into cotizacion values("
                 . "null,"
                 . "UPPER('$this->cod_cliente'),"
@@ -95,7 +97,7 @@ class Cotizacion extends \Prototipo\Operaciones {
                 . " 1,"
                 . "$id_usuario)");
         $id_cotizacion = $this->con->insert_id;
-        foreach ($detalles as $pro) {
+        foreach ($this->detalles as $pro) {
             $monto = $pro->unidades * $pro->precio;
             $this->query("INSERT INTO detallecotizacion VALUES ("
                     . "'$id_cotizacion',"

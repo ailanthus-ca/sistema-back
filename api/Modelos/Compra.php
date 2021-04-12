@@ -127,10 +127,11 @@ class Compra extends \Prototipo\Operaciones {
         $sql = "UPDATE `compra` SET `estatus`= 0 WHERE codigo = $id";
         $query = $this->query($sql);
         $sql2 = $this->query("select * from detallecompra where cod_compra = '$id' ");
+        $productos = new \Modelos\Producto();
         while ($row = $sql2->fetch_array()) {
             $cod = $row['cod_producto'];
             $cantidad = intval($row['cantidad']);
-            $this->query("UPDATE producto set cantidad = cantidad - $cantidad WHERE codigo = '$cod' ");
+            $productos->salida($cod, $cantidad);
         }
         return 1;
     }

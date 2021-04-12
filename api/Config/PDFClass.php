@@ -7,7 +7,7 @@ use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 class PDFClass extends \conexion {
 
     function ouput($name, $content) {
-        $sql_conf = $this->con->query("SELECT *from conf_factura");
+        $sql_conf = $this->query("SELECT *from conf_factura");
         if ($row = mysqli_fetch_array($sql_conf)) {
             $papel = $row['tipo_papel'];
         }
@@ -26,7 +26,7 @@ class PDFClass extends \conexion {
     }
 
     function ouputFactura($name, $content) {
-        $sql_conf = $this->con->query("SELECT *from conf_factura");
+        $sql_conf = $this->query("SELECT *from conf_factura");
         if ($row = mysqli_fetch_array($sql_conf)) {
             $mtop = $row['margen_sup'];
             $mder = $row['margen_der'];
@@ -88,7 +88,7 @@ class PDFClass extends \conexion {
     }
 
     function encabesado() {
-        $sql = $this->con->query("SELECT *FROM conf_empresa") or die(mysqli_error());
+        $sql = $this->query("SELECT *FROM conf_empresa") or die(mysqli_error());
         $fila = $sql->fetch_array();
         ?>
         <div>
@@ -112,7 +112,7 @@ class PDFClass extends \conexion {
     }
 
     function footer() {
-        $sql = $this->con->query("SELECT *FROM conf_empresa") or die(mysqli_error());
+        $sql = $this->query("SELECT *FROM conf_empresa") or die(mysqli_error());
         $fila = $sql->fetch_array();
         ?><page_footer backtop="20">
             <hr>

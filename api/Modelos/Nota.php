@@ -98,10 +98,11 @@ class Nota extends \Prototipo\Operaciones {
     function cancelar($id) {
         $query = $this->query("UPDATE `notasalida` SET `estatus`= 0 WHERE codigo = $id");
         $sql2 = $this->query("select * from detallesnotas where nota = '$id' ");
+        $producto = new Producto();
         while ($row = $sql2->fetch_array()) {
             $cod = $row['producto'];
             $cantidad = intval($row['cantidad']);
-            $this->query("UPDATE producto set cantidad = cantidad + $cantidad WHERE codigo = '$cod' ");
+            $producto->entrada($cod, $cantidad);
         }
         return $this->getResponse(1);
     }
@@ -110,7 +111,7 @@ class Nota extends \Prototipo\Operaciones {
         $query = $this->query("UPDATE `notasalida` SET `estatus`= 1 WHERE codigo = $id");
         $sql = $this->query("select usuario from notasalida WHERE codigo = $id");
         if ($row = $sql->fetch_array()) {
-            $user_id =(int) $row['usuario'];
+            $user_id = (int) $row['usuario'];
         }
         return $this->getResponse($user_id);
     }

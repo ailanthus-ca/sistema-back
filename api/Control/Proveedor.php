@@ -16,6 +16,12 @@ class Proveedor {
 
     function nuevo() {
         $Proveedor = new \Modelos\Proveedor();
+        $Proveedor->codigo = $Proveedor->postString("codigo");
+        $Proveedor->telefono = $Proveedor->postString("telefono");
+        $Proveedor->email = $Proveedor->postString("correo");
+        $Proveedor->nombre = $Proveedor->postString("nombre");
+        $Proveedor->contacto = $Proveedor->postString("contacto");
+        $Proveedor->direccion = $postString("direccion");
         return json_encode($Proveedor->nuevo());
     }
 

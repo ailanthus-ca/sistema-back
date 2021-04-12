@@ -13,7 +13,7 @@ namespace Modelos;
  *
  * @author Ailanthus
  */
-class Proveedor extends \conexion {
+class Proveedor extends \Prototipo\Entidades {
 
     function lista() {
         $cl = array();
@@ -28,11 +28,11 @@ class Proveedor extends \conexion {
                 'direccion' => $row['direccion'],
                 'estatus' => $row['estatus']);
         }
-        return $cl;
+        return $this->getResponse($cl);
     }
 
     function detalles($id) {
-        $sql = $this->con->query("SELECT *from proveedor where codigo = '$id' ");
+        $sql = $this->query("SELECT *from proveedor where codigo = '$id' ");
         if ($row = $sql->fetch_array()) {
             $data = array(
                 'codigo' => $row['codigo'],
@@ -43,28 +43,23 @@ class Proveedor extends \conexion {
                 'direccion' => $row['direccion'],
                 'estatus' => $row['estatus']);
         }
-        return $data;
+        return $this->getResponse($data);
     }
 
     function nuevo() {
-        $codigo = mysqli_real_escape_string($this->con, (strip_tags($_POST["codigo"], ENT_QUOTES)));
-        $nombre = mysqli_real_escape_string($this->con, (strip_tags($_POST["nombre"], ENT_QUOTES)));
-        $telefono = mysqli_real_escape_string($this->con, (strip_tags($_POST["telefono"], ENT_QUOTES)));
-        $email = mysqli_real_escape_string($this->con, (strip_tags($_POST["correo"], ENT_QUOTES)));
-        $this->contacto = mysqli_real_escape_string($this->con, (strip_tags($_POST["contacto"], ENT_QUOTES)));
-        $direccion = mysqli_real_escape_string($this->con, (strip_tags($_POST["direccion"], ENT_QUOTES)));
-        $estado = intval($_POST['estatus']);
-
-        $sql = $this->con->query("SELECT *from proveedor WHERE codigo = '$codigo'") or die(json_encode(array('error' => 1, 'msn' => $this->con->error)));
+        $sql = $this->con->query("SELECT *from proveedor WHERE codigo = '$this->codigo'");
         if ($row = $sql->fetch_array()) {
-            return array('error' => 1, 'msn' => "Ya existe un proveedor con el mismo RIF/CI.");
+            return $this->getResponse($this->detalles($this->codigo));
         } else {
-            $sql = "INSERT INTO proveedor (codigo,nombre,correo,direccion,contacto,telefono,estatus) VALUES (UPPER('$codigo'),UPPER('$nombre'), UPPER('$email'),UPPER('$direccion'),UPPER('$this->contacto'),'$telefono',$estado)";
-            $query = $this->con->query($sql) or die(json_encode(array('error' => 1, 'msn' => $this->con->error)));
-
-            if ($query) {
-                return $this->detalles($codigo);
-            }
+            $this->query("INSERT INTO proveedor (codigo,nombre,correo,direccion,contacto,telefono,estatus) VALUES ("
+                    . "UPPER('$this->codigo'),"
+                    . "UPPER('$this->nombre'),"
+                    . " UPPER('$this->email'),"
+                    . "UPPER('$this->direccion'),"
+                    . "UPPER('$this->contacto'),"
+                    . "'$this->telefono',"
+                    . "1)");
+            return $this->detalles($this->codigo);
         }
     }
 
