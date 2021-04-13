@@ -24,4 +24,26 @@ class Auth {
     function getToken(){
         
     }
+
+    function listar_roles(){
+    	$roles = new \Modelos\Auth();
+    	return json_encode($roles->listar_roles());
+    }
+
+    function detalles_rol($id){
+        $roles = new \Modelos\Auth();
+        return json_encode($roles->detalles_rol($id));
+    }
+
+    function listar_permisos(){
+    	$permisos = new \Modelos\Auth();
+    	return json_encode($permisos->listar_permisos());
+    }
+
+    function nuevo_rol(){
+        $role = new \Modelos\Auth();
+        $role->nombre = $role->postString("nombre");
+        return json_encode($role->nuevo_rol());
+
+    }
 }
