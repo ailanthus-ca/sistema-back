@@ -151,4 +151,20 @@ class Producto extends \conexion {
         $this->con->query("UPDATE producto set cantidad = cantidad - ('$can') WHERE codigo = '$cod' ")or die('ajustar cantidad ' . $this->con->error);
     }
 
+    public function cancelar($id){
+        $sql = $this->con->query("SELECT * FROM producto WHERE codigo= '$id' ");
+        if ($row = $sql->fetch_array()) {
+            if ($row['estatus'] === '1') {
+                $this->query("UPDATE producto SET "
+                        . "estatus = 0 "
+                        . "WHERE codigo = '$id' ");
+            } else {
+                $this->query("UPDATE producto SET "
+                        . "estatus = 1 "
+                        . "WHERE codigo = '$id' ");
+            }
+            return $this->getResponse(true);
+        }
+    }
+
 }

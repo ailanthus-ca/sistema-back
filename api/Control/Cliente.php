@@ -71,7 +71,7 @@ class Cliente {
 
         // Validar cliente
         $Cliente->detalles($id);
-        if ($Cliente->response == 400) {
+        if ($Cliente->response == 404) {
             return  $Cliente->getResponse();
         }
         // Validar que exista el codigo
@@ -106,6 +106,11 @@ class Cliente {
         }
 
         return json_encode($Cliente->actualizar($id));
+    }
+
+    function cancelar($id){
+        $Cliente = new \Modelos\Cliente();
+        return json_encode($Cliente->cancelar($id));
     }
 
 }

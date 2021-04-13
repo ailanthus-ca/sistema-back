@@ -64,7 +64,7 @@ class Compra {
         // Validar proveedor
         $proveedor = new \Modelos\Proveedor();
         $proveedor->detalles($compras->cod_proveedor);
-        if ($proveedor->response == 400) {
+        if ($proveedor->response == 404) {
             $compras->setError('El proveedor mandado no existe');
             return  $compras->getResponse();
         }

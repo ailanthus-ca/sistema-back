@@ -32,7 +32,7 @@ class conexion {
     }
 
     protected function getNotFount() {
-        $this->response = 400;
+        $this->response = 404;
     }
 
     protected function getErrorServer() {

@@ -47,7 +47,7 @@ class Nota extends \conexion {
         // Validar cliente
         $Cliente=new \Modelos\Cliente();
         $Cliente->detalles($Nota->cod_cliente);
-        if($Cliente->response==400){
+        if($Cliente->response==404){
             $Nota->setError('El cliente mandado no existe');
             return  $Nota->getResponse();            
         }

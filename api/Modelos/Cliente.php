@@ -20,7 +20,7 @@ class Cliente extends \conexion {
 
     public function lista() {
         $cl = array();
-        $sql = $this->query('SELECT * FROM cliente WHERE estatus = 1');
+        $sql = $this->query('SELECT * FROM cliente');
         while ($row = $sql->fetch_array()) {
             $cl[] = array(
                 'codigo' => $row['codigo'],
@@ -31,7 +31,7 @@ class Cliente extends \conexion {
                 'direccion' => $row['direccion'],
                 'tipo_contribuyente' => $row['tipo_contribuyente'],
                 'retencion' => (float) $row['retencion'],
-                'estatus' =>(int) $row['estatus']);
+                'estatus' => (int) $row['estatus']);
         }
         return $this->getResponse($cl);
     }
@@ -79,20 +79,36 @@ class Cliente extends \conexion {
     public function actualizar($id) {
         $sql = $this->con->query("SELECT * from cliente WHERE codigo = '$id' ");
         if ($row = $sql->fetch_array()) {
-            $this->query("UPDATE cliente SET ".
-                "nombre = UPPER('$this->nombre'), ".
-                "correo = UPPER('$this->email'),".
-                "direccion = UPPER('$this->direccion'),".
-                "contacto = UPPER('$this->contacto'),".
-                "telefono = '$this->telefono',".
-                "tipo_contribuyente = UPPER('$this->tipo_contribuyente'),".
-                "retencion = $this->retencion ".
-            "WHERE codigo = '$id'  ");
+            $this->query("UPDATE cliente SET " .
+                    "nombre = UPPER('$this->nombre'), " .
+                    "correo = UPPER('$this->email')," .
+                    "direccion = UPPER('$this->direccion')," .
+                    "contacto = UPPER('$this->contacto')," .
+                    "telefono = '$this->telefono'," .
+                    "tipo_contribuyente = UPPER('$this->tipo_contribuyente')," .
+                    "retencion = $this->retencion " .
+                    "WHERE codigo = '$id'  ");
 
             return $this->getResponse($this->detalles($id));
         }
         $this->getNotFount();
         return $this->getResponse();
+    }
+
+    public function cancelar($id) {
+        $sql = $this->con->query("SELECT * from cliente WHERE codigo = '$id' ");
+        if ($row = $sql->fetch_array()) {
+            if ($row['estatus'] === '1') {
+                $this->query("UPDATE cliente SET "
+                        . "estatus = 0 "
+                        . "WHERE codigo = '$id' ");
+            } else {
+                $this->query("UPDATE cliente SET "
+                        . "estatus = 1 "
+                        . "WHERE codigo = '$id' ");
+            }
+            return $this->getResponse(true);
+        }
     }
 
 }

@@ -6,7 +6,7 @@ class Usuario extends \conexion {
 
     function lista() {
         $cl = array();
-        $sql = $this->con->query('SELECT * FROM usuario WHERE estatus=1');
+        $sql = $this->query('SELECT * FROM usuario WHERE estatus=1');
         while ($row = $sql->fetch_array()) {
             $cl[] = array(
                 'codigo' => $row['codigo'],
@@ -14,12 +14,28 @@ class Usuario extends \conexion {
                 'correo' => $row['correo'],
                 'clave' => $row['clave']
             );
+            return $this->getResponse($cl);
         }
-        return $cl;
     }
 
     function actual() {
-        echo $_SESSION['id_usuario'];
+        return $_SESSION['id_usuario'];
+    }
+
+    function login($emil, $clave) {
+        $auth = new \Auth();
+        $sql = $this->query("SELECT *FROM usuario WHERE correo = '$emil' ");
+        if ($user = $sql->fetch_array()) {
+            if ($user['clave'] == crypt($clave, $user['clave']) && $user['estatus'] == 1) {
+                $_SESSION['id_usuario'] = $user['codigo'];
+                $_SESSION['usuario'] = $user['nombre'];
+                $_SESSION['nivel'] = $user['nivel'];
+            }
+        }
+        return $this->getResponse(array(
+                    'token' => $auth->generateToken(),
+                    'user' => $_SESSION
+        ));
     }
 
 }

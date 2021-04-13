@@ -17,7 +17,7 @@ class Proveedor extends \Prototipo\Entidades {
 
     function lista() {
         $cl = array();
-        $sql = $this->con->query('SELECT * FROM proveedor WHERE estatus = 1');
+        $sql = $this->con->query('SELECT * FROM proveedor');
         while ($row = $sql->fetch_array()) {
             $cl[] = array(
                 'codigo' => $row['codigo'],
@@ -78,6 +78,22 @@ class Proveedor extends \Prototipo\Entidades {
         }
         $this->getNotFount();
         return $this->getResponse();
+    }
+
+    function cancelar($id){
+        $sql = $this->con->query("SELECT * from proveedor WHERE codigo = '$id' ");
+        if ($row = $sql->fetch_array()) {
+            if ($row['estatus'] === '1') {
+                $this->query("UPDATE proveedor SET "
+                        . "estatus = 0 "
+                        . "WHERE codigo = '$id' ");
+            } else {
+                $this->query("UPDATE proveedor SET "
+                        . "estatus = 1 "
+                        . "WHERE codigo = '$id' ");
+            }
+            return $this->getResponse(true);
+        }
     }
 
 }

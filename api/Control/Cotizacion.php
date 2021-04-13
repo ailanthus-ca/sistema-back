@@ -34,7 +34,7 @@ class Cotizacion {
         // Validar cliente
         $Cliente=new \Modelos\Cliente();
         $Cliente->detalles($Cotizacion->cod_cliente);
-        if($Cliente->response==400){
+        if($Cliente->response==404){
             $Cotizacion->setError('El cliente mandado no existe');
             return  $Cotizacion->getResponse();            
         }

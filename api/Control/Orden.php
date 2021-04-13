@@ -34,7 +34,7 @@ class Orden {
         // Validar proveedor
         $proveedor = new \Modelos\Proveedor();
         $proveedor->detalles($Orden->cod_proveedor);
-        if ($proveedor->response == 400) {
+        if ($proveedor->response == 404) {
             $Orden->setError('El proveedor mandado no existe');
             return  $Orden->getResponse();
         }

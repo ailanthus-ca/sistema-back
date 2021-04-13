@@ -7,7 +7,12 @@ class Enrutador {
         $operacion = $request->getoperacion();
         $parametro = $request->getparametro();
         $clase = new $obj();
-        echo $clase->$operacion($parametro);
+        $user = new \Auth();
+        if ($user->isLog()) {
+            echo $clase->$operacion($parametro);
+        } else {
+            echo json_encode($user->unAutenticacted());
+        }
     }
 
 }

@@ -46,7 +46,7 @@ class Factura extends \conexion {
         // Validar cliente
         $Cliente=new \Modelos\Cliente();
         $Cliente->detalles($Factura->cod_cliente);
-        if($Cliente->response==400){
+        if($Cliente->response==404){
             $Factura->setError('El cliente mandado no existe');
             return  $Factura->getResponse();            
         }

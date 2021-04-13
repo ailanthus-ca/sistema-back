@@ -34,4 +34,9 @@ class Producto {
         return json_encode($Producto->nuevo());
     }
 
+    function cancelar($id){
+        $Producto = new \Modelos\Producto();
+        return json_encode($Producto->cancelar($id));
+    }
+
 }

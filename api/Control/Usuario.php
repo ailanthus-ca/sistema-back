@@ -12,5 +12,15 @@ class Usuario {
     function actual() {
         return json_encode($_SESSION);
     }
+    
+    function getToken(){
+        $m = new \Middleware();
+        return $m->getBearerToken();
+    }
+    
+    function PruebaToken(){
+        $m = new \Middleware();
+        return $m->safeDecrypt($m->getBearerToken());
+    }
 
 }
