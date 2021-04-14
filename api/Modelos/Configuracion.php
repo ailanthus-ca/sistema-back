@@ -72,4 +72,11 @@ class Configuracion extends \conexion {
         return $this->getResponse($region);
     }
 
+    function checkCodigo($id) {
+        $sql = $this->query("SELECT count(*) AS exist FROM configuracion WHERE id= $id ");
+        if ($row = $sql->fetch_array()) {
+            return boolval($row['exist']);
+        }
+    }
+
 }

@@ -34,4 +34,11 @@ class Unidad extends \conexion{
 		}
 	}
 
+	function checkCodigo($cod) {
+        $sql = $this->query('SELECT count(*) AS exist FROM unidad WHERE codigo="' . $cod . '"');
+        if ($row = $sql->fetch_array()) {
+            return boolval($row['exist']);
+        }
+    }
+
 }

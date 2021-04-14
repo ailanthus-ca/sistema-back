@@ -46,12 +46,15 @@ class Proveedor extends \Prototipo\Entidades {
         return $this->getResponse($data);
     }
 
-    function nuevo() {
-        $sql = $this->con->query("SELECT *from proveedor WHERE codigo = '$this->codigo'");
+    function checkCodigo($cod) {
+        $sql = $this->query('SELECT count(*) AS exist FROM proveedor WHERE codigo="' . $cod . '"');
         if ($row = $sql->fetch_array()) {
-            return $this->getResponse($this->detalles($this->codigo));
-        } else {
-            $this->query("INSERT INTO proveedor (codigo,nombre,correo,direccion,contacto,telefono,estatus) VALUES ("
+            return boolval($row['exist']);
+        }
+    }
+
+    function nuevo() {
+        $this->query("INSERT INTO proveedor (codigo,nombre,correo,direccion,contacto,telefono,estatus) VALUES ("
                     . "UPPER('$this->codigo'),"
                     . "UPPER('$this->nombre'),"
                     . " UPPER('$this->email'),"
@@ -59,14 +62,12 @@ class Proveedor extends \Prototipo\Entidades {
                     . "UPPER('$this->contacto'),"
                     . "'$this->telefono',"
                     . "1)");
-            return $this->detalles($this->codigo);
-        }
+        return $this->getResponse($this->detalles($this->codigo));
+        
     }
 
     function actualizar($id) {
-        $sql = $this->con->query("SELECT * from proveedor WHERE codigo = '$id' ");
-        if ($row = $sql->fetch_array()) {      
-            $this->query("UPDATE proveedor SET ".               
+        $this->query("UPDATE proveedor SET ".               
                 "nombre = UPPER('$this->nombre'),".
                 "correo = UPPER('$this->email'),".
                 "direccion = UPPER('$this->direccion'),".
@@ -74,10 +75,7 @@ class Proveedor extends \Prototipo\Entidades {
                 "telefono = '$this->telefono' ".
             "WHERE codigo = '$id'  ");
             
-            return $this->getResponse($this->detalles($id));            
-        }
-        $this->getNotFount();
-        return $this->getResponse();
+        return $this->getResponse($this->detalles($id));
     }
 
     function cancelar($id){

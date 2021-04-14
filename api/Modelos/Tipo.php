@@ -32,4 +32,11 @@ class Tipo extends \conexion{
 		}
 	}
 
+	function checkCodigo($cod) {
+        $sql = $this->query('SELECT count(*) AS exist FROM tipo_producto WHERE codigo="' . $cod . '"');
+        if ($row = $sql->fetch_array()) {
+            return boolval($row['exist']);
+        }
+    }
+
 }

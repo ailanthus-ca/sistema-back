@@ -45,20 +45,6 @@ class Middleware {
         return null;
     }
 
-    function generateToken() {
-        $seccionToken = $_SESSION;
-        if (isset($seccionToken)) {
-            $seccionToken['fecha'] = date('Y-m-d');
-            $token = json_encode($seccionToken);
-            $token = $this->safeEncrypt($token);
-            return $token;
-        }
-    }
-
-    function getTokenSeccion() {
-        return json_decode($this->safeDecrypt($this->getBearerToken()));
-    }
-
     function safeEncrypt($message) {
         $encode = base64_encode($message);
         $cipher = base64_encode($this->key . $encode);

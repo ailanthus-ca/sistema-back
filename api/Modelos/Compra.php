@@ -85,6 +85,13 @@ class Compra extends \Prototipo\Operaciones {
         }
     }
 
+    function checkCodigo($cod) {
+        $sql = $this->query('SELECT count(*) AS exist FROM compra WHERE codigo="' . $cod . '"');
+        if ($row = $sql->fetch_array()) {
+            return boolval($row['exist']);
+        }
+    }
+
     function nuevo() {
         //usuario
         $user = $_SESSION['id_usuario'];

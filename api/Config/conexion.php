@@ -4,6 +4,22 @@ use Spipu\Html2Pdf\Html2Pdf;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 
+class dataFech {
+
+    private $data;
+
+    function __construct($data) {
+        $this->data = $data;
+    }
+
+    function fetch_array() {
+        if ($this->data === 'error')
+            return false;
+        return $this->data->fetch_array();
+    }
+
+}
+
 class conexion {
 
     protected $con;
@@ -46,8 +62,9 @@ class conexion {
 
     public function query($sql) {
         if ($row = $this->con->query($sql)) {
-            return $row;
+            return new dataFech($row);
         } else {
+            return new dataFech('error');
             $this->setError($sql);
             $this->setError($this->con->error);
         }

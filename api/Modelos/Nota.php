@@ -76,6 +76,13 @@ class Nota extends \Prototipo\Operaciones {
         return $this->getResponse($notasalida);
     }
 
+    function checkCodigo($cod) {
+        $sql = $this->query('SELECT count(*) AS exist FROM notasalida WHERE codigo="' . $cod . '"');
+        if ($row = $sql->fetch_array()) {
+            return boolval($row['exist']);
+        }
+    }
+
     function nuevo() {
         $sql = $this->query("INSERT INTO `notasalida` VALUES ("
                 . "null,"

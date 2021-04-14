@@ -26,27 +26,26 @@ class Proveedor {
         // Validar que exista el codigo
         if ($Proveedor->codigo == '') {
             $Proveedor->setError('No se mando RIF/cédula');
-            return  $Proveedor->getResponse();
         }
         // Validar que exista el nombre
         if ($Proveedor->nombre == '') {
             $Proveedor->setError('No se mando el nombre');
-            return  $Proveedor->getResponse();
         }
         // Validar que exista el correo
         if ($Proveedor->email == '') {
             $Proveedor->setError('No se mando un email');
-            return  $Proveedor->getResponse();
         }
         // Validar que exista el contacto
         if ($Proveedor->contacto == '') {
             $Proveedor->setError('No se mando un contacto');
-            return  $Proveedor->getResponse();
         }
-        // Validar que exista una retencion
-        if ($Proveedor->retencion == 0) {
-            $Proveedor->setError('No se mando ninguna retención');
-            return  $Proveedor->getResponse();
+        //Validar si hubo errores
+        if ($Proveedor->response > 300) {
+            return json_encode($Proveedor->getResponse());
+        }
+        // Validar que exista proveedor
+        if ($Proveedor->checkCodigo($Proveedor->codigo)) {
+            return $Proveedor->getResponse($Proveedor->detalles($Proveedor->codigo));
         }
 
         return json_encode($Proveedor->nuevo());
@@ -61,35 +60,24 @@ class Proveedor {
         $Proveedor->contacto = $Proveedor->postString("contacto");
         $Proveedor->direccion = $Proveedor->postString("direccion");
 
-        // Validar proveedor
-        $Proveedor->detalles($id);
-        if ($Proveedor->response == 400) {
-            return  $Proveedor->getResponse();
-        }
-        // Validar que exista el codigo
-        if ($Proveedor->codigo == '') {
-            $Proveedor->setError('No se mando RIF/cédula');
-            return  $Proveedor->getResponse();
-        }
+        // Validar que exista proveedor
+        if (!$Proveedor->checkCodigo($id)) {
+            return $Proveedor->setError('El proveedor no existe');
+        }       
         // Validar que exista el nombre
         if ($Proveedor->nombre == '') {
             $Proveedor->setError('No se mando el nombre');
-            return  $Proveedor->getResponse();
-        }
         // Validar que exista el correo
         if ($Proveedor->email == '') {
             $Proveedor->setError('No se mando un email');
-            return  $Proveedor->getResponse();
         }
         // Validar que exista el contacto
         if ($Proveedor->contacto == '') {
             $Proveedor->setError('No se mando un contacto');
-            return  $Proveedor->getResponse();
         }
-        // Validar que exista una retencion
-        if ($Proveedor->retencion == 0) {
-            $Proveedor->setError('No se mando ninguna retención');
-            return  $Proveedor->getResponse();
+        //Validar si hubo errores
+        if ($Proveedor->response > 300) {
+            return json_encode($Proveedor->getResponse());
         }
 
         return json_encode($Proveedor->actualizar($id));

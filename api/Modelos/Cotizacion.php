@@ -75,6 +75,13 @@ class Cotizacion extends \Prototipo\Operaciones {
         return $this->getResponse($cotizacion);
     }
 
+    function checkCodigo($cod) {
+        $sql = $this->query('SELECT count(*) AS exist FROM cotizacion WHERE codigo="' . $cod . '"');
+        if ($row = $sql->fetch_array()) {
+            return boolval($row['exist']);
+        }
+    }
+
     public function nuevo() {
         $this->getCondiciones();
         $this->cod_cliente = $this->postString('cod_cliente');

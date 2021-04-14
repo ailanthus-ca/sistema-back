@@ -2,58 +2,87 @@
 
 namespace Modelos;
 
-class Auth extends \conexion{
+class Auth extends \conexion {
 
-	public function listar_roles(){
-		$roles = array();
-		$sql = $this->con->query("SELECT * FROM roles");
-		while($row = $sql->fetch_array()){
-			$roles[] = array(
-				'id' => $row['id'],
-				'nombre' => $row['nombre']
-			);
-		}
+    var $nombre = '';
+    var $permisos = array();
 
-		return $this->getResponse($roles);
-	}
+    public function listar_roles() {
+        $roles = array();
+        $sql = $this->con->query("SELECT * FROM roles");
+        while ($row = $sql->fetch_array()) {
+            $roles[] = array(
+                'id' => $row['id'],
+                'nombre' => $row['nombre']
+            );
+        }
 
-	public function detalles_rol($id){
-		$sql = $this->query("SELECT *from roles where id = '$id' ");
+        return $this->getResponse($roles);
+    }
+
+    public function detalles_rol($id) {
+        $sql = $this->query("SELECT * from roles where id = '$id' ");
+        $data = array();
         if ($row = $sql->fetch_array()) {
-        	$data[] = array(
-				'id' => $row['id'],
-				'nombre' => $row['nombre']
-			);
-            return $this->getResponse($data);		
+            $data['id'] = $row['id'];
+            $data['nombre'] = $row['nombre'];
+            $p = $this->query("SELECT id_permiso from permisos_roles where id_role = " . $data['id']);
+            $permisos = array();
+            while ($row = $p->fetch_array()) {
+                $permisos[] = $this->nombre_permiso($row['id_permiso']);
+            }
+            $data['permisos'] = $permisos;
+            return $this->getResponse($data);
         } else {
             $this->getNotFount();
             return $this->getResponse(array());
         }
-	}
+    }
 
-	public function listar_permisos(){
-		$permisos = array();
-		$sql = $this->con->query("SELECT * FROM permisos");
-		while($row = $sql->fetch_array()){
-			$permisos[] = array(
-				'id' => $row['id'],
-				'nombre' => $row['nombre']
-			);
-		}
-
-		return $this->getResponse($permisos);
-	}
-
-	public function nuevo_rol(){
-		$sql = $this->con->query("SELECT * from roles WHERE id = '$this->id'");
-        if ($row = $sql->fetch_array()) {
-            return $this->getResponse($this->detalles($this->id));
-        } else {
-        	$this->query("INSERT INTO roles(nombre) VALUES("
-        		."nombre = UPPER('$this->nombre')".
-        		") ");
-            return $this->getResponse($this->detalles_rol($this->id));
+    public function nuevo_rol() {
+        $this->query("INSERT INTO roles(nombre) VALUES("
+                . "UPPER('$this->nombre'))");
+        $id_rol = $this->con->insert_id;
+        foreach ($this->permisos as $per) {
+            $this->query("INSERT INTO permisos_roles VALUES("
+                    . "$per, "
+                    . "$id_rol)");
         }
-	}
+        return $this->getResponse($this->detalles_rol($id_rol));
+    }
+
+    public function actualizarRol($id) {
+        $this->query("UPDATE roles SET " .
+                "nombre = UPPER('$this->nombre'), " .
+                "WHERE id = 0$id");
+        $this->query("DELETE FROM `permisos_roles` WHERE id_role = 0$id");
+        foreach ($this->permisos as $per) {
+            $this->query("INSERT INTO permisos_roles VALUES("
+                    . "$per, "
+                    . "0$id)");
+        }
+        return $this->getResponse($this->detalles_rol($id));
+        $this->getNotFount();
+        return $this->getResponse();
+    }
+
+    public function listar_permisos() {
+        $permisos = array();
+        $sql = $this->con->query("SELECT * FROM permisos");
+        while ($row = $sql->fetch_array()) {
+            $permisos[] = array(
+                'id' => $row['id'],
+                'nombre' => $row['nombre']
+            );
+        }
+        return $this->getResponse($permisos);
+    }
+
+    function nombre_permiso($id) {
+        $sql = $this->query("SELECT nombre from permisos where id = $id");
+        if ($row = $sql->fetch_array()) {
+            return $row['nombre'];
+        }
+    }
 
 }

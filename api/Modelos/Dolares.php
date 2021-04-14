@@ -36,6 +36,13 @@ class Dolares extends \conexion {
         return $this->getResponse((float) $valor['valor']);
     }
 
+    function checkCodigo($id) {
+        $sql = $this->query("SELECT count(*) AS exist FROM dolares WHERE id=$id ");
+        if ($row = $sql->fetch_array()) {
+            return boolval($row['exist']);
+        }
+    }
+
     function set() {
         $this->query("INSERT INTO `dolares`(`id`, `valor`, `fecha`) VALUES (null,$this->valor,NOW())");
         $this->getResponse(array("st" => 1, "msn" => "Nueva tasa Guardada"));

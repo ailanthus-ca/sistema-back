@@ -18,24 +18,28 @@ class Usuario extends \conexion {
         }
     }
 
-    function actual() {
-        return $_SESSION['id_usuario'];
-    }
-
     function login($emil, $clave) {
         $auth = new \Auth();
-        $sql = $this->query("SELECT *FROM usuario WHERE correo = '$emil' ");
+        $sql = $this->query("SELECT * FROM usuario WHERE correo = '$emil' ");
         if ($user = $sql->fetch_array()) {
             if ($user['clave'] == crypt($clave, $user['clave']) && $user['estatus'] == 1) {
                 $_SESSION['id_usuario'] = $user['codigo'];
                 $_SESSION['usuario'] = $user['nombre'];
                 $_SESSION['nivel'] = $user['nivel'];
+                $auth->setPHPSeccion();
+                $auth->setPermisos();
+                return $this->getResponse(array(
+                            'token' => $auth->generateToken(),
+                            'user' => $_SESSION
+                ));
+            } else {
+                header("HTTP/1.0 401 Success");
+                return array('error' => 'clave errada');
             }
+        } else {
+            header("HTTP/1.0 401 Success");
+            return array('error' => 'correo no existe');
         }
-        return $this->getResponse(array(
-                    'token' => $auth->generateToken(),
-                    'user' => $_SESSION
-        ));
     }
 
 }

@@ -31,10 +31,32 @@ class Producto {
 
     function nuevo() {
         $Producto = new \Modelos\Producto();
+        //datos de tipo post
+        $Producto->departamento = $Producto->postString('departamento');
+        $Producto->descripcion = $Producto->postString('descripcion');
+        $Producto->costo = $Producto->postFloat('costo');
+        $Producto->precio1 = $Producto->postFloat('precio1');
+        $Producto->precio2 = $Producto->postFloat('precio2');
+        $Producto->precio3 = $Producto->postFloat('precio3');
+        $Producto->tipo = $Producto->postIntenger('tipo');
+        $Producto->unidad = $Producto->postIntenger('unidad');
+        $Producto->enser = $Producto->postIntenger('enser');
+        //validaciones
+        
+        //cantidad deproductos por categoria
+        $dep = new \Modelos\Departamento();
+        $num = $dep->count($Producto->departamento);
+        //comprovar si el codigo es valido
+        while ($Producto->checkCodigo($Producto->departamento + $num)) {
+            $num++;
+        }
+        //asignar codigo
+        $Producto->codigo = $Producto->departamento + $num;
+        //crear y responder
         return json_encode($Producto->nuevo());
     }
 
-    function cancelar($id){
+    function cancelar($id) {
         $Producto = new \Modelos\Producto();
         return json_encode($Producto->cancelar($id));
     }

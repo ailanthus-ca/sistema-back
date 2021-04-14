@@ -19,31 +19,22 @@ class Auth {
         $user = new \Modelos\Usuario();
         $email = $user->postString('correo');
         $clave = $user->postString('clave');
-        return $user->login($email, $clave);
-    }
-    function getToken(){
-        
+        return json_encode($user->login($email, $clave));
     }
 
-    function listar_roles(){
-    	$roles = new \Modelos\Auth();
-    	return json_encode($roles->listar_roles());
+    function token() {
+        $auth = new \Auth();
+        return json_encode(array('token' => $auth->generateToken()));
     }
 
-    function detalles_rol($id){
-        $roles = new \Modelos\Auth();
-        return json_encode($roles->detalles_rol($id));
+    function me() {
+        $auth = new \Auth();
+        return json_encode($auth);
     }
 
-    function listar_permisos(){
-    	$permisos = new \Modelos\Auth();
-    	return json_encode($permisos->listar_permisos());
+    function close() {
+        $auth = new \Auth();
+        $auth->close();
     }
 
-    function nuevo_rol(){
-        $role = new \Modelos\Auth();
-        $role->nombre = $role->postString("nombre");
-        return json_encode($role->nuevo_rol());
-
-    }
 }

@@ -69,6 +69,13 @@ class Factura extends \Prototipo\Operaciones {
         return $this->getResponse($factura);
     }
 
+    function checkCodigo($cod) {
+        $sql = $this->query('SELECT count(*) AS exist FROM factura WHERE codigo="' . $cod . '"');
+        if ($row = $sql->fetch_array()) {
+            return boolval($row['exist']);
+        }
+    }
+
     function nuevo() {
         $this->getCondiciones();
         $this->cod_cliente = $this->postString('cod_cliente');

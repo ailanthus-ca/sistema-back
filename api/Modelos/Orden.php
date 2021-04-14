@@ -71,6 +71,13 @@ class Orden extends \Prototipo\Operaciones {
         return $this->getResponse($orden);
     }
 
+    function checkCodigo($cod) {
+        $sql = $this->query('SELECT count(*) AS exist FROM ordencompra WHERE codigo="' . $cod . '"');
+        if ($row = $sql->fetch_array()) {
+            return boolval($row['exist']);
+        }
+    }
+
     function nuevo() {
         $user = $_SESSION['id_usuario'];
         $sql = $this->query("INSERT INTO ordencompra VALUES ("

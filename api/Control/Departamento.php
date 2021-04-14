@@ -4,7 +4,7 @@ namespace Control;
 
 class Departamento {
 
-	function lista() {
+    function lista() {
         $departamentos = new \Modelos\Departamento();
         return json_encode($departamentos->lista());
     }
@@ -12,6 +12,10 @@ class Departamento {
     function detalles($id) {
         $departamento = new \Modelos\Departamento();
         return json_encode($departamento->detalles($id));
+    }
+
+    function nuevo() {
+        
     }
 
 }
