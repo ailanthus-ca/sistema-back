@@ -8,7 +8,7 @@ class PDFClass extends \conexion {
 
     function ouput($name, $content) {
         $sql_conf = $this->query("SELECT *from conf_factura");
-        if ($row = mysqli_fetch_array($sql_conf)) {
+        if ($row = $sql_conf->fetch_array()) {
             $papel = $row['tipo_papel'];
         }
         try {
@@ -27,7 +27,7 @@ class PDFClass extends \conexion {
 
     function ouputFactura($name, $content) {
         $sql_conf = $this->query("SELECT *from conf_factura");
-        if ($row = mysqli_fetch_array($sql_conf)) {
+        if ($row = $sql_conf->fetch_array()) {
             $mtop = $row['margen_sup'];
             $mder = $row['margen_der'];
             $mizq = $row['margen_izq'];

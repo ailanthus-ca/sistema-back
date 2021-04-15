@@ -66,6 +66,23 @@ class Auth extends \conexion {
         return $this->getResponse();
     }
 
+    function checkNivelUsuario($nivel) {
+        $sql = $this->query("SELECT count(*) AS exist FROM usuario WHERE nivel=0$nivel");
+        if ($row = $sql->fetch_array()) {
+            return (intval($row['exist']) > 0);
+        }
+    }
+
+    public function eliminarRol($id) {
+        if ($this->checkNivelUsuario($id)) {
+            $this->setError('EXISTEN USUARIOS CON ESTE ROL NO SE PUEDE ELIMINAR');
+        }
+        return $this->getResponse();
+        $this->query("DELETE FROM `permisos_roles` WHERE id_role = 0$id");
+        $this->query("DELETE roles WHERE id = 0$id");
+        return json_encode(['ok' => 'rol elimiado']);
+    }
+
     public function listar_permisos() {
         $permisos = array();
         $sql = $this->con->query("SELECT * FROM permisos");

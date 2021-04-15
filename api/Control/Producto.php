@@ -43,10 +43,10 @@ class Producto {
         $Producto->enser = $Producto->postIntenger('enser');
         //validaciones
         
-        //cantidad deproductos por categoria
+        //cantidad de productos por categoria
         $dep = new \Modelos\Departamento();
         $num = $dep->count($Producto->departamento);
-        //comprovar si el codigo es valido
+        //comprobar si el codigo es valido
         while ($Producto->checkCodigo($Producto->departamento + $num)) {
             $num++;
         }
@@ -54,6 +54,23 @@ class Producto {
         $Producto->codigo = $Producto->departamento + $num;
         //crear y responder
         return json_encode($Producto->nuevo());
+    }
+
+    function actualizar($id) {
+        $Producto = new \Modelos\Producto();
+        //datos de tipo post
+        $Producto->descripcion = $Producto->postString('descripcion');       
+        $Producto->unidad = $Producto->postIntenger('unidad');
+        // Validar que exista codigo
+        if (!$Producto->checkCodigo($id)) {
+            $Producto->setError('Producto no existe');
+        }
+        //Validar si hubo errores
+        if ($Producto->response > 300) {
+            return json_encode($Producto->getResponse());
+        }
+        //crear y responder
+        return json_encode($Producto->actualizar($id));
     }
 
     function cancelar($id) {

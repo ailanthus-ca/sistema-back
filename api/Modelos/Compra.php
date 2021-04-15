@@ -23,7 +23,7 @@ class Compra extends \Prototipo\Operaciones {
                 . "compra.usuario  "
                 . "FROM compra,proveedor "
                 . "WHERE compra.cod_proveedor = proveedor.codigo order by fecha DESC ");
-        while ($row = mysqli_fetch_array($query)) {
+        while ($row = $query->fetch_array()) {
             $detalle = array();
             $sql = $this->query("SELECT cod_producto FROM detallecompra WHERE cod_compra = " . $row['codFact']);
             while ($row2 = $sql->fetch_array()) {

@@ -37,6 +37,7 @@ class Compra {
 
     function nuevo() {
         $compras = new \Modelos\Compra();
+        $compras->cod_compra = $compras->postIntenger('cod_compra');
         $compras->id_orden = $compras->postIntenger('id_orden');
         $compras->cod_proveedor = $compras->postString('cod_proveedor');
         $compras->nota = $compras->postString("nota");
@@ -59,24 +60,28 @@ class Compra {
         // Validar que exista el cod_proveedor
         if ($compras->cod_proveedor == '') {
             $compras->setError('Debe mandar un proveedor');
-            return  $compras->getResponse();
         }
         // Validar proveedor
         $proveedor = new \Modelos\Proveedor();
         $proveedor->detalles($compras->cod_proveedor);
         if ($proveedor->response == 404) {
             $compras->setError('El proveedor mandado no existe');
-            return  $compras->getResponse();
         }
         // Validar si existe al menos un item(producto)
         if (count($compras->detalles)==0) {
             $compras->setError('No se mandaron productos');
-            return  $compras->getResponse();
         }
         // Validar total
         if ($compras->total == 0) {
             $compras->setError('No se mando el total');
-            return  $compras->getResponse();
+        }
+        //Validar si hubo errores
+        if ($compras->response > 300) {
+            return json_encode($compras->getResponse());
+        }
+        // Validar que exista compra
+        if ($compras->checkCodigo($compras->cod_compra)) {
+            return $compras->getResponse($compras->detalles($compras->cod_compra));
         }
 
         return json_encode($compras->nuevo());

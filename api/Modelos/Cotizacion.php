@@ -10,7 +10,7 @@ class Cotizacion extends \Prototipo\Operaciones {
         $pen = array();
         $sql = "SELECT cotizacion.codigo as codFact,telefono,correo,contacto, fecha, nombre,total,cotizacion.estatus as status, nota,usuario,tasa   FROM cotizacion,cliente WHERE cotizacion.cod_cliente = cliente.codigo order by fecha desc";
         $query = $this->query($sql);
-        while ($row = mysqli_fetch_array($query)) {
+        while ($row = $query->fetch_array()) {
             $detalle = array();
             $sql = $this->query('SELECT codProducto FROM detallecotizacion WHERE codCotizacion = ' . $row['codFact']);
             while ($row2 = $sql->fetch_array()) {

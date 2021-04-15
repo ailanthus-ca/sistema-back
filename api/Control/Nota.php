@@ -27,6 +27,7 @@ class Nota extends \conexion {
 
     function nuevo() {
         $Nota = new \Modelos\Nota();
+        $Nota->codigo = $Nota->postString('codigo');
         $Nota->cod_cliente = $Nota->postString('cod_cliente');
         $Nota->id_cotizacion = $Nota->postString('id_cotizacion');
         $Nota->nota = $Nota->postString("nota");
@@ -42,24 +43,28 @@ class Nota extends \conexion {
         // Validar que exista el cliente
         if ($Nota->cod_cliente == '') {
             $Nota->setError('Debe mandar un cliente');
-            return  $Nota->getResponse();
         }
         // Validar cliente
         $Cliente=new \Modelos\Cliente();
         $Cliente->detalles($Nota->cod_cliente);
         if($Cliente->response==404){
-            $Nota->setError('El cliente mandado no existe');
-            return  $Nota->getResponse();            
+            $Nota->setError('El cliente mandado no existe');         
         }
         // Validar si existe al menos un item(producto)
         if (count($Nota->detalles)==0) {
             $Nota->setError('No se mandaron productos');
-            return  $Nota->getResponse();
         }
         // Validar total
         if ($Nota->total == 0) {
             $Nota->setError('No se mando el total');
-            return  $Nota->getResponse();
+        }
+        //Validar si hubo errores
+        if ($Nota->response > 300) {
+            return json_encode($Nota->getResponse());
+        }
+        // Validar que exista Nota
+        if ($Nota->checkCodigo($Nota->codigo)) {
+            return $Nota->getResponse($Nota->detalles($Nota->codigo));
         }
 
         return json_encode($Nota->nuevo());

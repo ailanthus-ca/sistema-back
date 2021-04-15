@@ -25,29 +25,35 @@ class Cotizacion {
         $Cotizacion->subtotal = $Cotizacion->postFloat("subtotal");
         $Cotizacion->total = $Cotizacion->postFloat("total");
         $Cotizacion->detalles = $Cotizacion->postArray("detalles");
+        $Cotizacion->codigo = $Cotizacion->postString("codigo");
         
         //validaciones para cod_cliente 
         if ($Cotizacion->cod_cliente == '') {
             $Cotizacion->setError('Debe mandar un cliente');
-            return  $Cotizacion->getResponse();
         }
         // Validar cliente
         $Cliente=new \Modelos\Cliente();
         $Cliente->detalles($Cotizacion->cod_cliente);
         if($Cliente->response==404){
-            $Cotizacion->setError('El cliente mandado no existe');
-            return  $Cotizacion->getResponse();            
+            $Cotizacion->setError('El cliente mandado no existe');          
         }
         // Validar total
         if ($Cotizacion->total == 0) {
             $Cotizacion->setError('No se mando el total');
-            return  $Cotizacion->getResponse();
         }
         // Validar si existe al menos un item(producto)
         if (count($Cotizacion->detalles)==0) {
             $Cotizacion->setError('No se mandaron productos');
-            return  $Cotizacion->getResponse();
         }
+        //Validar si hubo errores
+        if ($Cotizacion->response > 300) {
+            return json_encode($Cotizacion->getResponse());
+        }
+        // Validar que exista cotizacion
+        if ($Cotizacion->checkCodigo($Cotizacion->codigo)) {
+            return $Cotizacion->getResponse($Cotizacion->detalles($Cotizacion->codigo));
+        }
+
         return json_encode($Cotizacion->nuevo());
     }
 

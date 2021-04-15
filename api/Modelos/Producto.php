@@ -16,15 +16,8 @@ class Producto extends \conexion {
     var $enser = 0;
 
     public function lista() {
-        $where = ' WHERE estatus = 1 AND departamento!=""';
-        if (isset($_POST['tipo'])) {
-            $where += ' and tipo=' . $_POST['enser'];
-        }
-        if (isset($_POST['stock'])) {
-            $where += ' and cantidad>0';
-        }
         $pro = array();
-        $sql = $this->query('SELECT * FROM producto' . $where) or die($error);
+        $sql = $this->query('SELECT * FROM producto');
         while ($row = $sql->fetch_array()) {
             $pro[] = array(
                 'codigo' => $row['codigo'],
@@ -38,6 +31,7 @@ class Producto extends \conexion {
                 'precio2' => (float) $row['precio2'],
                 'precio3' => (float) $row['precio3'],
                 'cantidad' => (float) $row['cantidad'],
+                'fecha' => $row['fecha_creacion'],
             );
         }
         return $pro;
@@ -126,6 +120,14 @@ class Producto extends \conexion {
                 . "1,"
                 . " NOW())");
         return $this->getResponse($this->ver($this->codigo));
+    }
+
+    public function actualizar($id) {
+        $this->query("UPDATE producto SET " .
+                "descripcion = UPPER('$this->descripcion'), " .
+                "unidad = UPPER('$this->unidad')".
+                "WHERE codigo = '$id'");
+        return $this->getResponse($this->ver($id));
     }
 
     public function entrada($cod, $can, $pre = 0) {

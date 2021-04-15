@@ -28,6 +28,9 @@ class Factura extends \conexion {
         $Factura->total = $Factura->postFloat("total");
         $Factura->detalles = $Factura->postArray("detalles");
 
+        $Factura->codigo = $Factura->postString('codigo');
+
+
         if ($Factura->id_nota > 0) {
             $nota = new Nota();
             $Factura->user = $nota->procesar($Factura->id_nota);
@@ -41,24 +44,28 @@ class Factura extends \conexion {
         // Validar que exista el cliente
         if ($Factura->cod_cliente == '') {
             $Factura->setError('Debe mandar un cliente');
-            return  $Factura->getResponse();
         }
         // Validar cliente
         $Cliente=new \Modelos\Cliente();
         $Cliente->detalles($Factura->cod_cliente);
         if($Cliente->response==404){
-            $Factura->setError('El cliente mandado no existe');
-            return  $Factura->getResponse();            
+            $Factura->setError('El cliente mandado no existe');          
         }
         // Validar si existe al menos un item(producto)
         if (count($Factura->detalles)==0) {
             $Factura->setError('No se mandaron productos');
-            return  $Factura->getResponse();
         }
         // Validar total
         if ($Factura->total == 0) {
             $Factura->setError('No se mando el total');
-            return  $Factura->getResponse();
+        }
+        //Validar si hubo errores
+        if ($Factura->response > 300) {
+            return json_encode($Factura->getResponse());
+        }
+        // Validar que exista factura
+        if ($Factura->checkCodigo($Factura->codigo)) {
+            return $Factura->getResponse($Factura->detalles($Factura->codigo));
         }
 
         return json_encode($Factura->nuevo());

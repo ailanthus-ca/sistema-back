@@ -48,6 +48,11 @@ class Usuario {
         return json_encode($role->actualizarRol($id));
     }
 
+    function eliminar_rol($id){
+        $role = new \Modelos\Auth();
+        $role->eliminarRol($id);
+    }
+
     function listar_permisos() {
         $permisos = new \Modelos\Auth();
         return json_encode($permisos->listar_permisos());
