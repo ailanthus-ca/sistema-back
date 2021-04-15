@@ -59,7 +59,7 @@ class Auth extends Middleware {
             $this->usuario = (string) $_SESSION['usuario'];
             $this->nivel = (int) $_SESSION['nivel'];
             if (empty($_SESSION['permisos'])) {
-                $this->setPermisos();
+                //$this->setPermisos();
                 $_SESSION['rol'] = $this->rol;
                 $_SESSION['permisos'] = $this->permisos;
             } else {
@@ -104,7 +104,7 @@ class Auth extends Middleware {
 
     function getPermisos() {
         if (count($this->permisos) == 0)
-            $this->setPermisos();
+            //$this->setPermisos();
         return $this->permisos;
     }
 

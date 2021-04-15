@@ -12,7 +12,7 @@ class Compra extends \Prototipo\Operaciones {
 
     public function lista() {
         $pen = array();
-        $sql = "SELECT "
+        $query = $this->query("SELECT "
                 . "compra.codigo as codFact,"
                 . "telefono,correo,contacto, "
                 . "fecha,"
@@ -22,8 +22,7 @@ class Compra extends \Prototipo\Operaciones {
                 . "compra.nota,"
                 . "compra.usuario  "
                 . "FROM compra,proveedor "
-                . "WHERE compra.cod_proveedor = proveedor.codigo order by fecha DESC ";
-        $query = $this->query($sql);
+                . "WHERE compra.cod_proveedor = proveedor.codigo order by fecha DESC ");
         while ($row = mysqli_fetch_array($query)) {
             $detalle = array();
             $sql = $this->query("SELECT cod_producto FROM detallecompra WHERE cod_compra = " . $row['codFact']);

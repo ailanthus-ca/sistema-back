@@ -7,20 +7,34 @@ class Enrutador {
         $obj = '\\Control\\' . $request->getmodulo();
         $operacion = $request->getoperacion();
         $parametro = $request->getparametro();
-        $clase = new $obj();
         if ($obj == '\\Control\\Auth') {
             $clase = new $obj();
-            echo $clase->$operacion($parametro);
-            return;
+            if (method_exists($clase, $operacion)) {
+                echo $clase->$operacion($parametro);
+                return;
+            } else {
+                header("HTTP/1.0 404 Success");
+                return json_encode(array('error' => 'HETODO NO ENCONTRADO'));
+            }
         }
         $user = new \Auth();
         if ($user->isLog()) {
-            if (in_array($per, $user->permisos)) {
-                $clase = new $obj();
-                echo $clase->$operacion($parametro);
+            if (class_exists($obj)) {
+                if (in_array($per, $user->permisos)) {
+                    $clase = new $obj();
+                    if (method_exists($clase, $operacion)) {
+                        echo $clase->$operacion($parametro);
+                    } else {
+                        header("HTTP/1.0 404 Success");
+                        return json_encode(array('error' => 'HETODO NO ENCONTRADO'));
+                    }
+                } else {
+                    header("HTTP/1.0 403 Success");
+                    return json_encode(array('error' => 'NO AUTORIZADO'));
+                }
             } else {
-                header("HTTP/1.0 403 Success");
-                return json_encode(array('error' => 'NO AUTORIZADO'));
+                header("HTTP/1.0 404 Success");
+                return json_encode(array('error' => 'MODULO NO ENCONTRADO'));
             }
         } else {
             echo json_encode($user->unAutenticacted());

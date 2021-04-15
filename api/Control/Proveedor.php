@@ -63,10 +63,11 @@ class Proveedor {
         // Validar que exista proveedor
         if (!$Proveedor->checkCodigo($id)) {
             return $Proveedor->setError('El proveedor no existe');
-        }       
+        }
         // Validar que exista el nombre
         if ($Proveedor->nombre == '') {
             $Proveedor->setError('No se mando el nombre');
+        }
         // Validar que exista el correo
         if ($Proveedor->email == '') {
             $Proveedor->setError('No se mando un email');
@@ -83,7 +84,7 @@ class Proveedor {
         return json_encode($Proveedor->actualizar($id));
     }
 
-    function cancelar($id){
+    function cancelar($id) {
         $Proveedor = new \Modelos\Proveedor();
         return json_encode($Proveedor->cancelar($id));
     }
