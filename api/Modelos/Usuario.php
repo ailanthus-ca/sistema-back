@@ -4,6 +4,12 @@ namespace Modelos;
 
 class Usuario extends \conexion {
 
+    var $codigo = '';
+    var $nombre = '';
+    var $correo = '';
+    var $clave = '';
+    var $nivel = '';
+
     function lista() {
         $cl = array();
         $sql = $this->query('SELECT * FROM usuario WHERE estatus=1');
@@ -14,8 +20,8 @@ class Usuario extends \conexion {
                 'correo' => $row['correo'],
                 'clave' => $row['clave']
             );
-            return $this->getResponse($cl);
         }
+        return $this->getResponse($cl);
     }
 
     function login($emil, $clave) {
@@ -42,4 +48,68 @@ class Usuario extends \conexion {
         }
     }
 
+    function detalles($id) {
+        $sql = $this->query("SELECT * FROM usuario WHERE codigo = $id");
+        if ($row = $sql->fetch_array()) {
+            $data = array(
+                'codigo' => $row['codigo'],
+                'nombre' => $row['nombre'],
+                'correo' => $row['correo']
+            );
+
+            return $this->getResponse($data);
+        } else {
+            $this->getNotFount();
+            return $this->getResponse(array());
+        }
+    }
+
+    function checkCodigo($cod) {
+        $sql = $this->query("SELECT count(*) AS exist FROM usuario WHERE codigo= $cod");
+        if ($row = $sql->fetch_array()) {
+            return boolval($row['exist']);
+        }
+    }
+
+    function nuevo() {
+        $this->query("INSERT INTO usuario(nombre,correo,clave,nivel,estatus) VALUES("
+                . "UPPER('$this->nombre'),"
+                . "UPPER('$this->correo'),"
+                . "$this->clave,"
+                . "UPPER('$this->nivel'),"
+                . "1)");
+        $this->codigo = $this->con->insertId();
+        return $this->getResponse($this->detalles($this->codigo));
+    }
+
+    function actualizar($id) {
+        // $sql = $this->query("SELECT * FROM usuario WHERE codigo= $id ");
+        // if ($row = $sql->fetch_array()) {
+            $this->query("UPDATE usuario SET ".
+            "nombre = UPPER('$this->nombre'), ".
+            "correo = UPPER('$this->correo'), ".
+            "nivel = '$this->nivel'".
+            "WHERE codigo = $id " );
+            return $this->getResponse($this->detalles($id));
+        // } else{
+        //     $this->getNotFount();
+        //     return $this->getResponse(array());
+        // }
+    }
+
+    public function cancelar($id) {
+        $sql = $this->query("SELECT * FROM usuario WHERE codigo= $id ");
+        if ($row = $sql->fetch_array()) {
+            if ($row['estatus'] === '1') {
+                $this->query("UPDATE usuario SET "
+                        . "estatus = 0 "
+                        . "WHERE codigo = '$id' ");
+            } else {
+                $this->query("UPDATE usuario SET "
+                        . "estatus = 1 "
+                        . "WHERE codigo = '$id' ");
+            }
+            return $this->getResponse(true);
+        }
+    }
 }

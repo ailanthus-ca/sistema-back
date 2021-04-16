@@ -9,6 +9,48 @@ class Usuario {
         return json_encode($Usuario->lista());
     }
 
+    function detalles($id){
+        $Usuario = new \Modelos\Usuario();
+        return json_encode($Usuario->detalles($id));
+    }
+
+    function nuevo(){
+        $Usuario = new \Modelos\Usuario();
+        $Usuario->codigo = $Usuario->postString("codigo");
+        $Usuario->nombre = $Usuario->postString("nombre");
+        $Usuario->correo = $Usuario->postString("correo");
+        // $clave = $Usuario->postString("clave");
+        // $Usuario->clave = crypt($clave);
+        $Usuario->clave = $Usuario->postString("clave");
+        $Usuario->nivel = $Usuario->postString("nivel");
+
+        return json_encode($Usuario->nuevo());
+    }
+
+    function actualizar($id){
+        $Usuario = new \Modelos\Usuario();
+        $Usuario->nombre = $Usuario->postString("nombre");
+        $Usuario->correo = $Usuario->postString("correo");
+        $Usuario->clave = $Usuario->postString("clave");
+        $Usuario->nivel = $Usuario->postString("nivel");
+
+        // Validar que exista codigo
+        if (!$Usuario->checkCodigo($id)) {
+            $Usuario->setError('Usuario no existe');
+        }
+        //Validar si hubo errores
+        if ($Usuario->response > 300) {
+            return json_encode($Usuario->getResponse());
+        }
+
+        return json_encode($Usuario->actualizar($id));
+    }
+
+    function cancelar($id){
+        $Usuario = new \Modelos\Usuario();
+        return json_encode($Usuario->cancelar($id));
+    }
+
     function actual() {
         return json_encode($_SESSION);
     }

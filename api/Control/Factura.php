@@ -30,7 +30,6 @@ class Factura extends \conexion {
 
         $Factura->codigo = $Factura->postString('codigo');
 
-
         if ($Factura->id_nota > 0) {
             $nota = new Nota();
             $Factura->user = $nota->procesar($Factura->id_nota);
@@ -46,18 +45,31 @@ class Factura extends \conexion {
             $Factura->setError('Debe mandar un cliente');
         }
         // Validar cliente
-        $Cliente=new \Modelos\Cliente();
+        $Cliente = new \Modelos\Cliente();
         $Cliente->detalles($Factura->cod_cliente);
-        if($Cliente->response==404){
-            $Factura->setError('El cliente mandado no existe');          
+        if ($Cliente->response == 404) {
+            $Factura->setError('El cliente mandado no existe');
         }
         // Validar si existe al menos un item(producto)
-        if (count($Factura->detalles)==0) {
+        if (count($Factura->detalles) == 0) {
             $Factura->setError('No se mandaron productos');
         }
         // Validar total
         if ($Factura->total == 0) {
             $Factura->setError('No se mando el total');
+        }
+        $producto = new \Modelos\Producto();
+        foreach ($Factura->detalles as $pro) {
+            $producto->cargar($pro->codigo);
+            if (!$producto->checkCosto($pro->precio)) {
+                $Factura->setError($producto->descripcion . 'NO SE PUEDE VENDER POR DEBAJO DEL COSTO');
+            }
+            if (!$producto->checkPrecio($pro->precio)) {
+                $Factura->setError($producto->descripcion . 'NO SE PUEDE VENDER POR DEBAJO DEL PRECIO 1');
+            }
+            if (!$producto->checkStock($pro->unidades)) {
+                $Factura->setError($producto->descripcion . 'NO TIENE STOCK SUFICIENTE PARA REALIZAR LA VENTA');
+            }
         }
         //Validar si hubo errores
         if ($Factura->response > 300) {

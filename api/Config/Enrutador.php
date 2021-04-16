@@ -14,7 +14,7 @@ class Enrutador {
                 return;
             } else {
                 header("HTTP/1.0 404 METODO NO ENCONTRADO");
-                echo json_encode(array('error' => 'HETODO NO ENCONTRADO'));
+                echo json_encode(array('error' => 'METODO NO ENCONTRADO'));
                 return;
             }
         }

@@ -14,7 +14,7 @@ class dataFech {
 
     function fetch_array() {
         if ($this->data === 'error')
-            return false;
+            return array();
         return $this->data->fetch_array();
     }
 
@@ -68,6 +68,10 @@ class conexion {
             $this->setError($sql);
             $this->setError($this->con->error);
         }
+    }
+
+    function insertId() {
+        return $this->con->insert_id;
     }
 
     public function __construct() {

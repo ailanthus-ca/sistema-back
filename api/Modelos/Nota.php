@@ -76,6 +76,36 @@ class Nota extends \Prototipo\Operaciones {
         return $this->getResponse($notasalida);
     }
 
+    public function cargar($cod) {
+        $sql = $this->query('SELECT * FROM notasalida WHERE codigo="' . $cod . '"');
+        while ($row = $sql->fetch_array()) {
+            $notasalida['codigo'] = $row['codigo'];
+
+            $cliente = new Cliente();
+            $notasalida = $cliente->detalles($row['cod_cliente']);
+            $notasalida['cod_cliente'] = $row['cod_cliente'];
+
+            $notasalida['fecha'] = $row['fecha'];
+            $notasalida['total'] = (int) $row['total'];
+            $notasalida['nota'] = (int) $row['nota'];
+            $query = $this->query("SELECT * FROM `usuario` where codigo = '" . $row['usuario'] . "'");
+            if ($row = $query->fetch_array()) {
+                $notasalida['user'] = $row['nombre'];
+            }
+
+            $notasalida['detalles'] = array();
+            $sql = "SELECT * from detallesnotas where nota = '" . $notasalida['codigo'] . "'";
+            $query = $this->query($sql);
+            while ($row = $query->fetch_array()) {
+                $producto = new Producto();
+                $detalle = $producto->ver($row['producto']);
+                $detalle['unidades'] = (float) $row['cantidad'];
+                $detalle['precio'] = (float) $row['precio'];
+                $notasalida['detalles'][] = $detalle;
+            }
+        }
+    }
+
     function checkCodigo($cod) {
         $sql = $this->query('SELECT count(*) AS exist FROM notasalida WHERE codigo="' . $cod . '"');
         if ($row = $sql->fetch_array()) {
