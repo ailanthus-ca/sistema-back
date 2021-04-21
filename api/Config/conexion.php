@@ -26,6 +26,7 @@ class conexion {
     //trasa de errores para devolucion
     public $response = 200;
     private $errores = array();
+    var $estado = '';
 
     public function postString($data) {
         $return = (isset($_REQUEST[$data]) && $_REQUEST[$data] != null) ? $_REQUEST[$data] : "";
@@ -97,6 +98,42 @@ class conexion {
         } else {
             header("HTTP/1.0 $this->response Server Error");
             return array('errores' => $this->errores);
+        }
+    }
+
+    function actualizarEstado() {
+        $estado = new \Config('estado');
+        $data = $estado->get();
+        $data[$this->estado] = $data[$this->estado] + 1;
+        $estado->setMany($data);
+    }
+
+    function numberToMes($m) {
+        switch ($m) {
+            case '1':
+                return "ENERO";
+            case '2':
+                return "FEBRERO";
+            case '3':
+                return "MARZO";
+            case '4':
+                return "ABRIL";
+            case '5':
+                return "MAYO";
+            case '6':
+                return "JUNIO";
+            case '7':
+                return "JULIO";
+            case '8':
+                return "AGOSTO";
+            case '9':
+                return "SEPTIEMBRE";
+            case '10':
+                return "OCTUBRE";
+            case '11':
+                return "NOVIEMBRE";
+            case '12':
+                return "DICIEMBRE";
         }
     }
 

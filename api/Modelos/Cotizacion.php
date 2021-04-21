@@ -4,6 +4,7 @@ namespace Modelos;
 
 class Cotizacion extends \Prototipo\Operaciones {
 
+    var $estado = 'Cotizacion';
     var $cod_cliente = '';
 
     public function lista() {
@@ -39,10 +40,15 @@ class Cotizacion extends \Prototipo\Operaciones {
         $query = $this->query($sql);
         $cotizacion = array();
         if ($row = $query->fetch_array()) {
-            //datos del proveedor
+            //datos del cliente
             $cliente = new Cliente();
             $cotizacion = $cliente->detalles($row['cod_cliente']);
             $cotizacion['cod_cliente'] = $row['cod_cliente'];
+            //datos del usuario
+            $usuario = new Usuario();
+            $usuario = $usuario->detalles($row['usuario']);
+            $cotizacion['usuario'] = $usuario['nombre'];
+            $cotizacion['cod_usuario'] = $row['usuario'];
             //datos de la cotizacion
             $cotizacion['codigo'] = (int) $row['codigo'];
             $cotizacion['forma_pago'] = $row['forma_pago'];
@@ -56,11 +62,7 @@ class Cotizacion extends \Prototipo\Operaciones {
             $cotizacion['impuesto'] = (float) $row['iva'];
             $cotizacion['tasa'] = (float) $row['tasa'];
             $cotizacion['estatus'] = (int) $row['estatus'];
-            $sql = "SELECT * FROM `usuario` where codigo = '" . $row['usuario'] . "'";
-            $query = $this->query($sql);
-            if ($row = $query->fetch_array()) {
-                $cotizacion['user'] = $row['nombre'];
-            }
+            //Detalle de la cotizacion
             $query = $this->query("SELECT * from detallecotizacion where codCotizacion = $id");
             $cotizacion['detalles'] = array();
             $producto = new Producto();
@@ -118,12 +120,12 @@ class Cotizacion extends \Prototipo\Operaciones {
             $plantilla = new Plantilla();
             $plantilla->borrar($plantilla_id);
         }
+        $this->actualizarEstado();
         return $this->getResponse($id_cotizacion);
     }
 
     public function guardar() {
         $plantilla_id = $this->postIntenger('plantilla');
-        $plantilla = new Plantilla();
         return $plantilla->guardar($plantilla_id);
     }
 
@@ -154,7 +156,8 @@ class Cotizacion extends \Prototipo\Operaciones {
     function cancelar($id) {
         $sql = "UPDATE `cotizacion` SET `estatus`= 0 WHERE codigo = $id";
         $query = $this->query($sql);
-        return $this->getResponse(1);
+        $this->actualizarEstado();
+        return $this->getResponse($this->detalles($id));
     }
 
     function procesar($id) {
@@ -163,6 +166,7 @@ class Cotizacion extends \Prototipo\Operaciones {
         if ($row = $sql->fetch_array()) {
             $user_id = (int) $row['usuario'];
         }
+        $this->actualizarEstado();
         return $this->getResponse($user_id);
     }
 

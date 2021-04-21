@@ -4,6 +4,7 @@ namespace Modelos;
 
 class Orden extends \Prototipo\Operaciones {
 
+    var $estado = 'Orden';
     var $cod_proveedor;
 
     function lista() {
@@ -42,6 +43,10 @@ class Orden extends \Prototipo\Operaciones {
             $proveedor = new Proveedor();
             $orden = $proveedor->detalles($row['cod_proveedor']);
             $orden['cod_proveedor'] = $row['cod_proveedor'];
+            //datos del usuario
+            $usuario = new Usuario();
+            $user = $usuario->detalles($row['usuario']);
+            $orden['usuario'] = $user['nombre'];
             //datos de la orden
             $orden['codigo'] = (int) $id;
             $orden['forma_pago'] = $row['forma_pago'];
@@ -53,11 +58,7 @@ class Orden extends \Prototipo\Operaciones {
             $orden['impuesto'] = (float) $row['impuesto'];
             $orden['total'] = (float) $row['total'];
             $orden['estatus'] = (int) $row['estatus'];
-            $sql = "SELECT * FROM `usuario` where codigo = '" . $row['usuario'] . "'";
-            $query = $this->query($sql);
-            if ($row = $query->fetch_array()) {
-                $orden['user'] = $row['nombre'];
-            }
+            //detalle de la orden de compra
             $orden['detalles'] = array();
             $sql = $this->query("SELECT * from detalleordencompra where cod_orden = $id");
             while ($row = $sql->fetch_array()) {
@@ -104,18 +105,21 @@ class Orden extends \Prototipo\Operaciones {
                     . "$pro->unidades,"
                     . " $monto) ");
         }
+        $this->actualizarEstado();
         return $this->getResponse($id_orden);
     }
 
     function cancelar($id) {
         $sql = "UPDATE `ordencompra` SET `estatus`= 0 WHERE codigo = $id";
         $query = $this->query($sql);
+        $this->actualizarEstado();
         return $this->getResponse(1);
     }
 
     function procesar($id) {
         $sql = "UPDATE `ordencompra` SET `estatus`= 2 WHERE codigo = $id";
         $query = $this->query($sql);
+        $this->actualizarEstado();
         return $this->getResponse(1);
     }
 
@@ -135,7 +139,7 @@ class Orden extends \Prototipo\Operaciones {
         return $this->getResponse($cotizacion);
     }
 
-    public function seguimiento_nuevo($id,$descripcion) {
+    public function seguimiento_nuevo($id, $descripcion) {
         $id_usuario = $_SESSION['id_usuario'];
         $fecha = date('Y-m-d H:i:s');
         $sql = "INSERT INTO orden_seguimiento (cod_orden,descripcion,usuario,fecha) VALUES ($id,UPPER('$descripcion'),$id_usuario,'$fecha')";

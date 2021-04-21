@@ -4,6 +4,7 @@ namespace Modelos;
 
 class Factura extends \Prototipo\Operaciones {
 
+    var $estado = 'Factura';
     var $costo = 0;
     var $cod_cliente = '';
     var $porc_impuesto = 0;
@@ -40,23 +41,24 @@ class Factura extends \Prototipo\Operaciones {
 
     function detalles($id) {
         $query = $this->query("SELECT * FROM factura where codigo = $id");
-        $cotizacion = array();
+        $factura = array();
         if ($row = $query->fetch_array()) {
             //datos del cliente
             $cliente = new Cliente();
             $factura = $cliente->detalles($row['cod_cliente']);
             $factura['cod_cliente'] = $row['cod_cliente'];
-
+            //datos del usuario
+            $usuario = new Usuario();
+            $usuario = $usuario->detalles($row['usuario']);
+            $factura['usuario'] = $usuario['nombre'];
+            $factura['cod_usuario'] = $row['usuario'];
+            //datos de la factura
             $factura['codigo'] = $row['codigo'];
-            $factura['cod_cliente'] = $row['cod_cliente'];
             $factura['fecha'] = $row['fecha'];
             $factura['impuesto'] = $row['iva'];
             $factura['condicion'] = $row['condicion'];
-            $query = $this->query("SELECT * FROM `usuario` where codigo = '" . $row['usuario'] . "'");
-            if ($row = $query->fetch_array()) {
-                $factura['user'] = $row['nombre'];
-            }
-            $factura['detalles'] = array();
+            $factura['nota'] = $row['observacion'];
+            //detalle de la factura observacion
             $query = $this->query("SELECT * from detallefactura where codFactura = '$id'");
             $producto = new Producto();
             while ($row = $query->fetch_array()) {
@@ -65,8 +67,8 @@ class Factura extends \Prototipo\Operaciones {
                 $detalle['precio'] = (float) $row['precio_unit'];
                 $factura['detalles'][] = $detalle;
             }
+            return $this->getResponse($factura);
         }
-        return $this->getResponse($factura);
     }
 
     function checkCodigo($cod) {
@@ -124,6 +126,7 @@ class Factura extends \Prototipo\Operaciones {
             if ($this->nota === 0)
                 $producto->salida($pro->codigo, $pro->unidades);
         }
+        $this->actualizarEstado();
         return $this->getResponse($num_factura);
     }
 
@@ -137,7 +140,38 @@ class Factura extends \Prototipo\Operaciones {
             $cantidad = intval($row['cantidad']);
             $producto->entrada($cod, $cantidad);
         }
+        $this->actualizarEstado();
         return $this->getResponse(1);
+    }
+    function listaWhere($where) {
+        $pen = array();
+        $query = $this->query("SELECT "
+                . "factura.codigo as codFact,"
+                . " fecha,telefono,"
+                . " correo,"
+                . "contacto,"
+                . "nombre,"
+                . "total,"
+                . "factura.estatus as status,"
+                . "factura.usuario  "
+                . "FROM factura,cliente "
+                . "WHERE factura.cod_cliente = cliente.codigo"
+                . " $where "
+                . "order by fecha DESC ");
+        while ($row = $query->fetch_array()) {
+            $pen[] = array(
+                'codigo' => (int) $row['codFact'],
+                'fecha' => $row['fecha'],
+                'nombre' => $row['nombre'],
+                'telefono' => $row['telefono'],
+                'correo' => $row['correo'],
+                'contacto' => $row['contacto'],
+                'monto' => (float) $row['total'],
+                'usuario' => (int) $row['usuario'],
+                'status' => (int) $row['status'],
+            );
+        }
+        return $this->getResponse($pen);
     }
 
 }

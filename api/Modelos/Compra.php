@@ -18,6 +18,9 @@ class Compra extends \Prototipo\Operaciones {
                 . "fecha,"
                 . " nombre,"
                 . "total,"
+                . "cod_documento,"
+                . "fecha_documento,"
+                . "nun_control,"
                 . "compra.estatus as status,"
                 . "compra.nota,"
                 . "compra.usuario  "
@@ -36,6 +39,9 @@ class Compra extends \Prototipo\Operaciones {
                 'telefono' => $row['telefono'],
                 'correo' => $row['correo'],
                 'contacto' => $row['contacto'],
+                'cod_documento' => $row['cod_documento'],
+                'fecha_documento' => $row['fecha_documento'],
+                'nun_control' => $row['nun_control'],
                 'monto' => (float) $row['total'],
                 'nota' => $row['nota'],
                 'usuario' => (int) $row['usuario'],
@@ -55,19 +61,21 @@ class Compra extends \Prototipo\Operaciones {
             $proveedor = new Proveedor();
             $compra = $proveedor->detalles($row['cod_proveedor']);
             $compra['cod_proveedor'] = $row['cod_proveedor'];
+            //datos del usuario
+            $usuario = new Usuario();
+            $user = $usuario->detalles($row['usuario']);
+            $compra['usuario'] = $user['nombre'];
+            $compra['cod_usuario'] = (int) $row['usuario'];
             //datos de la compra
             $compra['codigo'] = (int) $row['codigo'];
             $compra['fecha'] = $row['fecha'];
             $compra['cod_documento'] = $row['cod_documento'];
+            $compra['nun_control'] = $row['nun_control'];
             $compra['fecha_documento'] = $row['fecha_documento'];
             $compra['nota'] = $row['nota'];
             $compra['estatus'] = (int) $row['estatus'];
             $compra['impuesto'] = (float) $row['impuesto'];
-            $sql = "SELECT * FROM `usuario` where codigo = '" . $row['usuario'] . "'";
-            $query = $this->query($sql);
-            if ($row = $query->fetch_array()) {
-                $compra['user'] = $row['nombre'];
-            }
+            //Detalle de la compra
             $compra['detalles'] = array();
             $sql = "SELECT * from detallecompra where cod_compra = '" . $compra['codigo'] . "'";
             $query = $this->query($sql);
@@ -126,6 +134,10 @@ class Compra extends \Prototipo\Operaciones {
             $orden = new \Modelos\Orden();
             $orden->procesar($this->id_orden);
         }
+        $estado = new \Config('estado');
+        $data = $estado->get();
+        $data['Compra'] = $data['Compra'] + 1;
+        $data->setMany($data);
         return $this->getResponse($cod_compra);
     }
 
@@ -139,6 +151,10 @@ class Compra extends \Prototipo\Operaciones {
             $cantidad = intval($row['cantidad']);
             $productos->salida($cod, $cantidad);
         }
+        $estado = new \Config('estado');
+        $data = $estado->get();
+        $data['Compra'] = $data['Compra'] + 1;
+        $data->setMany($data);
         return 1;
     }
 
@@ -162,7 +178,91 @@ class Compra extends \Prototipo\Operaciones {
                 . "`cod_documento`='$this->cod_documento',`"
                 . "fecha_documento`='$this->fecha_doc',"
                 . "`estatus`= $this->etatus WHERE codigo = $id");
+        $estado = new \Config('estado');
+        $data = $estado->get();
+        $data['Compra'] = $data['Compra'] + 1;
+        $data->setMany($data);
         return 1;
+    }
+
+    function listaWhere($where) {
+        $pen = array();
+        $query = $this->query("SELECT "
+                . "compra.codigo as codFact,"
+                . "telefono,correo,contacto, "
+                . "fecha,"
+                . " nombre,"
+                . "total,"
+                . "cod_documento,"
+                . "fecha_documento,"
+                . "nun_control,"
+                . "compra.estatus as status,"
+                . "compra.nota,"
+                . "compra.usuario ,"
+                . "FROM compra,proveedor "
+                . "WHERE compra.cod_proveedor = proveedor.codigo "
+                . $where
+                . " order by fecha DESC ");
+        while ($row = $query->fetch_array()) {
+            $pen[] = array(
+                'codigo' => (int) $row['codFact'],
+                'fecha' => $row['fecha'],
+                'nombre' => $row['nombre'],
+                'telefono' => $row['telefono'],
+                'correo' => $row['correo'],
+                'contacto' => $row['contacto'],
+                'cod_documento' => $row['cod_documento'],
+                'fecha_documento' => $row['fecha_documento'],
+                'nun_control' => $row['nun_control'],
+                'monto' => (float) $row['total'],
+                'nota' => $row['nota'],
+                'usuario' => (int) $row['usuario'],
+                'status' => (int) $row['status']
+            );
+        }
+        return $this->getResponse($pen);
+    }
+
+    function listaWithProducto($where) {
+        $pen = array();
+        $query = $this->query("SELECT "
+                . "compra.codigo as codFact,"
+                . "telefono,correo,contacto, "
+                . "fecha,"
+                . " nombre,"
+                . "total,"
+                . "cod_documento,"
+                . "fecha_documento,"
+                . "nun_control,"
+                . "compra.estatus as status,"
+                . "compra.nota,"
+                . "compra.usuario ,"
+                . "cantidad "
+                . "FROM compra,detallecompra,proveedor "
+                . "WHERE compra.cod_proveedor = proveedor.codigo "
+                . "AND compra.codigo=cod_compra"
+                . $where
+                . " order by fecha DESC ");
+        while ($row = $query->fetch_array()) {
+            $pen[] = array(
+                'operacion' => 'COMPRA',
+                'codigo' => (int) $row['codFact'],
+                'fecha' => $row['fecha'],
+                'nombre' => $row['nombre'],
+                'telefono' => $row['telefono'],
+                'correo' => $row['correo'],
+                'contacto' => $row['contacto'],
+                'cod_documento' => $row['cod_documento'],
+                'fecha_documento' => $row['fecha_documento'],
+                'nun_control' => $row['nun_control'],
+                'monto' => (float) $row['total'],
+                'cantidad' => (float) $row['cantidad'],
+                'nota' => $row['nota'],
+                'usuario' => (int) $row['usuario'],
+                'status' => (int) $row['status']
+            );
+        }
+        return $this->getResponse($pen);
     }
 
 }

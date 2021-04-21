@@ -4,6 +4,7 @@ namespace Modelos;
 
 class Unidad extends \conexion{
 
+    var $estado = 'Unidad';
 	public function lista(){
 		$unidades = array();
 		$sql = $this->con->query('SELECT * FROM unidad');

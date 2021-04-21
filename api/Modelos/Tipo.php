@@ -4,6 +4,7 @@ namespace Modelos;
 
 class Tipo extends \conexion{
 
+    var $estado = 'Tipo';
 	public function lista(){
 		$tipos = array();
 		$sql = $this->con->query('SELECT * FROM tipo_producto');

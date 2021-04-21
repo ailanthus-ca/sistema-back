@@ -4,6 +4,7 @@ namespace Modelos;
 
 class Departamento extends \conexion {
 
+    var $estado = 'Departamento';
     var $codigo = '';
     var $descripcion = '';
     var $estatus = 0;
@@ -55,7 +56,7 @@ class Departamento extends \conexion {
     }
 
     function nuevo($id) {
-
+        $this->actualizarEstado();
     }
 
 }

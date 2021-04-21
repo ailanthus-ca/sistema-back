@@ -4,6 +4,7 @@ namespace Modelos;
 
 class Producto extends \conexion {
 
+    var $estado = 'Producto';
     var $codigo = '';
     var $departamento = '';
     var $descripcion = '';
@@ -17,7 +18,7 @@ class Producto extends \conexion {
 
     public function lista() {
         $pro = array();
-        $sql = $this->query('SELECT * FROM producto');
+        $sql = $this->query('SELECT producto.*, unidad.descripcion as medida FROM producto,unidad WHERE producto.unidad=unidad.codigo ');
         while ($row = $sql->fetch_array()) {
             $pro[] = array(
                 'codigo' => $row['codigo'],
@@ -26,6 +27,8 @@ class Producto extends \conexion {
                 'estatus' => (int) $row['estatus'],
                 'enser' => (int) $row['enser'],
                 'tipo' => (int) $row['tipo'],
+                'unidad' => (int) $row['unidad'],
+                'medida' => $row['medida'],
                 'costo' => (float) $row['costo'],
                 'precio1' => (float) $row['precio1'],
                 'precio2' => (float) $row['precio2'],
@@ -38,7 +41,7 @@ class Producto extends \conexion {
     }
 
     public function ver($cod) {
-        $sql = $this->query('SELECT * FROM producto WHERE codigo="' . $cod . '"');
+        $sql = $this->query('SELECT producto.*,unidad.descripcion as medida FROM producto,unidad WHERE producto.unidad=unidad.codigo AND producto.codigo="' . $cod . '"');
         while ($row = $sql->fetch_array()) {
             $pro = array(
                 'codigo' => $row['codigo'],
@@ -47,6 +50,7 @@ class Producto extends \conexion {
                 'tipo' => (int) $row['tipo'],
                 'enser' => (int) $row['enser'],
                 'unidad' => (int) $row['unidad'],
+                'medida' => $row['medida'],
                 'cantidad' => (float) $row['cantidad'],
                 'costo' => (float) $row['costo'],
                 'precio1' => (float) $row['precio1'],
@@ -56,8 +60,8 @@ class Producto extends \conexion {
                 'estatus' => (int) $row['estatus'],
                 'fecha_creacion' => $row['fecha_creacion'],
             );
+            return $pro;
         }
-        return $pro;
     }
 
     public function cargar($cod) {
@@ -117,6 +121,7 @@ class Producto extends \conexion {
                 . "'',"
                 . "1,"
                 . " NOW())");
+        $this->actualizarEstado();
         return $this->getResponse($this->ver($this->codigo));
     }
 
@@ -125,6 +130,7 @@ class Producto extends \conexion {
                 "descripcion = UPPER('$this->descripcion'), " .
                 "unidad = UPPER('$this->unidad')" .
                 "WHERE codigo = '$id'");
+        $this->actualizarEstado();
         return $this->getResponse($this->ver($id));
     }
 
@@ -135,15 +141,19 @@ class Producto extends \conexion {
         if ($row2['costo'] < $pre) {
             $this->costo($cod, $pre);
         }
+        $this->actualizarEstado();
     }
 
     public function salida($cod, $can) {
         $this->query("UPDATE producto set cantidad = cantidad - ('$can') WHERE codigo = '$cod'");
+        $this->actualizarEstado();
     }
 
     public function costo($cod, $pre) {
         $this->query("UPDATE producto set costo = $pre WHERE codigo = '$cod'");
+        $this->actualizarEstado();
     }
+
     public function utilidad($cod, $p1 = 0, $p2 = 0, $p3 = 0) {
         $set = "";
         if ($p1 != 0) {
@@ -156,6 +166,7 @@ class Producto extends \conexion {
             $set .= ", precio3 = $p3";
         }
         $this->query("UPDATE producto set $set WHERE codigo = '$cod'");
+        $this->actualizarEstado();
     }
 
     public function cancelar($id) {
@@ -170,8 +181,33 @@ class Producto extends \conexion {
                         . "estatus = 1 "
                         . "WHERE codigo = '$id' ");
             }
+            $this->actualizarEstado();
             return $this->getResponse(true);
         }
+    }
+
+    public function listaWhere($where) {
+        $pro = array();
+        $sql = $this->query("SELECT producto.*, unidad.descripcion as medida FROM producto,unidad WHERE producto.unidad=unidad.codigo $where");
+        while ($row = $sql->fetch_array()) {
+            $pro[] = array(
+                'codigo' => $row['codigo'],
+                'departamento' => $row['departamento'],
+                'descripcion' => $row['descripcion'],
+                'estatus' => (int) $row['estatus'],
+                'enser' => (int) $row['enser'],
+                'tipo' => (int) $row['tipo'],
+                'unidad' => (int) $row['unidad'],
+                'medida' => $row['medida'],
+                'costo' => (float) $row['costo'],
+                'precio1' => (float) $row['precio1'],
+                'precio2' => (float) $row['precio2'],
+                'precio3' => (float) $row['precio3'],
+                'cantidad' => (float) $row['cantidad'],
+                'fecha' => $row['fecha_creacion'],
+            );
+        }
+        return $pro;
     }
 
 }

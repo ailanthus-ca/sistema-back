@@ -7,6 +7,11 @@ class Enrutador {
         $obj = '\\Control\\' . $request->getmodulo();
         $operacion = $request->getoperacion();
         $parametro = $request->getparametro();
+        $parametro2 = $request->getparametro2();
+        $parametro3 = $request->getparametro3();
+        $parametro4 = $request->getparametro4();
+        $parametro5 = $request->getparametro5();
+        $parametro6 = $request->getparametro6();
         if ($obj == '\\Control\\Auth') {
             $clase = new $obj();
             if (method_exists($clase, $operacion)) {
@@ -47,7 +52,7 @@ class Enrutador {
                 return;
             }
         }
-        echo $clase->$operacion($parametro);
+        echo $clase->$operacion($parametro, $parametro2, $parametro3, $parametro4, $parametro5, $parametro6);
     }
 
 }

@@ -26,23 +26,23 @@ class Cotizacion {
         $Cotizacion->total = $Cotizacion->postFloat("total");
         $Cotizacion->detalles = $Cotizacion->postArray("detalles");
         $Cotizacion->codigo = $Cotizacion->postString("codigo");
-        
+
         //validaciones para cod_cliente 
         if ($Cotizacion->cod_cliente == '') {
             $Cotizacion->setError('Debe mandar un cliente');
         }
         // Validar cliente
-        $Cliente=new \Modelos\Cliente();
+        $Cliente = new \Modelos\Cliente();
         $Cliente->detalles($Cotizacion->cod_cliente);
-        if($Cliente->response==404){
-            $Cotizacion->setError('El cliente mandado no existe');          
+        if ($Cliente->response == 404) {
+            $Cotizacion->setError('El cliente mandado no existe');
         }
         // Validar total
         if ($Cotizacion->total == 0) {
             $Cotizacion->setError('No se mando el total');
         }
         // Validar si existe al menos un item(producto)
-        if (count($Cotizacion->detalles)==0) {
+        if (count($Cotizacion->detalles) == 0) {
             $Cotizacion->setError('No se mandaron productos');
         }
         //Validar si hubo errores
@@ -86,9 +86,17 @@ class Cotizacion {
     function PDFD($id) {
         $Cotizacion = new \Modelos\Cotizacion();
         $data = $Cotizacion->detalles($id);
+        $d = $data['detalles'];
+        $data['detalles'] = array();
+        $detalle = array();
+        foreach ($d as $row) {
+            $detalle = $row;
+            $detalle['precio'] = $row['precio'] / $data['tasa'];
+            $data['detalles'][] = $detalle;
+        }
         $pdf = new \PDF\Cotizacion();
         ob_start();
-        $pdf->dolar($data);
+        $pdf->ver($data);
         $content = ob_get_clean();
         $pdf->ouput('Compra.pdf', $content);
     }

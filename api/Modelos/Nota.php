@@ -15,6 +15,7 @@ namespace Modelos;
  */
 class Nota extends \Prototipo\Operaciones {
 
+    var $estado = 'Nota';
     var $id_cotizacion = 0;
     var $cod_cliente = '';
     var $user = 0;
@@ -53,15 +54,17 @@ class Nota extends \Prototipo\Operaciones {
             $cliente = new Cliente();
             $notasalida = $cliente->detalles($row['cod_cliente']);
             $notasalida['cod_cliente'] = $row['cod_cliente'];
-
+            //datos del usuario
+            $usuario = new Usuario();
+            $usuario = $usuario->detalles($row['usuario']);
+            $notasalida['usuario'] = $usuario['nombre'];
+            $notasalida['cod_usuario'] = $row['usuario'];
+            //datos de nota de entrega
             $notasalida['codigo'] = $row['codigo'];
             $notasalida['cod_cliente'] = $row['cod_cliente'];
             $notasalida['fecha'] = $row['fecha'];
             $notasalida['nota'] = $row['nota'];
-            $query = $this->query("SELECT * FROM `usuario` where codigo = '" . $row['usuario'] . "'");
-            if ($row = $query->fetch_array()) {
-                $notasalida['user'] = $row['nombre'];
-            }
+            //detalle de nota de entrega
             $notasalida['detalles'] = array();
             $sql = "SELECT * from detallesnotas where nota = '" . $notasalida['codigo'] . "'";
             $query = $this->query($sql);
@@ -72,8 +75,8 @@ class Nota extends \Prototipo\Operaciones {
                 $detalle['precio'] = (float) $row['precio'];
                 $notasalida['detalles'][] = $detalle;
             }
+            return $this->getResponse($notasalida);
         }
-        return $this->getResponse($notasalida);
     }
 
     public function cargar($cod) {
@@ -129,6 +132,7 @@ class Nota extends \Prototipo\Operaciones {
                     "('$nota','$pro->codigo',$pro->unidades,$pro->precio) ");
             $producto->salida($pro->codigo, $pro->unidades);
         }
+        $this->actualizarEstado();
         return $this->getResponse($nota);
     }
 
@@ -141,6 +145,7 @@ class Nota extends \Prototipo\Operaciones {
             $cantidad = intval($row['cantidad']);
             $producto->entrada($cod, $cantidad);
         }
+        $this->actualizarEstado();
         return $this->getResponse(1);
     }
 
@@ -150,6 +155,7 @@ class Nota extends \Prototipo\Operaciones {
         if ($row = $sql->fetch_array()) {
             $user_id = (int) $row['usuario'];
         }
+        $this->actualizarEstado();
         return $this->getResponse($user_id);
     }
 

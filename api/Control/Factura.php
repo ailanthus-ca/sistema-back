@@ -95,7 +95,42 @@ class Factura extends \conexion {
         ob_start();
         $pdf->ver($data);
         $content = ob_get_clean();
-        $pdf->ouputFactura('Compra.pdf', $content);
+        $pdf->ouput('Compra.pdf', $content);
+    }
+
+    function reporte($rango, $p1, $p2) {
+        $Factura = new \Modelos\Factura();
+        switch ($rango) {
+            case 'ano':
+                $where = " AND YEAR(fecha) = $p1 AND factura.estatus = 2";
+                $titulo = "AÑO $p1";
+                break;
+            case 'mes':
+                $where = " AND YEAR(fecha)= $p1 AND month(fecha) = $p2 AND factura.estatus = 2";
+                $m = $Factura->numberToMes($p2);
+                $titulo = "$m DEl $p1";
+                break;
+            case 'rango':
+                $date1 = new DateTime($p1);
+                $date2 = new DateTime($p2);
+                $where = "AND fecha between '$p1' AND '$p2' AND factura.estatus = 2";
+                $titulo = "DESDE " . $date1->format("d-m-Y") . " HASTA " . $date2->format("d-m-Y");
+                break;
+            default :
+                $where = "";
+                $titulo = "TODO";
+                break;
+        }
+        $data = array(
+            'facturas' => $Factura->listaWhere($where),
+            'titulo' => $titulo
+        );
+        $pdf = new \PDF\Reportes();
+        $pdf->version = 'factura';
+        ob_start();
+        $pdf->ver($data);
+        $content = ob_get_clean();
+        $pdf->ouput('Compra.pdf', $content);
     }
 
 }

@@ -57,7 +57,7 @@ class Configuracion extends \conexion {
 
     function getEmpresa() {
         $empresa = array();
-        $sql = $this->query("SELECT *from conf_empresa");
+        $sql = $this->query("SELECT * from conf_empresa");
         if ($row = $sql->fetch_array()) {
             $empresa['nombre'] = $row['nombre'];
             $empresa['numero_fiscal'] = $row['numero_fiscal'];
@@ -69,7 +69,7 @@ class Configuracion extends \conexion {
             $empresa['logo'] = $row['logo'];
             $empresa['eslogan'] = $row['eslogan'];
         }
-        return $this->getResponse($region);
+        return $this->getResponse($empresa);
     }
 
     function checkCodigo($id) {

@@ -37,4 +37,21 @@ class Auth {
         $auth->close();
     }
 
+    function estado() {
+        $estado = new \Config('estado');
+        return json_encode($estado->get());
+    }
+
+    function migracion() {
+        $c = new \Modelos\Configuracion();
+        $factura = new \Config('factura');
+        $factura->setMany($c->getFactura());
+        $region = new \Config('region');
+        $region->setMany($c->getRegion());
+        $empresa = new \Config('empresa');
+        $empresa->setMany($c->getEmpresa());
+        $ventas = new \Config('ventas');
+        return json_encode(array('factura' => $factura->get(), 'region' => $region->get(), 'empresa' => $empresa->get(), 'ventas' => $ventas->get()));
+    }
+
 }

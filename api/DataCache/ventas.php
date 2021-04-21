@@ -1,0 +1,5 @@
+<?php 
+ return array(
+    'garantia' => 'LA EVALUACIÓN, VERIFICACIÓN Y DECISIÓN DE COMPRA DE LOS PRODUCTOS QUEDA BAJO EL CRITERIO DEL CLIENTE',
+    'observacion' => 'NO INCLUYE TRANSPORTE',
+);

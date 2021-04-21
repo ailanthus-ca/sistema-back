@@ -15,6 +15,7 @@ namespace Modelos;
  */
 class Plantilla extends \Prototipo\Operaciones {
 
+    var $estado = 'Plantilla';
     var $cod_cliente = '';
     var $id_usuario = '';
 
@@ -48,10 +49,14 @@ class Plantilla extends \Prototipo\Operaciones {
         $query = $this->query("SELECT * FROM tmp_cotizacion where codigo = $id");
         $cotizacion = array();
         if ($row = $query->fetch_array()) {
-            //datos del proveedor
+            //datos del cliente
             $cliente = new Cliente();
-            $cotizacion = $cliente->detalles($row['cod_cliente']);
+            $cotizacion['cliente'] = $cliente->detalles($row['cod_cliente']);
             $cotizacion['cod_cliente'] = $row['cod_cliente'];
+            //datos del usuario
+            $usuario = new Usuario();
+            $compra['usuario'] = $usuario->detalles($row['usuario']);
+            $compra['cod_usuario'] = $row['usuario'];
             //datos de plantilla
             $cotizacion['codigo'] = $row['codigo'];
             $cotizacion['forma_pago'] = $row['forma_pago'];
@@ -60,10 +65,7 @@ class Plantilla extends \Prototipo\Operaciones {
             $cotizacion['nota'] = $row['nota'];
             $cotizacion['fecha'] = $row['fecha'];
             $cotizacion['impuesto'] = $row['iva'];
-            $query = $this->query("SELECT * FROM `usuario` where codigo = '" . $row['usuario'] . "'");
-            if ($row = $query->fetch_array()) {
-                $cotizacion['user'] = $row['nombre'];
-            }
+            //detalle de la plantilla
             $cotizacion['detalles'] = array();
             $query = $this->query("SELECT * from tmp_detalle_cotizacion where codCotizacion = $id");
             $producto = new Producto();
@@ -97,6 +99,7 @@ class Plantilla extends \Prototipo\Operaciones {
                     . "'$monto',"
                     . "'$pro->comentario') ");
         }
+        $this->actualizarEstado();
     }
 
     public function nuevo() {

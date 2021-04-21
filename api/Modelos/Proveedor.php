@@ -15,6 +15,7 @@ namespace Modelos;
  */
 class Proveedor extends \Prototipo\Entidades {
 
+    var $estado = 'Proveedor';
     function lista() {
         $cl = array();
         $sql = $this->con->query('SELECT * FROM proveedor');
@@ -26,7 +27,7 @@ class Proveedor extends \Prototipo\Entidades {
                 'correo' => $row['correo'],
                 'contacto' => $row['contacto'],
                 'direccion' => $row['direccion'],
-                'estatus' =>(int) $row['estatus']);
+                'estatus' => (int) $row['estatus']);
         }
         return $this->getResponse($cl);
     }
@@ -55,30 +56,30 @@ class Proveedor extends \Prototipo\Entidades {
 
     function nuevo() {
         $this->query("INSERT INTO proveedor (codigo,nombre,correo,direccion,contacto,telefono,estatus) VALUES ("
-                    . "UPPER('$this->codigo'),"
-                    . "UPPER('$this->nombre'),"
-                    . " UPPER('$this->email'),"
-                    . "UPPER('$this->direccion'),"
-                    . "UPPER('$this->contacto'),"
-                    . "'$this->telefono',"
-                    . "1)");
+                . "UPPER('$this->codigo'),"
+                . "UPPER('$this->nombre'),"
+                . " UPPER('$this->email'),"
+                . "UPPER('$this->direccion'),"
+                . "UPPER('$this->contacto'),"
+                . "'$this->telefono',"
+                . "1)");
+        $this->actualizarEstado();
         return $this->getResponse($this->detalles($this->codigo));
-        
     }
 
     function actualizar($id) {
-        $this->query("UPDATE proveedor SET ".               
-                "nombre = UPPER('$this->nombre'),".
-                "correo = UPPER('$this->email'),".
-                "direccion = UPPER('$this->direccion'),".
-                "contacto = UPPER('$this->contacto'),".
-                "telefono = '$this->telefono' ".
-            "WHERE codigo = '$id'  ");
-            
+        $this->query("UPDATE proveedor SET " .
+                "nombre = UPPER('$this->nombre')," .
+                "correo = UPPER('$this->email')," .
+                "direccion = UPPER('$this->direccion')," .
+                "contacto = UPPER('$this->contacto')," .
+                "telefono = '$this->telefono' " .
+                "WHERE codigo = '$id'  ");
+        $this->actualizarEstado();
         return $this->getResponse($this->detalles($id));
     }
 
-    function cancelar($id){
+    function cancelar($id) {
         $sql = $this->con->query("SELECT * from proveedor WHERE codigo = '$id' ");
         if ($row = $sql->fetch_array()) {
             if ($row['estatus'] === '1') {
@@ -90,6 +91,7 @@ class Proveedor extends \Prototipo\Entidades {
                         . "estatus = 1 "
                         . "WHERE codigo = '$id' ");
             }
+            $this->actualizarEstado();
             return $this->getResponse(true);
         }
     }

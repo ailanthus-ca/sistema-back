@@ -15,6 +15,7 @@ namespace Modelos;
  */
 class Cliente extends \Prototipo\Entidades {
 
+    var $estado = 'Cliente';
     var $tipo_contribuyente = 'ORDINARIO';
     var $retencion = 0;
 
@@ -75,6 +76,7 @@ class Cliente extends \Prototipo\Entidades {
                 . "UPPER('$this->tipo_contribuyente'),"
                 . "$this->retencion,"
                 . "1)");
+        $this->actualizarEstado();
         return $this->getResponse($this->detalles($this->codigo));
     }
 
@@ -88,6 +90,7 @@ class Cliente extends \Prototipo\Entidades {
                 "tipo_contribuyente = UPPER('$this->tipo_contribuyente')," .
                 "retencion = $this->retencion " .
                 "WHERE codigo = '$id'");
+        $this->actualizarEstado();
         return $this->getResponse($this->detalles($id));
     }
 
@@ -103,6 +106,7 @@ class Cliente extends \Prototipo\Entidades {
                         . "estatus = 1 "
                         . "WHERE codigo = '$id' ");
             }
+            $this->actualizarEstado();
             return $this->getResponse(true);
         }
     }

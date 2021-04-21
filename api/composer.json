@@ -1,0 +1,6 @@
+{
+    "name": "sisapi-v2",
+    "require": {
+        "spipu/html2pdf": "^5.2"
+    }
+}

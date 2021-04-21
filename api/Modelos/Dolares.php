@@ -15,6 +15,7 @@ namespace Modelos;
  */
 class Dolares extends \conexion {
 
+    var $estado = 'Dolares';
     var $valor = 0;
 
     //put your code here
@@ -45,6 +46,7 @@ class Dolares extends \conexion {
 
     function set() {
         $this->query("INSERT INTO `dolares`(`id`, `valor`, `fecha`) VALUES (null,$this->valor,NOW())");
+        $this->actualizarEstado();
         $this->getResponse(array("st" => 1, "msn" => "Nueva tasa Guardada"));
     }
 

@@ -4,6 +4,7 @@ namespace Modelos;
 
 class Usuario extends \conexion {
 
+    var $estado = 'Usuario';
     var $codigo = '';
     var $nombre = '';
     var $correo = '';
@@ -17,8 +18,7 @@ class Usuario extends \conexion {
             $cl[] = array(
                 'codigo' => $row['codigo'],
                 'nombre' => $row['nombre'],
-                'correo' => $row['correo'],
-                'clave' => $row['clave']
+                'correo' => $row['correo']
             );
         }
         return $this->getResponse($cl);
@@ -56,11 +56,13 @@ class Usuario extends \conexion {
                 'nombre' => $row['nombre'],
                 'correo' => $row['correo']
             );
-
             return $this->getResponse($data);
         } else {
-            $this->getNotFount();
-            return $this->getResponse(array());
+            return $this->getResponse(array(
+                        'codigo' => '',
+                        'nombre' => '',
+                        'correo' => '')
+            );
         }
     }
 
@@ -79,22 +81,18 @@ class Usuario extends \conexion {
                 . "UPPER('$this->nivel'),"
                 . "1)");
         $this->codigo = $this->con->insertId();
+        $this->actualizarEstado();
         return $this->getResponse($this->detalles($this->codigo));
     }
 
     function actualizar($id) {
-        // $sql = $this->query("SELECT * FROM usuario WHERE codigo= $id ");
-        // if ($row = $sql->fetch_array()) {
-            $this->query("UPDATE usuario SET ".
-            "nombre = UPPER('$this->nombre'), ".
-            "correo = UPPER('$this->correo'), ".
-            "nivel = '$this->nivel'".
-            "WHERE codigo = $id " );
-            return $this->getResponse($this->detalles($id));
-        // } else{
-        //     $this->getNotFount();
-        //     return $this->getResponse(array());
-        // }
+        $this->query("UPDATE usuario SET " .
+                "nombre = UPPER('$this->nombre'), " .
+                "correo = UPPER('$this->correo'), " .
+                "nivel = '$this->nivel'" .
+                "WHERE codigo = $id ");
+        $this->actualizarEstado();
+        return $this->getResponse($this->detalles($id));
     }
 
     public function cancelar($id) {
@@ -109,7 +107,9 @@ class Usuario extends \conexion {
                         . "estatus = 1 "
                         . "WHERE codigo = '$id' ");
             }
+            $this->actualizarEstado();
             return $this->getResponse(true);
         }
     }
+
 }
