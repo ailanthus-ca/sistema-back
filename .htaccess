@@ -183,3 +183,13 @@ RewriteRule ^cambiarclave vistas/resetclave/cambiarclave.php
 RewriteRule ^nueva_nota vistas/notas/new.php
 RewriteRule ^nota vistas/notas/ver.php
 RewriteRule ^ver_notas vistas/notas/administrar.php
+
+
+
+RewriteRule ^conf_orden vistas/configuracion/conf_empresa.php
+RewriteRule ^conf_compra vistas/configuracion/conf_empresa.php
+RewriteRule ^conf_cotizacion vistas/configuracion/conf_empresa.php
+RewriteRule ^conf_nota vistas/configuracion/conf_empresa.php
+RewriteRule ^conf_ajustes vistas/configuracion/conf_empresa.php
+RewriteRule ^conf_reportes vistas/configuracion/conf_empresa.php
+RewriteRule ^costos vistas/configuracion/conf_empresa.php
