@@ -170,4 +170,75 @@ class Cotizacion extends \Prototipo\Operaciones {
         return $this->getResponse($user_id);
     }
 
+    function listaWhere($where){
+        $pen = array();
+        $query = $this->query("SELECT " 
+            ."cotizacion.codigo as codFact, " 
+            ."fecha, "
+            ."telefono, "
+            ."correo, "
+            ."contacto, "
+            ."nombre, "
+            ."total, "
+            ."cotizacion.estatus as status, "
+            ."cotizacion.usuario " 
+            ."FROM cotizacion,cliente "
+            ."WHERE cotizacion.cod_cliente = cliente.codigo "
+            . " $where "
+            ." order by fecha DESC");
+        while ($row = $query->fetch_array()) {
+            $pen[] = array(
+                'codigo' => (int) $row['codFact'],
+                'fecha' => $row['fecha'],
+                'nombre' => $row['nombre'],
+                'telefono' => $row['telefono'],
+                'correo' => $row['correo'],
+                'contacto' => $row['contacto'],
+                'monto' => (float) $row['total'],
+                'usuario' => (int) $row['usuario'],
+                'status' => (int) $row['status'],
+            );
+        }
+        return $this->getResponse($pen);
+    }
+
+    function listaWithProducto($codigo, $where) {
+        $pen = array();
+        $query = $this->query("SELECT "
+                . "cotizacion.codigo as codFact,"
+                . " fecha,telefono,"
+                . " correo,"
+                . "contacto,"
+                . "nombre,"
+                . "total,"
+                . "cotizacion.estatus as status,"
+                . "cotizacion.usuario, "
+                . "detallecotizacion.cantidad, "
+                . "detallecotizacion.precio_unit "
+                . "FROM cotizacion, cliente, detallecotizacion "
+                . "WHERE cotizacion.cod_cliente = cliente.codigo "
+                . "AND codProducto = '$codigo' "
+                . " $where "
+                . "order by fecha DESC ");
+        while ($row = $query->fetch_array()) {
+            $pen[] = array(
+                'operacion' => 'COTIZACION',
+                'tipo' => 'SALIDA',
+                'orden' => strtotime($row['fecha']),
+                'codigo' => (int) $row['codFact'],
+                'fecha' => $row['fecha'],
+                'nombre' => $row['nombre'],
+                'telefono' => $row['telefono'],
+                'correo' => $row['correo'],
+                'contacto' => $row['contacto'],
+                'monto' => (float) $row['total'],
+                'usuario' => (int) $row['usuario'],
+                'status' => (int) $row['status'],
+                'cantidad' => (float) $row['cantidad'],
+                'precio_unit' => (float) $row['precio_unit']
+            );
+        }
+        return $this->getResponse($pen);
+    }
+
 }

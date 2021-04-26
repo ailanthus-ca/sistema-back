@@ -85,4 +85,40 @@ class Nota extends \conexion {
         $pdf->ouput('Compra.pdf', $content);
     }
 
+    function reporte($rango, $p1, $p2) {
+        $Factura = new \Modelos\Nota();
+        switch ($rango) {
+            case 'ano':
+                $where = " AND YEAR(fecha) = $p1 ";
+                $titulo = "AÑO $p1";
+                break;
+            case 'mes':
+                $where = " AND YEAR(fecha)= $p1 AND month(fecha) = $p2 ";
+                $m = $Factura->numberToMes($p2);
+                $titulo = "$m DEl $p1";
+                break;
+            case 'rango':
+                $date1 = new \DateTime($p1);
+                $date2 = new \DateTime($p2);
+                $where = " AND fecha between '$p1' AND '$p2' ";
+                $titulo = "DESDE " . $date1->format("d/m/Y") . " HASTA " . $date2->format("d/m/Y");
+                break;
+            default :
+                $where = "";
+                $titulo = "TODO";
+                break;
+        }
+        $data = array(
+            'lista' => $Factura->listaWhere($where),
+            'titulo' => $titulo,
+            'operacion' => 'NOTA DE ENTREGA'
+        );
+        $pdf = new \PDF\Reportes();
+        $pdf->version = 'factura';
+        ob_start();
+        $pdf->ver($data);
+        $content = ob_get_clean();
+        $pdf->ouput('Compra.pdf', $content);
+    }
+
 }

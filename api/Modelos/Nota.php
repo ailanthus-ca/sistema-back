@@ -211,4 +211,32 @@ class Nota extends \Prototipo\Operaciones {
         return $this->getResponse($pen);
     }
 
+    function listaWhere($where){
+        $pen = array();
+        $query = $this->query("SELECT " 
+            ."notasalida.codigo as codFact, " 
+            ."fecha, "
+            ."nombre, "
+            ."total, "
+            ."nota, "
+            ."notasalida.estatus as status, "
+            ."notasalida.usuario " 
+            ."FROM notasalida,cliente "
+            ."WHERE notasalida.cod_cliente = cliente.codigo "
+            . " $where "
+            ." order by fecha DESC");
+        while ($row = $query->fetch_array()) {
+            $pen[] = array(
+                'codigo' => (int) $row['codFact'],
+                'fecha' => $row['fecha'],
+                'nombre' => $row['nombre'],
+                'monto' => (float) $row['total'],
+                'nota' => (float) $row['nota'],
+                'usuario' => (int) $row['usuario'],
+                'status' => (int) $row['status'],
+            );
+        }
+        return $this->getResponse($pen);
+    }
+
 }

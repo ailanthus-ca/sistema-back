@@ -147,4 +147,35 @@ class Orden extends \Prototipo\Operaciones {
         return $this->getResponse(1);
     }
 
+    function listaWhere($where){
+        $pen = array();
+        $query = $this->query("SELECT "
+            ."ordencompra.codigo as codFact, "
+            ."telefono, "
+            ."correo, "
+            ."contacto, " 
+            ."fecha, "
+            ."nombre, "
+            ."total, "
+            ."ordencompra.estatus as status, " 
+            ."nota, "
+            ."usuario " 
+            ."FROM ordencompra,proveedor " 
+            ."WHERE ordencompra.cod_proveedor = proveedor.codigo "
+            ." $where "
+            ."order by fecha DESC");
+        while ($row = $query->fetch_array()) {
+            $pen[] = array(
+                'codigo' => (int) $row['codFact'],
+                'fecha' => $row['fecha'],
+                'nombre' => $row['nombre'],
+                'monto' => (float) $row['total'],
+                'nota' => (float) $row['nota'],
+                'usuario' => (int) $row['usuario'],
+                'status' => (int) $row['status'],
+            );
+        }
+        return $this->getResponse($pen);
+    }
+
 }

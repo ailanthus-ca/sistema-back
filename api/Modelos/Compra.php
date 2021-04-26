@@ -12,7 +12,7 @@ class Compra extends \Prototipo\Operaciones {
 
     public function lista() {
         $pen = array();
-        $query = $this->query("SELECT "
+        $query = $this->query("SELECT DISTINCT "
                 . "compra.codigo as codFact,"
                 . "telefono,correo,contacto, "
                 . "fecha,"

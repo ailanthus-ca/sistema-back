@@ -85,4 +85,40 @@ class Orden {
         $pdf->ouput('Orden.pdf', $content);
     }
 
+    function reporte($rango, $p1, $p2) {
+        $orden = new \Modelos\Orden();
+        switch ($rango) {
+            case 'ano':
+                $where = " AND YEAR(fecha) = $p1 ";
+                $titulo = "AÑO $p1";
+                break;
+            case 'mes':
+                $where = " AND YEAR(fecha)= $p1 AND month(fecha) = $p2 ";
+                $m = $orden->numberToMes($p2);
+                $titulo = "$m DEL $p1";
+                break;
+            case 'rango':
+                $date1 = new \DateTime($p1);
+                $date2 = new \DateTime($p2);
+                $where = " AND fecha between '$p1' AND '$p2' ";
+                $titulo = "DESDE " . $date1->format("d/m/Y") . " HASTA " . $date2->format("d/m/Y");
+                break;
+            default :
+                $where = "";
+                $titulo = "TODO";
+                break;
+        }
+        $data = array(
+            'lista' => $orden->listaWhere($where),
+            'titulo' => $titulo,
+            'operacion' => 'ORDEN DE COMPRA'
+        );
+        $pdf = new \PDF\Reportes();
+        $pdf->version = 'orden';
+        ob_start();
+        $pdf->ver($data);
+        $content = ob_get_clean();
+        $pdf->ouput('Compra.pdf', $content);
+    }
+
 }

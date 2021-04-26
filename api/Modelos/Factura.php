@@ -177,20 +177,21 @@ class Factura extends \Prototipo\Operaciones {
 
     function listaWithProducto($codigo, $where) {
         $pen = array();
-        $query = $this->query("SELECT "
-                . "factura.codigo as codFact,"
-                . " fecha,telefono,"
-                . " correo,"
-                . "contacto,"
-                . "nombre,"
-                . "total,"
-                . "factura.estatus as status,"
+        $query = $this->query("SELECT DISTINCT "
+                . "factura.codigo as codFact, "
+                . "fecha,telefono, "
+                . "correo, "
+                . "contacto, "
+                . "nombre, "
+                . "total, "
+                . "factura.estatus as status, "
                 . "factura.usuario, "
                 . "detallefactura.cantidad, "
                 . "detallefactura.precio_unit "
                 . "FROM factura, cliente, detallefactura "
                 . "WHERE factura.cod_cliente = cliente.codigo "
-                . "AND codProducto = '$codigo' "
+                . "AND detallefactura.codFactura = factura.codigo "
+                . "AND detallefactura.codProducto = '$codigo' "
                 . " $where "
                 . "order by fecha DESC ");
         while ($row = $query->fetch_array()) {

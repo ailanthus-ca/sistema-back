@@ -126,7 +126,7 @@ class Cotizacion {
     }
 
     function reporte($rango, $p1, $p2) {
-        $Factura = new \Modelos\Cotizacion();
+        $cotizacion = new \Modelos\Cotizacion();
         switch ($rango) {
             case 'ano':
                 $where = " AND YEAR(fecha) = $p1 ";
@@ -134,8 +134,8 @@ class Cotizacion {
                 break;
             case 'mes':
                 $where = " AND YEAR(fecha)= $p1 AND month(fecha) = $p2 ";
-                $m = $Factura->numberToMes($p2);
-                $titulo = "$m DEl $p1";
+                $m = $cotizacion->numberToMes($p2);
+                $titulo = "$m DEL $p1";
                 break;
             case 'rango':
                 $date1 = new \DateTime($p1);
@@ -149,7 +149,7 @@ class Cotizacion {
                 break;
         }
         $data = array(
-            'lista' => $Factura->listaWhere($where),
+            'lista' => $cotizacion->listaWhere($where),
             'titulo' => $titulo,
             'operacion' => 'COTIZACION'
         );
