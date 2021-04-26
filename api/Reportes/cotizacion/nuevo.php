@@ -24,14 +24,11 @@
 </div><br/><br/>
 <!--Titulo del reporte-->
 <div class="col-12" style="text-align: center;">
-    <span style="color: #34495e;font-size:14px;font-weight:bold"><strong>C O T I Z A C I O N</strong></span>
+    <span style="color: #34495e;font-size:14px;font-weight:bold"><strong>COTIZACION N.  <?php echo str_pad($data['codigo'], 6, "0", STR_PAD_LEFT) ?></strong></span>
 </div><br>
 <div class="col-12 bordered"  >
-    <div class="col-8">
+    <div class="col-10">
         <strong>ATENCION:&nbsp;</strong><?php echo $data["usuario"] ?>
-    </div>
-    <div class="col-2">
-        <strong >NUMERO:&nbsp;</strong> <?php echo str_pad($data['codigo'], 6, "0", STR_PAD_LEFT) ?>
     </div>
     <div class="col-2" style="text-align: right">
         <strong >FECHA:&nbsp; </strong> <?php echo $fecha->format('d/m/Y'); ?>
@@ -67,17 +64,17 @@
     <tfoot>
         <tr>
             <td colspan="4" rowspan="3" class="condiciones">
-                <div class="col-8">
+                <div class="col-8" style="padding-bottom: 2px;padding-top: 2px">
                     <strong>FORMA DE PAGO:&nbsp; </strong> <?php echo $data['forma_pago'] ?>	
                 </div><br/>
-                <div class="col-8">
+                <div class="col-8" style="padding-bottom: 2px;padding-top: 2px">
                     <strong>VALIDEZ DE LA OFERTA:&nbsp; </strong> <?php echo $data['validez'] ?>	
                 </div><br/>
-                <div class="col-8">
+                <div class="col-8" style="padding-bottom: 2px;padding-top: 2px">
                     <strong>TIEMPO DE ENTREGA:&nbsp; </strong> <?php echo $data['tiempo_entrega'] ?>	
                 </div><br/>
-                <div class="col-8">
-                    <strong>NOTA:&nbsp; </strong><br/><?php echo $data['nota']; ?>
+                <div class="col-8" style="padding-bottom: 2px;padding-top: 2px">
+                    <strong>NOTA:&nbsp; </strong><?php echo $data['nota']; ?>
                 </div>
             </td>            
             <td style="text-align: right; "><strong> SUB TOTAL: </strong></td>

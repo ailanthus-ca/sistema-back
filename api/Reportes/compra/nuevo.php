@@ -24,17 +24,39 @@
 </div><br/><br/>
 <!--Titulo del reporte-->
 <div class="col-12" style="text-align: center;">
-    <span style="color: #34495e;font-size:14px;font-weight:bold"><strong>C O M P R A</strong></span>
+    <span style="color: #34495e;font-size:14px;font-weight:bold"><strong>COMPRA N. <?php echo str_pad($data['codigo'], 6, "0", STR_PAD_LEFT) ?></strong></span>
 </div><br>
 <div class="col-12 bordered"  >
-    <div class="col-8">
+    <div class="col-10">
         <strong>ATENCION:&nbsp;</strong><?php echo $data["usuario"] ?>
-    </div>
-    <div class="col-2">
-        <strong >NUMERO:&nbsp;</strong> <?php echo str_pad($data['codigo'], 6, "0", STR_PAD_LEFT) ?>
     </div>
     <div class="col-2" style="text-align: right">
         <strong >FECHA:&nbsp; </strong> <?php echo $fecha->format('d/m/Y'); ?>
+    </div><br>
+    <div class="col-4">
+        <strong>NUMERO DE DOCUMENTO:&nbsp;</strong><?php
+        if ($data["cod_documento"] != "")
+            echo $data["cod_documento"];
+        else
+            echo 'N/A';
+        ?>
+    </div>
+    <div class="col-4" style="text-align: center">
+        <strong >NUMERO DE CONTROL:&nbsp;</strong> <?php
+        if ($data["nun_control"] != "")
+            echo $data["nun_control"];
+        else
+            echo 'N/A';
+        ?>
+    </div>
+    <div class="col-4" style="text-align: right">
+        <strong >FECHA DE DOCUMENTO:&nbsp; </strong> <?php
+        $fechaD = new \DateTime($data['fecha_documento']);
+        if ($fechaD->format('d/m/Y') != "31/12/1969")
+            echo $fechaD->format('d/m/Y');
+        else
+            echo 'N/A';
+        ?>
     </div>
 </div><br/><br/>
 

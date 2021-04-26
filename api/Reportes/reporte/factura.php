@@ -1,5 +1,5 @@
 <div class="col-12" style="text-align: center">
-    <span style="color: #34495e;font-size:16px;font-weight:bold"><strong>REPORTE DE FACTURAS</strong></span><br>
+    <span style="color: #34495e;font-size:16px;font-weight:bold"><strong>REPORTE DE  <?php echo $data['operacion'] ?></strong></span><br>
     <span style="color: #34495e;font-size:14px;font-weight:bold"><strong><?php echo $data['titulo'] ?></strong></span>
 </div>
 <table  cellspacing="0">
@@ -14,7 +14,7 @@
     <tbody>
         <?php
         $todo = 0;
-        foreach ($data['facturas'] as $c) {
+        foreach ($data['lista'] as $c) {
             $date1 = new DateTime($c['fecha']);
             $todo += $c['monto'];
             ?>

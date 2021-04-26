@@ -51,7 +51,7 @@ class Auth {
         $empresa = new \Config('empresa');
         $empresa->setMany($c->getEmpresa());
         $ventas = new \Config('ventas');
-        return json_encode(array('factura' => $factura->get(), 'region' => $region->get(), 'empresa' => $empresa->get(), 'ventas' => $ventas->get()));
+        return json_encode(array('factura' => $factura->cargar(), 'region' => $region->cargar(), 'empresa' => $empresa->cargar(), 'ventas' => $ventas->cargar()));
     }
 
 }

@@ -22,7 +22,19 @@ class Nota extends \Prototipo\Operaciones {
 
     function lista() {
         $pen = array();
-        $sql = "SELECT notasalida.codigo as codFact, fecha,telefono, correo,contacto,nombre,total,notasalida.estatus as status,notasalida.usuario  FROM notasalida,cliente WHERE notasalida.cod_cliente = cliente.codigo order by fecha DESC ";
+        $sql = "SELECT "
+                . "notasalida.codigo as codFact,"
+                . " fecha,"
+                . "telefono,"
+                . " correo,"
+                . "contacto,"
+                . "nombre,"
+                . "total,"
+                . "notasalida.estatus as status,"
+                . "notasalida.usuario "
+                . "FROM notasalida,cliente WHERE "
+                . "notasalida.cod_cliente = cliente.codigo "
+                . "order by fecha DESC ";
         $query = $this->query($sql);
         while ($row = $query->fetch_array()) {
             $detalle = array();
@@ -157,6 +169,46 @@ class Nota extends \Prototipo\Operaciones {
         }
         $this->actualizarEstado();
         return $this->getResponse($user_id);
+    }
+
+    function listaWithProducto($codigo, $where) {
+        $pen = array();
+        $query = $this->query("SELECT "
+                . "notasalida.codigo as codFact,"
+                . " fecha,"
+                . "telefono,"
+                . " correo,"
+                . "contacto,"
+                . "nombre,"
+                . "total,"
+                . "notasalida.estatus as status,"
+                . "notasalida.usuario, "
+                . "detallesnotas.cantidad, "
+                . "detallesnotas.precio "
+                . "FROM notasalida, detallesnotas, cliente WHERE "
+                . "notasalida.cod_cliente = cliente.codigo AND "
+                . "producto = '$codigo' "
+                . "$where "
+                . "order by fecha DESC ");
+        while ($row = $query->fetch_array()) {
+            $pen[] = array(
+                'operacion' => 'NOTA',
+                'tipo' => 'SALIDA',
+                'orden' => strtotime($row['fecha']),
+                'codigo' => (int) $row['codFact'],
+                'fecha' => $row['fecha'],
+                'nombre' => $row['nombre'],
+                'telefono' => $row['telefono'],
+                'correo' => $row['correo'],
+                'contacto' => $row['contacto'],
+                'monto' => (float) $row['total'],
+                'usuario' => (int) $row['usuario'],
+                'status' => (int) $row['status'],
+                'cantidad' => (float) $row['cantidad'],
+                'precio_unit' => (float) $row['precio']
+            );
+        }
+        return $this->getResponse($pen);
     }
 
 }

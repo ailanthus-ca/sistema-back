@@ -1,14 +1,4 @@
 <?php $subtotal = 0; ?>
-<div class="col-4">
-    <strong>CONDICION:&nbsp;</strong> <?php echo $data["condicion"]; ?>	
-</div>
-<div class="col-4" style="text-align: center">
-    <strong >FECHA:&nbsp; </strong> <?php echo $fecha->format('d/m/Y'); ?>
-</div>
-<div class="col-4" style="text-align: right">
-    <strong >FACTURA:&nbsp;</strong> <?php echo str_pad($data['codigo'], 6, "0", STR_PAD_LEFT) ?>
-</div>
-<br/>
 <div class="col-10">
     <strong>NOMBRE Y RAZON SOCIAL:&nbsp; </strong> <?php echo $data['nombre'] ?>
 </div>
@@ -27,6 +17,16 @@
 <div class="col-12">
     <strong>DIRECCION FISCAL:&nbsp;</strong> <?php echo $data["direccion"] ?>
 </div>
+<div class="col-4">
+    <strong>CONDICION:&nbsp;</strong> <?php echo $data["condicion"]; ?>	
+</div>
+<div class="col-4" style="text-align: center">
+    <strong >FECHA:&nbsp; </strong> <?php echo $fecha->format('d/m/Y'); ?>
+</div>
+<div class="col-4" style="text-align: right">
+    <strong >FACTURA:&nbsp;</strong> <?php echo str_pad($data['codigo'], 6, "0", STR_PAD_LEFT) ?>
+</div>
+<br/>
 <table cellspacing="0"> 
     <thead>
         <tr>

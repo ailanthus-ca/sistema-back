@@ -198,7 +198,7 @@ class Compra extends \Prototipo\Operaciones {
                 . "nun_control,"
                 . "compra.estatus as status,"
                 . "compra.nota,"
-                . "compra.usuario ,"
+                . "compra.usuario  "
                 . "FROM compra,proveedor "
                 . "WHERE compra.cod_proveedor = proveedor.codigo "
                 . $where
@@ -223,29 +223,33 @@ class Compra extends \Prototipo\Operaciones {
         return $this->getResponse($pen);
     }
 
-    function listaWithProducto($where) {
+    function listaWithProducto($codigo, $where) {
         $pen = array();
         $query = $this->query("SELECT "
                 . "compra.codigo as codFact,"
                 . "telefono,correo,contacto, "
                 . "fecha,"
-                . " nombre,"
-                . "total,"
-                . "cod_documento,"
-                . "fecha_documento,"
-                . "nun_control,"
-                . "compra.estatus as status,"
-                . "compra.nota,"
-                . "compra.usuario ,"
-                . "cantidad "
-                . "FROM compra,detallecompra,proveedor "
+                . "nombre, "
+                . "total, "
+                . "cod_documento, "
+                . "fecha_documento, "
+                . "nun_control, "
+                . "compra.estatus as status, "
+                . "compra.nota, "
+                . "compra.usuario, "
+                . "detallecompra.cantidad, "
+                . "detallecompra.precio_unit "
+                . "FROM compra, detallecompra, proveedor "
                 . "WHERE compra.cod_proveedor = proveedor.codigo "
-                . "AND compra.codigo=cod_compra"
+                . "AND compra.codigo=cod_compra "
+                . "AND cod_producto = '$codigo' "
                 . $where
                 . " order by fecha DESC ");
         while ($row = $query->fetch_array()) {
             $pen[] = array(
                 'operacion' => 'COMPRA',
+                'tipo' => 'ENTRADA',
+                'orden' => strtotime($row['fecha']),
                 'codigo' => (int) $row['codFact'],
                 'fecha' => $row['fecha'],
                 'nombre' => $row['nombre'],
@@ -256,13 +260,18 @@ class Compra extends \Prototipo\Operaciones {
                 'fecha_documento' => $row['fecha_documento'],
                 'nun_control' => $row['nun_control'],
                 'monto' => (float) $row['total'],
-                'cantidad' => (float) $row['cantidad'],
                 'nota' => $row['nota'],
                 'usuario' => (int) $row['usuario'],
-                'status' => (int) $row['status']
+                'status' => (int) $row['status'],
+                'cantidad' => (float) $row['cantidad'],
+                'precio_unit' => (float) $row['precio_unit']
             );
         }
         return $this->getResponse($pen);
+    }
+    
+    function rubros($where){
+        
     }
 
 }

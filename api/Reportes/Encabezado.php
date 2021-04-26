@@ -6,12 +6,7 @@
         <div class="col-11 col-offset-1" style="font-size:8px;">
             <span class="text-encabezado" style="font-size:16px;"><?php echo $company['nombre'] ?></span><br>
             <span class="text-encabezado" style="font-size:10px;"><?php echo $company['eslogan'] ?></span><br>
-            <div class="col-6">
-                <span class="text-encabezado"><?php echo $region['cod_fiscal'] . " " . $company['numero_fiscal'] ?></span>
-            </div>
-            <div class="col-6" style="text-align: right;" >
-                <span style="font-weight:bold" ><?php echo "FECHA DE IMPRESIÓN: " . date("d-m-Y") ?></span>
-            </div>
+            <span class="text-encabezado"><?php echo $region['cod_fiscal'] . " " . $company['numero_fiscal'] ?></span>
         </div>
         <hr style="margin-top: -5px"/>
     </div>

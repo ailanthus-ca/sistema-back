@@ -60,7 +60,7 @@
         padding: 2px;
         line-height: 1.42857143;
         vertical-align: top;
-        border: 1px solid #ddd;
+        border: 1px solid #555;
         font-size: 7pt;
         height: 15px; 
         vertical-align: middle;
@@ -71,7 +71,7 @@
         vertical-align: top;
         font-size: 8pt;
         vertical-align: bottom;
-        border: 2px solid #ddd;
+        border: 2px solid #555;
     }
     .bordered {
         border: 1px solid #ddd;
@@ -80,6 +80,12 @@
     }
     .condiciones{
         font-size: 5pt;
+        vertical-align: top;
+    }
+    .con{
+        width: 66.66666667%;
+        padding-bottom: 2px;
+        padding-top: 2px;
     }
     .space{ height: 1px; }
     .style-none{border: none;padding: 0px 0px 0px 0px}

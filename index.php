@@ -1,13 +1,7 @@
 <!DOCTYPE html>
 <html>
     <?php
-    include 'config/conexion.php';
-    $sql2 = $con->query("SELECT * FROM `conf_empresa`");
-    if ($row = $sql2->fetch_array()) {
-        $logo = $row['logo'];
-    }else{
-        header("Location: /install");
-    }
+    $data = include './api/DataCache/empresa.php';
     ?>
     <head>
         <meta charset="utf-8">
@@ -21,7 +15,7 @@
 
         <div class="container" >
             <div class="col-xs-6 col-xs-offset-3 col-md-4 col-md-offset-4">
-                <img src="public/imagenes/<?php echo $logo ?>" alt="Responsive image" class="img-responsive" alt="Logo"  >
+                <img src="public/imagenes/<?php echo $data['logo'] ?>" alt="Responsive image" class="img-responsive" alt="Logo"  >
             </div>
             <form class="col-xs-12 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 row" name="form_login" id="form_login" method="POST">
                 <div id="resultados_ajax" ></div>

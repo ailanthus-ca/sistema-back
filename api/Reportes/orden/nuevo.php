@@ -67,17 +67,17 @@
     <tfoot>
         <tr>
             <td colspan="4" rowspan="3" class="condiciones">
-                <div class="col-8">
+                <div class="col-8" style="padding-bottom: 2px;padding-top: 2px">
                     <strong>FORMA DE PAGO:&nbsp; </strong> <?php echo $data['forma_pago'] ?>	
                 </div><br/>
-                <div class="col-8">
+                <div class="col-8" style="padding-bottom: 2px;padding-top: 2px">
                     <strong>VALIDEZ DE LA OFERTA:&nbsp; </strong> <?php echo $data['validez'] ?>	
                 </div><br/>
-                <div class="col-8">
+                <div class="col-8" style="padding-bottom: 2px;padding-top: 2px">
                     <strong>TIEMPO DE ENTREGA:&nbsp; </strong> <?php echo $data['tiempo_entrega'] ?>	
                 </div><br/>
-                <div class="col-8">
-                    <strong>NOTA:&nbsp; </strong><br/><?php echo $data['nota']; ?>
+                <div class="col-8" style="padding-bottom: 2px;padding-top: 2px">
+                    <strong>NOTA:&nbsp; </strong><?php echo $data['nota']; ?>
                 </div>
             </td>            
             <td style="text-align: right; "><strong> SUB TOTAL: </strong></td>

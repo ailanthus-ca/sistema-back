@@ -143,6 +143,7 @@ class Factura extends \Prototipo\Operaciones {
         $this->actualizarEstado();
         return $this->getResponse(1);
     }
+
     function listaWhere($where) {
         $pen = array();
         $query = $this->query("SELECT "
@@ -169,6 +170,45 @@ class Factura extends \Prototipo\Operaciones {
                 'monto' => (float) $row['total'],
                 'usuario' => (int) $row['usuario'],
                 'status' => (int) $row['status'],
+            );
+        }
+        return $this->getResponse($pen);
+    }
+
+    function listaWithProducto($codigo, $where) {
+        $pen = array();
+        $query = $this->query("SELECT "
+                . "factura.codigo as codFact,"
+                . " fecha,telefono,"
+                . " correo,"
+                . "contacto,"
+                . "nombre,"
+                . "total,"
+                . "factura.estatus as status,"
+                . "factura.usuario, "
+                . "detallefactura.cantidad, "
+                . "detallefactura.precio_unit "
+                . "FROM factura, cliente, detallefactura "
+                . "WHERE factura.cod_cliente = cliente.codigo "
+                . "AND codProducto = '$codigo' "
+                . " $where "
+                . "order by fecha DESC ");
+        while ($row = $query->fetch_array()) {
+            $pen[] = array(
+                'operacion' => 'FACTURA',
+                'tipo' => 'SALIDA',
+                'orden' => strtotime($row['fecha']),
+                'codigo' => (int) $row['codFact'],
+                'fecha' => $row['fecha'],
+                'nombre' => $row['nombre'],
+                'telefono' => $row['telefono'],
+                'correo' => $row['correo'],
+                'contacto' => $row['contacto'],
+                'monto' => (float) $row['total'],
+                'usuario' => (int) $row['usuario'],
+                'status' => (int) $row['status'],
+                'cantidad' => (float) $row['cantidad'],
+                'precio_unit' => (float) $row['precio_unit']
             );
         }
         return $this->getResponse($pen);
