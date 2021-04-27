@@ -270,8 +270,28 @@ class Compra extends \Prototipo\Operaciones {
         return $this->getResponse($pen);
     }
     
-    function rubros($where){
-        
+    function productos($where) {
+        $query = $this->query("SELECT "
+                . "detallecompra.cod_producto as codigo, "
+                . "producto.descripcion as descripcion, "
+                . "SUM( detallecompra.cantidad ) as cantidad, "
+                . "SUM( detallecompra.monto ) as monto "
+                . "FROM detallecompra,  producto, compra WHERE "
+                . "producto.codigo = cod_producto AND "
+                . "compra.codigo = cod_compra "
+                . "$where "
+                . "GROUP BY cod_producto");
+        $pen = array();
+        while ($row = $query->fetch_array()) {
+            $pen[] = array(
+                'codigo' => $row['codigo'],
+                'descripcion' => $row['descripcion'],
+                'cantidad' => (float) $row['cantidad'],
+                'monto' => (float) $row['monto'],
+            );
+        }
+        return $this->getResponse($pen);
     }
+
 
 }

@@ -178,4 +178,44 @@ class Orden extends \Prototipo\Operaciones {
         return $this->getResponse($pen);
     }
 
+    function listaWithProducto($codigo, $where) {
+        $pen = array();
+        $query = $this->query("SELECT DISTINCT "
+                . "ordencompra.codigo as codFact, "
+                . "fecha,telefono, "
+                . "correo, "
+                . "contacto, "
+                . "nombre, "
+                . "total, "
+                . "ordencompra.estatus as status, "
+                . "ordencompra.usuario, "
+                . "detalleordencompra.cantidad, "
+                . "detalleordencompra.precio_unit "
+                . "FROM ordencompra, cliente, detalleordencompra "
+                . "WHERE ordencompra.cod_proveedor = proveedor.codigo "
+                . "AND detalleordencompra.cod_orden = ordencompra.codigo "
+                . "AND detalleordencompra.cod_producto = '$codigo' "
+                . " $where "
+                . "order by fecha DESC ");
+        while ($row = $query->fetch_array()) {
+            $pen[] = array(
+                'operacion' => 'ORDEN DE COMPRA',
+                'tipo' => 'SALIDA',
+                'orden' => strtotime($row['fecha']),
+                'codigo' => (int) $row['codFact'],
+                'fecha' => $row['fecha'],
+                'nombre' => $row['nombre'],
+                'telefono' => $row['telefono'],
+                'correo' => $row['correo'],
+                'contacto' => $row['contacto'],
+                'monto' => (float) $row['total'],
+                'usuario' => (int) $row['usuario'],
+                'status' => (int) $row['status'],
+                'cantidad' => (float) $row['cantidad'],
+                'precio_unit' => (float) $row['precio_unit']
+            );
+        }
+        return $this->getResponse($pen);
+    }
+
 }

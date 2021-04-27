@@ -215,4 +215,27 @@ class Factura extends \Prototipo\Operaciones {
         return $this->getResponse($pen);
     }
 
+    function productos($where) {
+        $query = $this->query("SELECT "
+                . "detallefactura.codProducto as codigo, "
+                . "producto.descripcion as descripcion, "
+                . "SUM( detallefactura.cantidad ) as cantidad, "
+                . "SUM( detallefactura.monto ) as monto "
+                . "FROM detallefactura,  producto, factura WHERE "
+                . "producto.codigo = codProducto AND "
+                . "factura.codigo = codFactura "
+                . "$where "
+                . "GROUP BY codProducto");
+        $pen = array();
+        while ($row = $query->fetch_array()) {
+            $pen[] = array(
+                'codigo' => $row['codigo'],
+                'descripcion' => $row['descripcion'],
+                'cantidad' => (float) $row['cantidad'],
+                'monto' => (float) $row['monto'],
+            );
+        }
+        return $this->getResponse($pen);
+    }
+
 }

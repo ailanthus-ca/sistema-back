@@ -174,20 +174,21 @@ class Nota extends \Prototipo\Operaciones {
     function listaWithProducto($codigo, $where) {
         $pen = array();
         $query = $this->query("SELECT "
-                . "notasalida.codigo as codFact,"
-                . " fecha,"
-                . "telefono,"
-                . " correo,"
-                . "contacto,"
-                . "nombre,"
-                . "total,"
-                . "notasalida.estatus as status,"
+                . "notasalida.codigo as codFact, "
+                . "fecha, "
+                . "telefono, "
+                . "correo, "
+                . "contacto, "
+                . "nombre, "
+                . "total, "
+                . "notasalida.estatus as status, "
                 . "notasalida.usuario, "
                 . "detallesnotas.cantidad, "
                 . "detallesnotas.precio "
-                . "FROM notasalida, detallesnotas, cliente WHERE "
-                . "notasalida.cod_cliente = cliente.codigo AND "
-                . "producto = '$codigo' "
+                . "FROM notasalida, detallesnotas, cliente "
+                . "WHERE notasalida.cod_cliente = cliente.codigo "
+                . "AND detallesnotas.nota = notasalida.codigo "
+                . "AND producto = '$codigo' "
                 . "$where "
                 . "order by fecha DESC ");
         while ($row = $query->fetch_array()) {
@@ -234,6 +235,29 @@ class Nota extends \Prototipo\Operaciones {
                 'nota' => (float) $row['nota'],
                 'usuario' => (int) $row['usuario'],
                 'status' => (int) $row['status'],
+            );
+        }
+        return $this->getResponse($pen);
+    }
+
+    function productos($where) {
+        $query = $this->query("SELECT "
+                . "producto.codigo as codigo, "
+                . "producto.descripcion as descripcion, "
+                . "SUM( detallesnotas.cantidad ) as cantidad, "
+                . "SUM( detallesnotas.precio*detallesnotas.cantidad ) as monto "
+                . "FROM detallesnotas,  producto, notasalida WHERE "
+                . "producto.codigo = detallesnotas.producto AND "
+                . "notasalida.codigo = detallesnotas.nota "
+                . "$where "
+                . "GROUP BY `producto`.`codigo`");
+        $pen = array();
+        while ($row = $query->fetch_array()) {
+            $pen[] = array(
+                'codigo' => $row['codigo'],
+                'descripcion' => $row['descripcion'],
+                'cantidad' => (float) $row['cantidad'],
+                'monto' => (float) $row['monto'],
             );
         }
         return $this->getResponse($pen);

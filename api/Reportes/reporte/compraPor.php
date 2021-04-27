@@ -9,8 +9,8 @@
             <th class="col-3" style="text-align: center">Proveedor</th>
             <th class="col-1" style="text-align: center">Numero Doc.</th>
             <th class="col-1" style="text-align: center">Fecha Doc.</th>
-            <th class="col-1" style="text-align: center">cant</th>
-            <th class="col-2" style="text-align: center">precio</th>
+            <th class="col-1" style="text-align: center">Cant</th>
+            <th class="col-2" style="text-align: center">Precio</th>
             <th class="col-2" style="text-align: center">Total</th>
         </tr>	
     </thead>

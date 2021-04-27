@@ -8,6 +8,6 @@
             <span class="text-encabezado" style="font-size:10px;"><?php echo $company['eslogan'] ?></span><br>
             <span class="text-encabezado"><?php echo $region['cod_fiscal'] . " " . $company['numero_fiscal'] ?></span>
         </div>
-        <hr style="margin-top: -5px"/>
+        <hr/>
     </div>
 </page_header>

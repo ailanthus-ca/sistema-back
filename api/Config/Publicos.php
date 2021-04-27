@@ -20,4 +20,8 @@ class Publicos {
         return array('lista', 'detalles');
     }
 
+    public static function MONEDA() {
+        return array('lista', 'detalles');
+    }
+
 }

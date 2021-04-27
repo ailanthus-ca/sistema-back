@@ -15,4 +15,6 @@
     'Tipo' => 1,
     'Unidad' => 1,
     'Usuario' => 1,
+    '' => 9,
+    'Moneda' => 14,
 );

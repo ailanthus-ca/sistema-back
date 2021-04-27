@@ -205,18 +205,19 @@ class Cotizacion extends \Prototipo\Operaciones {
     function listaWithProducto($codigo, $where) {
         $pen = array();
         $query = $this->query("SELECT "
-                . "cotizacion.codigo as codFact,"
-                . " fecha,telefono,"
-                . " correo,"
-                . "contacto,"
-                . "nombre,"
-                . "total,"
-                . "cotizacion.estatus as status,"
+                . "cotizacion.codigo as codFact, "
+                . "fecha,telefono, "
+                . "correo, "
+                . "contacto, "
+                . "nombre, "
+                . "total, "
+                . "cotizacion.estatus as status, "
                 . "cotizacion.usuario, "
                 . "detallecotizacion.cantidad, "
                 . "detallecotizacion.precio_unit "
                 . "FROM cotizacion, cliente, detallecotizacion "
                 . "WHERE cotizacion.cod_cliente = cliente.codigo "
+                . "AND detallecotizacion.codCotizacion = cotizacion.codigo "
                 . "AND codProducto = '$codigo' "
                 . " $where "
                 . "order by fecha DESC ");
@@ -236,6 +237,29 @@ class Cotizacion extends \Prototipo\Operaciones {
                 'status' => (int) $row['status'],
                 'cantidad' => (float) $row['cantidad'],
                 'precio_unit' => (float) $row['precio_unit']
+            );
+        }
+        return $this->getResponse($pen);
+    }
+
+    function productos($where) {
+        $query = $this->query("SELECT "
+                . "detallecotizacion.codProducto as codigo, "
+                . "producto.descripcion as descripcion, "
+                . "SUM( detallecotizacion.cantidad ) as cantidad, "
+                . "SUM( detallecotizacion.monto ) as monto "
+                . "FROM detallecotizacion,  producto, cotizacion WHERE "
+                . "producto.codigo = codProducto AND "
+                . "cotizacion.codigo = codCotizacion "
+                . "$where "
+                . "GROUP BY codProducto");
+        $pen = array();
+        while ($row = $query->fetch_array()) {
+            $pen[] = array(
+                'codigo' => $row['codigo'],
+                'descripcion' => $row['descripcion'],
+                'cantidad' => (float) $row['cantidad'],
+                'monto' => (float) $row['monto'],
             );
         }
         return $this->getResponse($pen);

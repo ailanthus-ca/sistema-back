@@ -121,4 +121,84 @@ class Nota extends \conexion {
         $pdf->ouput('Compra.pdf', $content);
     }
 
+    function de($cod, $rango, $p1, $p2) {
+        $nota = new \Modelos\Nota();
+        switch ($rango) {
+            case 'ano':
+                $where = " AND YEAR(fecha) = $p1 ";
+                $titulo = "AÑO $p1";
+                break;
+            case 'mes':
+                $where = " AND YEAR(fecha)= $p1 AND month(fecha) = $p2 ";
+                $m = $nota->numberToMes($p2);
+                $titulo = "$m DEL $p1";
+                break;
+            case 'rango':
+                $date1 = new \DateTime($p1);
+                $date2 = new \DateTime($p2);
+                $where = " AND fecha between '$p1' AND '$p2' ";
+                $titulo = "DESDE " . $date1->format("d/m/Y") . " HASTA " . $date2->format("d/m/Y");
+                break;
+            default :
+                $where = "";
+                $titulo = "TODO";
+                break;
+        }
+        $producto = new \Modelos\Producto();
+        $pro = $producto->ver($cod);
+        $data = array(
+            'facturas' => $nota->listaWithProducto($cod, $where . ' AND notasalida.estatus > 0'),
+            'titulo' => $pro['descripcion'] . '<br>' . $titulo,
+            'operacion' => 'NOTA DE ENTREGA'
+        );
+        $pdf = new \PDF\Reportes();
+        $pdf->version = 'facturaPor';
+        ob_start();
+        $pdf->ver($data);
+        $content = ob_get_clean();
+        $pdf->ouput('Compra.pdf', $content);
+    }
+
+    function productos($dpt, $rango, $p1, $p2) {
+        $nota = new \Modelos\Nota();
+        switch ($rango) {
+            case 'ano':
+                $where = " AND YEAR(fecha) = $p1 ";
+                $titulo = "AÑO $p1";
+                break;
+            case 'mes':
+                $where = " AND YEAR(fecha)= $p1 AND month(fecha) = $p2 ";
+                $m = $nota->numberToMes($p2);
+                $titulo = "$m DEL $p1";
+                break;
+            case 'rango':
+                $date1 = new \DateTime($p1);
+                $date2 = new \DateTime($p2);
+                $where = " AND fecha between '$p1' AND '$p2' ";
+                $titulo = "DESDE " . $date1->format("d/m/Y") . " HASTA " . $date2->format("d/m/Y");
+                break;
+            default :
+                $where = "";
+                $titulo = "TODO";
+                break;
+        }
+        if ($dpt !== 'TODO') {
+            $where .= " and departamento = '$dpt'";
+            $dp = new \Modelos\Departamento();
+            $row = $dp->detalles($dpt);
+            $titulo .= '<br> DEL DEPARTAMENTO ' . $row['descripcion'];
+        }
+        $data = array(
+            'itens' => $nota->productos($where . ' AND notasalida.estatus > 0'),
+            'titulo' => $titulo,
+            'operacion' => 'NOTA DE ENTREGA'
+        );
+        $pdf = new \PDF\Reportes();
+        $pdf->version = 'productosDe';
+        ob_start();
+        $pdf->ver($data);
+        $content = ob_get_clean();
+        $pdf->ouput('Compra.pdf', $content);
+    }
+
 }
