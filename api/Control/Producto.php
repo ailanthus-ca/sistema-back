@@ -26,6 +26,8 @@ class Producto {
         $Producto->tipo = $Producto->postIntenger('tipo');
         $Producto->unidad = $Producto->postIntenger('unidad');
         $Producto->enser = $Producto->postIntenger('enser');
+        $Producto->excento = $Producto->postString('excento');
+        $Producto->dolar = $Producto->postFloat('dolar');
         //validaciones
         //cantidad de productos por categoria
         $dep = new \Modelos\Departamento();

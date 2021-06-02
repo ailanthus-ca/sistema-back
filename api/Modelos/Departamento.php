@@ -32,9 +32,10 @@ class Departamento extends \conexion {
             );
 
             return $this->getResponse($data);
+
         } else {
             $this->getNotFount();
-            return getResponse(array());
+            return $this->getResponse(array());
         }
     }
 
@@ -55,8 +56,38 @@ class Departamento extends \conexion {
         }
     }
 
-    function nuevo($id) {
+    function nuevo() {
+        $this->query("INSERT INTO departamento (codigo, descripcion, estatus) VALUES("
+            ."UPPER('$this->codigo'), "
+            ."UPPER('$this->descripcion'), "
+            . "1)");
         $this->actualizarEstado();
+        return $this->getResponse($this->detalles($this->codigo));
+    }
+
+    function actualizar($id) {
+        $this->query("UPDATE departamento SET "
+            ."descripcion = UPPER('$this->descripcion') "
+            ."WHERE codigo = '$id' ");
+        $this->actualizarEstado();
+        return $this->getResponse($this->detalles($id));
+    }
+
+    public function cancelar($id) {
+        $sql = $this->query("SELECT * FROM departamento WHERE codigo= '$id' ");
+        if ($row = $sql->fetch_array()) {
+            if ($row['estatus'] === '1') {
+                $this->query("UPDATE departamento SET "
+                        . "estatus = 0 "
+                        . "WHERE codigo = '$id' ");
+            } else {
+                $this->query("UPDATE departamento SET "
+                        . "estatus = 1 "
+                        . "WHERE codigo = '$id' ");
+            }
+            $this->actualizarEstado();
+            return $this->getResponse(true);
+        }
     }
 
 }

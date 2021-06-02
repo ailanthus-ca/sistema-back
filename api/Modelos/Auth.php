@@ -12,7 +12,7 @@ class Auth extends \conexion {
         $sql = $this->con->query("SELECT * FROM roles");
         while ($row = $sql->fetch_array()) {
             $roles[] = array(
-                'id' => $row['id'],
+                'id' =>(int) $row['id'],
                 'nombre' => $row['nombre']
             );
         }
@@ -26,10 +26,10 @@ class Auth extends \conexion {
         if ($row = $sql->fetch_array()) {
             $data['id'] = $row['id'];
             $data['nombre'] = $row['nombre'];
-            $p = $this->query("SELECT id_permiso from permisos_roles where id_role = " . $data['id']);
+            $p = $this->query("SELECT permisos.* FROM permisos_roles,permisos WHERE id_permiso = id AND id_role = 0" . $data['id']);
             $permisos = array();
             while ($row = $p->fetch_array()) {
-                $permisos[] = $this->nombre_permiso($row['id_permiso']);
+                $permisos[] = array('id' => (int) $row['id'], 'nombre' => $row['nombre']);
             }
             $data['permisos'] = $permisos;
             return $this->getResponse($data);
@@ -88,7 +88,7 @@ class Auth extends \conexion {
         $sql = $this->con->query("SELECT * FROM permisos");
         while ($row = $sql->fetch_array()) {
             $permisos[] = array(
-                'id' => $row['id'],
+                'id' => (int) $row['id'],
                 'nombre' => $row['nombre']
             );
         }

@@ -9,7 +9,7 @@
 class Publicos {
 
     public static function Modulos() {
-        return array('USUARIO', 'PRODUCTO');
+        return array('USUARIO', 'PRODUCTO', 'MONEDA');
     }
 
     public static function USUARIO() {

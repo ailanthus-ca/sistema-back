@@ -13,12 +13,15 @@ class Usuario extends \conexion {
 
     function lista() {
         $cl = array();
-        $sql = $this->query('SELECT * FROM usuario WHERE estatus=1');
+        $sql = $this->query('SELECT usuario.*,roles.nombre as rol FROM usuario,roles WHERE roles.id=usuario.nivel');
         while ($row = $sql->fetch_array()) {
             $cl[] = array(
-                'codigo' => $row['codigo'],
+                'codigo' => (int) $row['codigo'],
                 'nombre' => $row['nombre'],
-                'correo' => $row['correo']
+                'correo' => $row['correo'],
+                'rol' => $row['rol'],
+                'nivel' =>(int)  $row['nivel'],
+                'estado' => (int) $row['estatus']
             );
         }
         return $this->getResponse($cl);
@@ -74,13 +77,15 @@ class Usuario extends \conexion {
     }
 
     function nuevo() {
-        $this->query("INSERT INTO usuario(nombre,correo,clave,nivel,estatus) VALUES("
-                . "UPPER('$this->nombre'),"
-                . "UPPER('$this->correo'),"
-                . "$this->clave,"
-                . "UPPER('$this->nivel'),"
-                . "1)");
-        $this->codigo = $this->con->insertId();
+        $clave = \crypt($this->clave);
+        $this->query("INSERT INTO usuario VALUES("
+                ."null,"
+                . "UPPER('$this->nombre'), "
+                . "UPPER('$this->correo'), "
+                . "'$clave', "
+                . "$this->nivel, "
+                . "1) ");
+        $this->codigo = $this->con->insert_id;
         $this->actualizarEstado();
         return $this->getResponse($this->detalles($this->codigo));
     }
@@ -101,11 +106,11 @@ class Usuario extends \conexion {
             if ($row['estatus'] === '1') {
                 $this->query("UPDATE usuario SET "
                         . "estatus = 0 "
-                        . "WHERE codigo = '$id' ");
+                        . "WHERE codigo = $id ");
             } else {
                 $this->query("UPDATE usuario SET "
                         . "estatus = 1 "
-                        . "WHERE codigo = '$id' ");
+                        . "WHERE codigo = $id ");
             }
             $this->actualizarEstado();
             return $this->getResponse(true);

@@ -95,7 +95,12 @@ class Auth extends Middleware {
         $auth = new \Modelos\Auth();
         $rol = $auth->detalles_rol($this->nivel);
         $this->rol = $rol['nombre'];
-        $this->permisos = $rol['permisos'];
+        $this->permisos =array();
+        
+        foreach ($rol['permisos'] as $p) {
+            $this->permisos[]= $p['nombre'];
+        }
+
         if (empty($_SESSION['permisos'])) {
             $_SESSION['rol'] = $this->rol;
             $_SESSION['permisos'] = $this->permisos;

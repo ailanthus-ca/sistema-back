@@ -40,9 +40,8 @@ class Enrutador {
             return;
         }
         $validarPermiso = true;
-        $publicos = new \Publicos();
-        if (method_exists($publicos, $per)) {
-            if (in_array($operacion, $publicos->$per())) {
+        if (in_array($obj, \Publicos::Modulos())) {
+            if (in_array($operacion, \Publicos::$per())) {
                 $validarPermiso = false;
             }
         }

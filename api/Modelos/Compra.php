@@ -9,6 +9,7 @@ class Compra extends \Prototipo\Operaciones {
     var $cod_documento = '';
     var $fecha_doc = '';
     var $num_con = '';
+    var $dolar = 0;
 
     public function lista() {
         $pen = array();
@@ -23,6 +24,7 @@ class Compra extends \Prototipo\Operaciones {
                 . "nun_control,"
                 . "compra.estatus as status,"
                 . "compra.nota,"
+                . "compra.dolar,"
                 . "compra.usuario  "
                 . "FROM compra,proveedor "
                 . "WHERE compra.cod_proveedor = proveedor.codigo order by fecha DESC ");
@@ -44,6 +46,7 @@ class Compra extends \Prototipo\Operaciones {
                 'nun_control' => $row['nun_control'],
                 'monto' => (float) $row['total'],
                 'nota' => $row['nota'],
+                'dolar' => $row['dolar'],
                 'usuario' => (int) $row['usuario'],
                 'status' => (int) $row['status'],
                 'detalles' => $detalle
@@ -73,6 +76,7 @@ class Compra extends \Prototipo\Operaciones {
             $compra['nun_control'] = $row['nun_control'];
             $compra['fecha_documento'] = $row['fecha_documento'];
             $compra['nota'] = $row['nota'];
+            $compra['dolar'] = $row['dolar'];
             $compra['estatus'] = (int) $row['estatus'];
             $compra['impuesto'] = (float) $row['impuesto'];
             //Detalle de la compra
@@ -156,20 +160,6 @@ class Compra extends \Prototipo\Operaciones {
         $data['Compra'] = $data['Compra'] + 1;
         $data->setMany($data);
         return 1;
-    }
-
-    public function getFactura() {
-        $this->cod_documento = $this->postString('cod_documento');
-        $this->num_con = $this->postString('num_con');
-        $fecha = (isset($_POST['fecha_doc']) && $_POST['fecha_doc'] != NULL) ? $_POST['fecha_doc'] : '';
-        //fecha valida
-        $this->fecha_doc = date("Y-m-d", strtotime($fecha));
-        //factura ingresada
-        if ($this->cod_documento === '') {
-            $this->etatus = 1;
-        } else {
-            $this->etatus = 2;
-        }
     }
 
     function facturar($id) {

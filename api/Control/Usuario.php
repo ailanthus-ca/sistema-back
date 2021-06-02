@@ -19,10 +19,28 @@ class Usuario {
         $Usuario->codigo = $Usuario->postString("codigo");
         $Usuario->nombre = $Usuario->postString("nombre");
         $Usuario->correo = $Usuario->postString("correo");
-        // $clave = $Usuario->postString("clave");
-        // $Usuario->clave = crypt($clave);
         $Usuario->clave = $Usuario->postString("clave");
         $Usuario->nivel = $Usuario->postString("nivel");
+
+        if ($Usuario->nombre == '') {
+            $Usuario->setError('El nombre es requerido');
+        }
+
+        if ($Usuario->correo == '') {
+            $Usuario->setError('El email es requerido');
+        }
+
+        if (!filter_var($Usuario->correo, FILTER_VALIDATE_EMAIL)) {
+            $Usuario->setError('Email mal escrito');
+        }
+
+        if ($Usuario->clave == '') {
+            $Usuario->setError('La clave es requerida');
+        }
+
+        if($Usuario->nivel == '') {
+            $Usuario->setError('El nivel es requerido');
+        }
 
         return json_encode($Usuario->nuevo());
     }
@@ -37,6 +55,26 @@ class Usuario {
         // Validar que exista codigo
         if (!$Usuario->checkCodigo($id)) {
             $Usuario->setError('Usuario no existe');
+        }
+
+        if ($Usuario->nombre == '') {
+            $Usuario->setError('El nombre es requerido');
+        }
+
+        if ($Usuario->correo == '') {
+            $Usuario->setError('El email es requerido');
+        }
+
+        if (!filter_var($Usuario->correo, FILTER_VALIDATE_EMAIL)) {
+            $Usuario->setError('Email mal escrito');
+        }
+
+        if ($Usuario->clave == '') {
+            $Usuario->setError('La clave es requerida');
+        }
+
+        if($Usuario->nivel == '') {
+            $Usuario->setError('El nivel es requerido');
         }
         //Validar si hubo errores
         if ($Usuario->response > 300) {
@@ -86,7 +124,6 @@ class Usuario {
         $role = new \Modelos\Auth();
         $role->nombre = $role->postString("nombre");
         $role->permisos = $role->postArray("permisos");
-        //return json_encode($role);
         return json_encode($role->actualizarRol($id));
     }
 

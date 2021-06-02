@@ -15,10 +15,12 @@ class Producto extends \conexion {
     var $tipo = 0;
     var $unidad = 0;
     var $enser = 0;
+    var $exento = 0;
+    var $dolar = 0;
 
     public function lista() {
         $pro = array();
-        $sql = $this->query('SELECT producto.*, unidad.descripcion as medida FROM producto,unidad WHERE producto.unidad=unidad.codigo ');
+        $sql = $this->query('SELECT producto.*, unidad.descripcion as medida, tipo_producto.inventario as inventario  FROM producto,unidad, tipo_producto WHERE producto.unidad=unidad.codigo ');
         while ($row = $sql->fetch_array()) {
             $pro[] = array(
                 'codigo' => $row['codigo'],
@@ -35,13 +37,15 @@ class Producto extends \conexion {
                 'precio3' => (float) $row['precio3'],
                 'cantidad' => (float) $row['cantidad'],
                 'fecha' => $row['fecha_creacion'],
+                'inventario' => $row['inventario'],
+                'dolar' => $row['dolar'],
             );
         }
         return $pro;
     }
 
     public function ver($cod) {
-        $sql = $this->query('SELECT producto.*,unidad.descripcion as medida FROM producto,unidad WHERE producto.unidad=unidad.codigo AND producto.codigo="' . $cod . '"');
+        $sql = $this->query('SELECT producto.*,unidad.descripcion as medida FROM producto,unidad, tipo_producto.inventario as inventario WHERE producto.unidad=unidad.codigo AND producto.codigo="' . $cod . '"');
         while ($row = $sql->fetch_array()) {
             $pro = array(
                 'codigo' => $row['codigo'],
@@ -59,6 +63,8 @@ class Producto extends \conexion {
                 'imagen' => $row['imagen'],
                 'estatus' => (int) $row['estatus'],
                 'fecha_creacion' => $row['fecha_creacion'],
+                'inventario' => $row['inventario'],
+                'dolar' => $row['dolar'],
             );
             return $pro;
         }
@@ -120,7 +126,9 @@ class Producto extends \conexion {
                 . "0,"
                 . "'',"
                 . "1,"
-                . " NOW())");
+                . " NOW(),"
+                . "'$this->exento',"
+                . "$this->dolar)");
         $this->actualizarEstado();
         return $this->getResponse($this->ver($this->codigo));
     }
