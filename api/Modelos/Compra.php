@@ -109,6 +109,8 @@ class Compra extends \Prototipo\Operaciones {
         $sql = $this->query('SELECT COUNT(*) as cant FROM `compra`');
         $row = $sql->fetch_array();
         $cod_compra = $row['cant'] + 1;
+        $dolar = new \Modelos\Dolares();
+        $tasa = $dolar->valor();
         $this->query("INSERT INTO compra VALUES ("
                 . "'$cod_compra',"
                 . "'$this->cod_proveedor',"
@@ -121,7 +123,8 @@ class Compra extends \Prototipo\Operaciones {
                 . "$this->total,"
                 . "'$this->nota',"
                 . "$user,"
-                . "$this->etatus)");
+                . "$this->etatus,"
+                . "$tasa)");
         //;
         $productos = new \Modelos\Producto();
         foreach ($this->detalles as $iten) {
@@ -132,7 +135,16 @@ class Compra extends \Prototipo\Operaciones {
                     . "$iten->unidades,"
                     . "$iten->precio,"
                     . "$monto)");
-            $productos->entrada($iten->codigo, $iten->unidades, $iten->precio);
+            $productos->entrada($iten->codigo, $iten->unidades);
+            $config = new \Config('costo');
+            $costo = $config->get();
+            if ($costo['costo'] < 3) {
+                $productos->cargar($iten->codigo);
+                if ($costo['costo'] === 2 && $productos->checkCosto($iten->precio, $tasa))
+                    $productos->costo($iten->codigo, $iten->precio, $tasa);
+                else
+                    $productos->costo($iten->codigo, $iten->precio, $tasa);
+            }
         }
         if ($this->id_orden > 0) {
             $orden = new \Modelos\Orden();
@@ -259,7 +271,7 @@ class Compra extends \Prototipo\Operaciones {
         }
         return $this->getResponse($pen);
     }
-    
+
     function productos($where) {
         $query = $this->query("SELECT "
                 . "detallecompra.cod_producto as codigo, "
@@ -282,6 +294,5 @@ class Compra extends \Prototipo\Operaciones {
         }
         return $this->getResponse($pen);
     }
-
 
 }

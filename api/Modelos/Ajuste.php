@@ -15,7 +15,43 @@ namespace Modelos;
  */
 class Ajuste extends \conexion {
 
-    //put your code here
+    public function lista()
+    {
+        $data = array();
+        $query = $this->query("SELECT ajusteinv.codigo as codigo, tipo_ajuste, fecha, usuario, usuario.nombre as nombre, nota FROM `ajusteinv`, `usuario` WHERE ajusteinv.usuario = usuario.codigo");
+        while ($row = $query->fetch_array()) {
+            $data[] = array(
+                'codigo' => $row['codigo'],
+                'cod_usuario' => $row['usuario'],
+                'usuario' => $row['nombre'],
+                'tipo' => $row['tipo_ajuste'],
+                'fecha' => $row['fecha'],
+                'nota' => $row['nota']
+            );
+        }
+        return $this->getResponse($data);
+    }
+
+    public function detalles($id)
+    {
+        $sql = "SELECT ajusteinv.codigo as codigo, usuario.nombre as nombre, tipo_ajuste, fecha, nota FROM ajusteinv, usuario WHERE ajusteinv.usuario=usuario.codigo AND ajusteinv.codigo = $id";
+        $query = $this->query($sql);
+        $data = array();
+        if ($row = $query->fetch_array()) {
+            $data[] = array(
+                'codigo' => $row['codigo'],
+                'usuario' => $row['nombre'],
+                'tipo' => $row['tipo_ajuste'],
+                'fecha' => $row['fecha'],
+                'nota' => $row['nota']
+            );
+            return $this->getResponse($data);
+
+        } else {
+            $this->getNotFount();
+            return $this->getResponse(array());
+        }
+    }
 
     function listaWithProducto($codigo, $where) {
         $pen = array();

@@ -4,10 +4,13 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>SISTEMA ADMINISTRATIVO</title>
         <link rel="icon" type="image/svg" sizes="*" href="/logos/logo.svg">
-        <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-        <link href="bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-        <link href="/static/css/2.ffda3d49.chunk.css" rel="stylesheet">
-        <link href="/static/css/main.00a05bd2.chunk.css" rel="stylesheet">
+        <link
+            rel="stylesheet"
+            href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
+            />
+        <link rel="stylesheet" href="/bootstrap/font-awesome/css/font-awesome.min.css" />
+        <link href="/bootstrap.css" rel="stylesheet" />
+        <link href="/adminlte.css" rel="stylesheet" />
     </head>
     <body class="sidebar-mini wysihtml5-supported sidebar-collapse skin-green-light">
         <div id="root" class="wrapper"></div>

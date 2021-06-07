@@ -20,7 +20,9 @@ class Producto extends \conexion {
 
     public function lista() {
         $pro = array();
-        $sql = $this->query('SELECT producto.*, unidad.descripcion as medida, tipo_producto.inventario as inventario  FROM producto,unidad, tipo_producto WHERE producto.unidad=unidad.codigo ');
+        $sql = $this->query('SELECT producto.*, unidad.descripcion as medida, tipo_producto.inventario as inventario '
+                . 'FROM producto,unidad, tipo_producto '
+                . 'WHERE producto.unidad=unidad.codigo AND tipo_producto.codigo = producto.tipo');
         while ($row = $sql->fetch_array()) {
             $pro[] = array(
                 'codigo' => $row['codigo'],
@@ -38,6 +40,7 @@ class Producto extends \conexion {
                 'cantidad' => (float) $row['cantidad'],
                 'fecha' => $row['fecha_creacion'],
                 'inventario' => $row['inventario'],
+                'exento' => $row['exento'],
                 'dolar' => $row['dolar'],
             );
         }
@@ -45,7 +48,7 @@ class Producto extends \conexion {
     }
 
     public function ver($cod) {
-        $sql = $this->query('SELECT producto.*,unidad.descripcion as medida FROM producto,unidad, tipo_producto.inventario as inventario WHERE producto.unidad=unidad.codigo AND producto.codigo="' . $cod . '"');
+        $sql = $this->query('SELECT producto.*, unidad.descripcion as medida, tipo_producto.inventario as inventario FROM producto,unidad, tipo_producto WHERE producto.unidad=unidad.codigo AND tipo_producto.codigo = producto.tipo AND producto.codigo="' . $cod . '"');
         while ($row = $sql->fetch_array()) {
             $pro = array(
                 'codigo' => $row['codigo'],
@@ -65,6 +68,7 @@ class Producto extends \conexion {
                 'fecha_creacion' => $row['fecha_creacion'],
                 'inventario' => $row['inventario'],
                 'dolar' => $row['dolar'],
+                'exento' => $row['exento'],
             );
             return $pro;
         }
@@ -87,6 +91,7 @@ class Producto extends \conexion {
             $this->imagen = $row['imagen'];
             $this->estatus = (int) $row['estatus'];
             $this->fecha_creacion = $row['fecha_creacion'];
+            $this->dolar = (float) $row['dolar'];
         }
     }
 
@@ -100,8 +105,17 @@ class Producto extends \conexion {
         return ($pre <= $precio);
     }
 
-    function checkCosto($precio) {
-        return ($this->costo <= $precio);
+    function checkCosto($precio, $tasa) {
+        $config = new \Config('costo');
+        $costo = $config->get();
+        $costo = $this->costo;
+        if ($costo['tasa']) {
+            if ($this->dolar > 0) {
+                $costo = $this->costo / $this->dolar;
+                $precio = $precio / $tasa;
+            }
+        }
+        return ($costo <= $precio);
     }
 
     function checkCodigo($cod) {
@@ -142,13 +156,8 @@ class Producto extends \conexion {
         return $this->getResponse($this->ver($id));
     }
 
-    public function entrada($cod, $can, $pre = 0) {
+    public function entrada($cod, $can) {
         $this->query("UPDATE producto set cantidad = cantidad + ('$can') WHERE codigo = '$cod'");
-        $sql2 = $this->query("SELECT costo from producto where codigo = '$cod' ");
-        $row2 = $sql2->fetch_array();
-        if ($row2['costo'] < $pre) {
-            $this->costo($cod, $pre);
-        }
         $this->actualizarEstado();
     }
 
@@ -157,8 +166,8 @@ class Producto extends \conexion {
         $this->actualizarEstado();
     }
 
-    public function costo($cod, $pre) {
-        $this->query("UPDATE producto set costo = $pre WHERE codigo = '$cod'");
+    public function costo($cod, $pre, $tasa) {
+        $this->query("UPDATE producto set costo = $pre, dolar=$tasa  WHERE codigo = '$cod'");
         $this->actualizarEstado();
     }
 
