@@ -16,7 +16,6 @@ class Usuario {
 
     function nuevo(){
         $Usuario = new \Modelos\Usuario();
-        $Usuario->codigo = $Usuario->postString("codigo");
         $Usuario->nombre = $Usuario->postString("nombre");
         $Usuario->correo = $Usuario->postString("correo");
         $Usuario->clave = $Usuario->postString("clave");
@@ -34,12 +33,21 @@ class Usuario {
             $Usuario->setError('Email mal escrito');
         }
 
+        if ($Usuario->checkCorreo($Usuario->correo)) {
+            $Usuario->setError('Este email ya esta siendo usado');
+        }        
+
         if ($Usuario->clave == '') {
             $Usuario->setError('La clave es requerida');
         }
 
         if($Usuario->nivel == '') {
             $Usuario->setError('El nivel es requerido');
+        }
+
+        //Validar si hubo errores
+        if ($Usuario->response > 300) {
+            return json_encode($Usuario->getResponse());
         }
 
         return json_encode($Usuario->nuevo());
@@ -54,7 +62,7 @@ class Usuario {
 
         // Validar que exista codigo
         if (!$Usuario->checkCodigo($id)) {
-            $Usuario->setError('Usuario no existe');
+            $Usuario->setError('El usuario no existe');
         }
 
         if ($Usuario->nombre == '') {
@@ -67,6 +75,10 @@ class Usuario {
 
         if (!filter_var($Usuario->correo, FILTER_VALIDATE_EMAIL)) {
             $Usuario->setError('Email mal escrito');
+        }
+
+        if ($Usuario->checkCorreo($Usuario->correo)) {
+            $Usuario->setError('Este email ya esta siendo usado');
         }
 
         if ($Usuario->clave == '') {

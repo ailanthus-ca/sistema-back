@@ -76,7 +76,17 @@ class Usuario extends \conexion {
         }
     }
 
+    function checkCorreo($correo)
+    {
+        $sql = $this->query("SELECT COUNT(*) AS exist FROM `usuario` WHERE correo = '$correo'");
+        if ($row = $sql->fetch_array()) {
+            return boolval($row['exist']);
+        }
+    }
+
     function nuevo() {
+        $mi = new \Middleware();
+        // $clave = \crypt($this->clave, $mi->key);
         $clave = \crypt($this->clave);
         $this->query("INSERT INTO usuario VALUES("
                 ."null,"

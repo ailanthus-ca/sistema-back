@@ -6,7 +6,7 @@
     'Cotizacion' => 10,
     'Departamento' => 14,
     'Dolares' => 2,
-    'Factura' => 1,
+    'Factura' => 2,
     'Nota' => 1,
     'Orden' => 1,
     'Plantilla' => 1,
@@ -14,7 +14,8 @@
     'Proveedor' => 1,
     'Tipo' => 45,
     'Unidad' => 4,
-    'Usuario' => 26,
+    'Usuario' => 52,
     '' => 9,
     'Moneda' => 14,
+    'Ajuste' => 377,
 );

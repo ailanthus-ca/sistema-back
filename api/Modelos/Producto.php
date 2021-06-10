@@ -105,7 +105,7 @@ class Producto extends \conexion {
         return ($pre <= $precio);
     }
 
-    function checkCosto($precio, $tasa) {
+    function checkCosto($precio, $tasa=1) {
         $config = new \Config('costo');
         $costo = $config->get();
         $costo = $this->costo;

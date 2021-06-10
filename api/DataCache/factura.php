@@ -1,13 +1,13 @@
 <?php 
  return array(
-    'margen_sup' => 45,
-    'margen_inf' => 43,
-    'margen_izq' => 12,
-    'margen_der' => 20,
+    'margen_sup' => 35,
+    'margen_inf' => 15,
+    'margen_izq' => 15,
+    'margen_der' => 15,
     'tipo_papel' => 'LETTER',
-    'observacion' => 'SE LES NOTIFICA A LOS CLIENTES CONTRIBUYENTES ESPECIALES QUE TENDRAN 24 HORAS DESDE QUE SE EMITE LA FACTURA PARA TRAER EL PAGO Y LA RETENCIÓN DE LA MISMA. DE LO CONTRARIO SE PROCEDERÁ A ANULAR EL DOCUMENTO ',
-    'num_factura' => 1,
+    'observacion' => 'GARANTIA DEL PRODUCTO VARIA SEGÚN EL FABRICANTE O PROVEEDOR. LOS GASTOS LOGÍSTICOS POR TRAMITACIÓN DE GARANTÍAS CORREN POR CUENTA DEL CLIENTE.',
+    'num_factura' => 433,
     'version' => 'nuevo',
-    'encabezado' => false,
-    'piepagina' => false,
+    'encabezado' => '',
+    'piepagina' => '',
 );

@@ -15,6 +15,12 @@ namespace Modelos;
  */
 class Ajuste extends \conexion {
 
+    var $estado = 'Ajuste';
+    var $tipo_ajuste = '';
+    var $fecha = '';
+    var $nota = '';
+    var $usuario = 0;
+
     public function lista()
     {
         $data = array();
@@ -78,6 +84,15 @@ class Ajuste extends \conexion {
             );
         }
         return $this->getResponse($pen);
+    }
+
+    public function nuevo()
+    {
+        $id_usuario = $_SESSION['id_usuario'];
+        $this->query("INSERT INTO ajusteinv (codigo, tipo_ajuste, fecha, nota, usuario) VALUES (null, UPPER('$this->tipo_ajuste'), NOW(), UPPER('$this->nota'), $id_usuario)");
+        $id_ajus = $this->con->insert_id;
+        $this->actualizarEstado();
+        return $this->getResponse($this->detalles($id_ajus));
     }
 
 }
