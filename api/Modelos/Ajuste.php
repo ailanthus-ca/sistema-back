@@ -24,15 +24,22 @@ class Ajuste extends \conexion {
     public function lista()
     {
         $data = array();
-        $query = $this->query("SELECT ajusteinv.codigo as codigo, tipo_ajuste, fecha, usuario, usuario.nombre as nombre, nota FROM `ajusteinv`, `usuario` WHERE ajusteinv.usuario = usuario.codigo");
+        $query = $this->query("SELECT ajusteinv.codigo as codFact, tipo_ajuste, fecha, ajusteinv.estatus, usuario, usuario.nombre as nombre, nota FROM `ajusteinv`, `usuario` WHERE ajusteinv.usuario = usuario.codigo");
         while ($row = $query->fetch_array()) {
+            $detalle = array();
+            $sql = $this->query("SELECT cod_producto FROM detalleajusteinv WHERE cod_ajuste = " . $row['codFact']);
+            while ($row2 = $sql->fetch_array()) {
+                $detalle[] = $row2['cod_producto'];
+            }
             $data[] = array(
-                'codigo' => $row['codigo'],
-                'cod_usuario' => $row['usuario'],
-                'usuario' => $row['nombre'],
+                'codigo' => (int) $row['codFact'],
+                'usuario' => (int) $row['usuario'],
+                'nombre' => $row['nombre'],
                 'tipo' => $row['tipo_ajuste'],
-                'fecha' => $row['fecha'],
-                'nota' => $row['nota']
+                'fecha' => $row['fecha'],              
+                'nota' => $row['nota'],
+                'status' => (int) $row['estatus'],             
+                'detalles' => $detalle
             );
         }
         return $this->getResponse($data);
@@ -40,16 +47,24 @@ class Ajuste extends \conexion {
 
     public function detalles($id)
     {
-        $sql = "SELECT ajusteinv.codigo as codigo, usuario.nombre as nombre, tipo_ajuste, fecha, nota FROM ajusteinv, usuario WHERE ajusteinv.usuario=usuario.codigo AND ajusteinv.codigo = $id";
+        $sql = "SELECT ajusteinv.codigo as codFact, usuario, usuario.nombre as nombre, tipo_ajuste, fecha, nota, ajusteinv.estatus FROM ajusteinv, usuario WHERE ajusteinv.usuario=usuario.codigo AND ajusteinv.codigo = $id";
         $query = $this->query($sql);
         $data = array();
         if ($row = $query->fetch_array()) {
+            $detalle = array();
+            $sql = $this->query("SELECT cod_producto FROM detalleajusteinv WHERE cod_ajuste = " . $row['codFact']);
+            while ($row2 = $sql->fetch_array()) {
+                $detalle[] = $row2['cod_producto'];
+            }
             $data[] = array(
-                'codigo' => $row['codigo'],
-                'usuario' => $row['nombre'],
+                'codigo' => (int) $row['codFact'],
+                'usuario' => (int) $row['usuario'],
+                'nombre' => $row['nombre'],
                 'tipo' => $row['tipo_ajuste'],
                 'fecha' => $row['fecha'],
-                'nota' => $row['nota']
+                'nota' => $row['nota'],
+                'status' => (int) $row['estatus'],
+                'detalles' => $detalle
             );
             return $this->getResponse($data);
 

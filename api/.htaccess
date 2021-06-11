@@ -1,7 +1,7 @@
 
-Header set Access-Control-Allow-Origin "*"
+ Header set Access-Control-Allow-Origin "*"
 Header set Access-Control-Allow-Headers "*"
-Header set Access-Control-Allow-Methods "*"
+ Header set Access-Control-Allow-Methods "*"
 
 RewriteEngine On
 
