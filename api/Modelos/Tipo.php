@@ -13,9 +13,9 @@ class Tipo extends \conexion{
 		$sql = $this->con->query('SELECT * FROM tipo_producto');
 		while($row = $sql->fetch_array()){
 			$tipos[] = array(
-				'codigo' => $row['codigo'] ,
+				'codigo' => (int) $row['codigo'] ,
                 'descripcion' => $row['descripcion'],
-				'inventario' => $row['inventario'],
+				'inventario' => (int) $row['inventario'],
 				'estatus' => (int) $row['estatus']
 			);
 		}
@@ -54,8 +54,7 @@ class Tipo extends \conexion{
 
     function actualizar($id) {
         $this->query("UPDATE tipo_producto SET "
-            ."descripcion = UPPER('$this->descripcion'),"
-            ."inventario = UPPER('$this->inventario') "
+            ."descripcion = UPPER('$this->descripcion') "
             ."WHERE codigo = $id ");
         $this->actualizarEstado();
         return $this->getResponse($this->detalles($id));

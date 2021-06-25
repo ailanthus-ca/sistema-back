@@ -115,6 +115,7 @@ class Factura extends \Prototipo\Operaciones {
                 . "2)");
 
         $producto = new Producto();
+        
         foreach ($this->detalles as $pro) {
             $monto = $pro->unidades * $pro->precio;
             $this->query("INSERT INTO detallefactura VALUES " .
@@ -123,6 +124,11 @@ class Factura extends \Prototipo\Operaciones {
                     . "$pro->unidades,"
                     . "$pro->precio,"
                     . "$monto )");
+            
+            $producto->cargar($pro->codigo);
+            if ($producto->inventario !== 1) 
+                $producto->entrada($pro->codigo, $pro->unidades);
+            
             if ($this->nota === 0)
                 $producto->salida($pro->codigo, $pro->unidades);
         }
@@ -234,6 +240,63 @@ class Factura extends \Prototipo\Operaciones {
                 'cantidad' => (float) $row['cantidad'],
                 'monto' => (float) $row['monto'],
             );
+        }
+        return $this->getResponse($pen);
+    }
+
+    // ------------------------------------ GRAFICAS ------------------------------------
+
+    public function torta($where) {
+        $query = $this->query("SELECT "
+                . "estatus AS RANK, "
+                . "COUNT(estatus) AS CANT "
+                . "FROM compra "
+                . "WHERE $where "
+                . "GROUP BY estatus");
+        $pen = array();
+        while ($row = $query->fetch_array()) {
+            $pen[] = array(
+                'cantidad' => $row['CANT'],
+                'estatus' => $row['RANK']
+            );
+        }
+        return $this->getResponse($pen);
+    }
+
+    public function ventaAno($ano) {
+        $query = $this->query("SELECT "
+                . "SUM(subtotal) AS r,"
+                . "MONTH(fecha) AS mes "
+                . "FROM factura WHERE "
+                . "YEAR(fecha)=$ano AND "
+                . "estatus = 2 "
+                . "GROUP BY mes");
+        $pen = array();
+        while ($row = $query->fetch_array()) {
+            // $pen[] = (float) $row['r'];
+            $pen[(int) $row['mes']] = (float) $row['r'];
+        }
+        return $this->getResponse($pen);
+    }
+
+    public function ventaMes($ano, $mes) {
+        $query = $this->query("SELECT "
+                . "SUM(subtotal) AS r, "
+                . "DAY(fecha) as dia "
+                . "FROM factura WHERE "
+                . "MONTH(fecha)=$mes AND "
+                . "YEAR(fecha)=$ano AND "
+                . "estatus > 0 "
+                . "GROUP BY dia");
+        $pen = array();
+        while ($row = $query->fetch_array()) {
+            $pen[(int) $row['dia']] = (float) $row['r'];
+        }
+        $dias = date('t', strtotime("$ano-$mes-1"));
+        for ($i = 1; $i <= $dias; $i++) {
+            if (empty($pen[$i])) {
+                $pen[$i] = 0;
+            }
         }
         return $this->getResponse($pen);
     }

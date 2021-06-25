@@ -50,4 +50,16 @@ class Dolares extends \conexion {
         $this->getResponse(array("st" => 1, "msn" => "Nueva tasa Guardada"));
     }
 
+    function formatter($where, $limit = '') {
+        $query = $this->query("SELECT fecha, valor FROM `dolares` $where ORDER BY fecha desc $limit");
+        $pen = array();
+        while ($row = $query->fetch_array()) {
+            $pen[] = array(
+                'fecha' => $row['fecha'],
+                'valor' => (float) $row['valor']
+            );
+        }
+        return $this->getResponse($pen);
+    }
+
 }

@@ -170,22 +170,22 @@ class Cotizacion extends \Prototipo\Operaciones {
         return $this->getResponse($user_id);
     }
 
-    function listaWhere($where){
+    function listaWhere($where) {
         $pen = array();
-        $query = $this->query("SELECT " 
-            ."cotizacion.codigo as codFact, " 
-            ."fecha, "
-            ."telefono, "
-            ."correo, "
-            ."contacto, "
-            ."nombre, "
-            ."total, "
-            ."cotizacion.estatus as status, "
-            ."cotizacion.usuario " 
-            ."FROM cotizacion,cliente "
-            ."WHERE cotizacion.cod_cliente = cliente.codigo "
-            . " $where "
-            ." order by fecha DESC");
+        $query = $this->query("SELECT "
+                . "cotizacion.codigo as codFact, "
+                . "fecha, "
+                . "telefono, "
+                . "correo, "
+                . "contacto, "
+                . "nombre, "
+                . "total, "
+                . "cotizacion.estatus as status, "
+                . "cotizacion.usuario "
+                . "FROM cotizacion,cliente "
+                . "WHERE cotizacion.cod_cliente = cliente.codigo "
+                . " $where "
+                . " order by fecha DESC");
         while ($row = $query->fetch_array()) {
             $pen[] = array(
                 'codigo' => (int) $row['codFact'],
@@ -261,6 +261,62 @@ class Cotizacion extends \Prototipo\Operaciones {
                 'cantidad' => (float) $row['cantidad'],
                 'monto' => (float) $row['monto'],
             );
+        }
+        return $this->getResponse($pen);
+    }
+
+    // ---------------------------------------- GRAFICAS -------------------------------------------------
+    public function torta($where) {
+        $query = $this->query("SELECT "
+                . "estatus AS RANK, "
+                . "COUNT(estatus) AS CANT "
+                . "FROM cotizacion "
+                . "WHERE $where "
+                . "GROUP BY estatus");
+        $pen = array();
+        while ($row = $query->fetch_array()) {
+            $pen[] = array(
+                'cantidad' => $row['CANT'],
+                'estatus' => $row['RANK']
+            );
+        }
+        return $this->getResponse($pen);
+    }
+
+    public function cotizacionAno($ano) {
+        $query = $this->query("SELECT "
+                . "SUM(subtotal) AS r,"
+                . "MONTH(fecha) AS mes "
+                . "FROM cotizacion WHERE "
+                . "YEAR(fecha)=$ano AND "
+                . "estatus = 2 "
+                . "GROUP BY mes");
+        $pen = array();
+        while ($row = $query->fetch_array()) {
+            // $pen[] = (float) $row['r'];
+            $pen[(int) $row['mes']] = (float) $row['r'];
+        }
+        return $this->getResponse($pen);
+    }
+
+    public function cotizacionMes($ano, $mes) {
+        $query = $this->query("SELECT "
+                . "SUM(subtotal) AS r, "
+                . "DAY(fecha) as dia "
+                . "FROM cotizacion WHERE "
+                . "MONTH(fecha)=$mes AND "
+                . "YEAR(fecha)=$ano AND "
+                . "estatus > 0 "
+                . "GROUP BY dia");
+        $pen = array();
+        while ($row = $query->fetch_array()) {
+            $pen[(int) $row['dia']] = (float) $row['r'];
+        }
+        $dias = date('t', strtotime("$ano-$mes-1"));
+        for ($i = 1; $i <= $dias; $i++) {
+            if (empty($pen[$i])) {
+                $pen[$i] = 0;
+            }
         }
         return $this->getResponse($pen);
     }

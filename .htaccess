@@ -194,3 +194,5 @@ RewriteRule ^conf_ajustes vistas/configuracion/conf_empresa.php
 RewriteRule ^conf_reportes vistas/configuracion/conf_empresa.php
 RewriteRule ^costos vistas/configuracion/conf_empresa.php
 RewriteRule ^roles vistas/configuracion/conf_empresa.php
+RewriteRule ^nuevo_ajuste vistas/configuracion/conf_empresa.php
+

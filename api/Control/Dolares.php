@@ -31,4 +31,21 @@ class Dolares {
         return json_encode($dolar->set());
     }
 
+    function formatter($rango, $p1, $p2) {
+        $dolar = new \Modelos\Dolares();
+        $data = array();
+        $where = '';
+        $limit = '';
+        switch ($rango) {
+            case 'last':
+                $limit = " LIMIT 11";
+                break;
+            case 'mes':
+                $where = "WHERE YEAR(fecha)= $p1 AND month(fecha) = $p2 ";
+                break;
+        }
+        $data = $dolar->formatter($where, $limit);
+        return json_encode($data);
+    }
+
 }

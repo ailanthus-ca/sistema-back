@@ -241,4 +241,41 @@ class Cotizacion {
         $pdf->ouput('Compra.pdf', $content);
     }
 
+    function torta($rango, $p1, $p2) {
+        $cotizacion = new \Modelos\Cotizacion();
+        $data = array();
+        switch ($rango) {
+            case 'ano':
+                $where = " YEAR(fecha) = $p1 ";
+                $titulo = "AÑO $p1";
+                break;
+            case 'mes':
+                $where = " YEAR(fecha)= $p1 AND month(fecha) = $p2 ";
+                $m = $cotizacion->numberToMes($p2);
+                $titulo = "$m DEl $p1";
+                break;
+            default :
+                $where = "";
+                $titulo = "TODO";
+                break;
+        }
+        $data = $cotizacion->torta($where);
+        return json_encode($data);
+    }
+
+    function linea($rango, $p1, $p2) {
+        $cotizacion = new \Modelos\Cotizacion();
+        $data = array();
+        switch ($rango) {
+            case 'ano':
+                $data = $cotizacion->cotizacionAno($p1);
+                break;
+            case 'mes':
+                $data = $cotizacion->cotizacionMes($p1, $p2);
+                break;
+        }
+        return json_encode($data);
+    }
+
+
 }

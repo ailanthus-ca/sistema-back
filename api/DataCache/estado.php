@@ -1,7 +1,7 @@
 <?php 
  return array(
     'Cliente' => 13,
-    'Compra' => 1,
+    'Compra' => 2,
     'Config' => 1,
     'Cotizacion' => 10,
     'Departamento' => 14,
@@ -10,12 +10,12 @@
     'Nota' => 1,
     'Orden' => 1,
     'Plantilla' => 1,
-    'Producto' => 6,
+    'Producto' => 43,
     'Proveedor' => 1,
-    'Tipo' => 45,
+    'Tipo' => 47,
     'Unidad' => 4,
     'Usuario' => 52,
     '' => 9,
     'Moneda' => 14,
-    'Ajuste' => 377,
+    'Ajuste' => 408,
 );

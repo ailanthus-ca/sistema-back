@@ -263,4 +263,23 @@ class Nota extends \Prototipo\Operaciones {
         return $this->getResponse($pen);
     }
 
+    // ------------------------------------ GRAFICAS ------------------------------------
+
+    public function torta($where) {
+        $query = $this->query("SELECT "
+                . "estatus AS RANK, "
+                . "COUNT(estatus) AS CANT "
+                . "FROM notasalida "
+                . "WHERE $where "
+                . "GROUP BY estatus");
+        $pen = array();
+        while ($row = $query->fetch_array()) {
+            $pen[] = array(
+                'cantidad' => $row['CANT'],
+                'estatus' => $row['RANK']
+            );
+        }
+        return $this->getResponse($pen);
+    }
+
 }

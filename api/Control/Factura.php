@@ -42,21 +42,21 @@ class Factura extends \conexion {
 
         // Validar que exista el cliente
         if ($Factura->cod_cliente == '') {
-            $Factura->setError('Debe mandar un cliente');
+            $Factura->setError('DEBE ASIGNAR UN CLIENTE');
         }
         // Validar cliente
         $Cliente = new \Modelos\Cliente();
         $Cliente->detalles($Factura->cod_cliente);
         if ($Cliente->response == 404) {
-            $Factura->setError('El cliente mandado no existe');
+            $Factura->setError('EL CLIENTE ASIGNADO NO EXISTE');
         }
         // Validar si existe al menos un item(producto)
         if (count($Factura->detalles) == 0) {
-            $Factura->setError('No se mandaron productos');
+            $Factura->setError('NO SE MANDARON PRODUCTOS');
         }
         // Validar total
         if ($Factura->total == 0) {
-            $Factura->setError('No se mando el total');
+            $Factura->setError('NO SE MANDO EL TOTAL');
         }
         $producto = new \Modelos\Producto();
         foreach ($Factura->detalles as $pro) {
@@ -248,6 +248,42 @@ class Factura extends \conexion {
         $pdf->ver($data);
         $content = ob_get_clean();
         $pdf->ouput('Compra.pdf', $content);
+    }
+
+    function torta($rango, $p1, $p2) {
+        $factura = new \Modelos\Factura();
+        $data = array();
+        switch ($rango) {
+            case 'ano':
+                $where = " YEAR(fecha) = $p1 ";
+                $titulo = "AÑO $p1";
+                break;
+            case 'mes':
+                $where = " YEAR(fecha)= $p1 AND month(fecha) = $p2 ";
+                $m = $factura->numberToMes($p2);
+                $titulo = "$m DEl $p1";
+                break;
+            default :
+                $where = "";
+                $titulo = "TODO";
+                break;
+        }
+        $data = $factura->torta($where);
+        return json_encode($data);
+    }
+
+    function linea($rango, $p1, $p2) {
+        $factura = new \Modelos\Factura();
+        $data = array();
+        switch ($rango) {
+            case 'ano':
+                $data = $factura->ventaAno($p1);
+                break;
+            case 'mes':
+                $data = $factura->ventaMes($p1, $p2);
+                break;
+        }
+        return json_encode($data);
     }
 
 }

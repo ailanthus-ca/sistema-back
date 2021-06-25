@@ -125,8 +125,8 @@ class Producto {
                 $titulo = "$m DEl $p1";
                 break;
             case 'rango':
-                $date1 = new DateTime($p1);
-                $date2 = new DateTime($p2);
+                $date1 = new \DateTime($p1);
+                $date2 = new \DateTime($p2);
                 $where = "AND fecha between '$p1' AND '$p2' ";
                 $titulo = "DESDE " . $date1->format("d-m-Y") . " HASTA " . $date2->format("d-m-Y");
                 break;

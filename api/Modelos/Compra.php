@@ -3,6 +3,7 @@
 namespace Modelos;
 
 class Compra extends \Prototipo\Operaciones {
+    var $estado = 'Compra';
 
     var $id_orden = 0;
     var $cod_proveedor = '';
@@ -135,11 +136,14 @@ class Compra extends \Prototipo\Operaciones {
                     . "$iten->unidades,"
                     . "$iten->precio,"
                     . "$monto)");
-            $productos->entrada($iten->codigo, $iten->unidades);
             $config = new \Config('costo');
+            $productos->cargar($iten->codigo);
+
+            if ($productos->inventario !== 1) {
+                $productos->entrada($iten->codigo, $iten->unidades);
+            }
             $costo = $config->get();
             if ($costo['costo'] < 3) {
-                $productos->cargar($iten->codigo);
                 if ($costo['costo'] === 2 && $productos->checkCosto($iten->precio, $tasa))
                     $productos->costo($iten->codigo, $iten->precio, $tasa);
                 else
@@ -150,10 +154,7 @@ class Compra extends \Prototipo\Operaciones {
             $orden = new \Modelos\Orden();
             $orden->procesar($this->id_orden);
         }
-        $estado = new \Config('estado');
-        $data = $estado->get();
-        $data['Compra'] = $data['Compra'] + 1;
-        $data->setMany($data);
+        $this->actualizarEstado();
         return $this->getResponse($cod_compra);
     }
 
@@ -291,6 +292,62 @@ class Compra extends \Prototipo\Operaciones {
                 'cantidad' => (float) $row['cantidad'],
                 'monto' => (float) $row['monto'],
             );
+        }
+        return $this->getResponse($pen);
+    }
+
+    // -------------------------- GRAFICAS -----------------------------------
+    public function torta($where) {
+        $query = $this->query("SELECT "
+                . "estatus AS RANK, "
+                . "COUNT(estatus) AS CANT "
+                . "FROM compra "
+                . "WHERE $where "
+                . "GROUP BY estatus");
+        $pen = array();
+        while ($row = $query->fetch_array()) {
+            $pen[] = array(
+                'cantidad' => $row['CANT'],
+                'estatus' => $row['RANK']
+            );
+        }
+        return $this->getResponse($pen);
+    }
+
+    public function compraAno($ano) {
+        $query = $this->query("SELECT "
+                . "SUM(subtotal) AS r,"
+                . "MONTH(fecha) AS mes "
+                . "FROM compra WHERE "
+                . "YEAR(fecha)=$ano AND "
+                . "estatus > 0 "
+                . "GROUP BY mes");
+        $pen = array();
+        while ($row = $query->fetch_array()) {
+            $pen[(int) $row['mes']] = (float) $row['r'];
+        }
+        return $this->getResponse($pen);
+    }
+
+    public function compraMes($ano, $mes) {
+        $query = $this->query("SELECT "
+                . "SUM(subtotal) AS r, "
+                . "DAY(fecha) as dia "
+                . "FROM compra WHERE "
+                . "MONTH(fecha)=$mes AND "
+                . "YEAR(fecha)=$ano AND "
+                . "estatus > 0 "
+                . "GROUP BY dia");
+        $pen = array();
+        while ($row = $query->fetch_array()) {
+            // $pen[(int) $row['dia']] = (float) $row['r'];
+            $pen[(int) $row['dia']] = (float) $row['r'];
+        }
+        $dias = date('t', strtotime("$ano-$mes-1"));
+        for ($i = 1; $i <= $dias; $i++) {
+            if (empty($pen[$i])) {
+                $pen[$i] = 0;
+            }
         }
         return $this->getResponse($pen);
     }

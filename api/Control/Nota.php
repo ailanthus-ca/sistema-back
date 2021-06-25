@@ -201,4 +201,26 @@ class Nota extends \conexion {
         $pdf->ouput('Compra.pdf', $content);
     }
 
+    function torta($rango, $p1, $p2) {
+        $nota = new \Modelos\Nota();
+        $data = array();
+        switch ($rango) {
+            case 'ano':
+                $where = " YEAR(fecha) = $p1 ";
+                $titulo = "AÑO $p1";
+                break;
+            case 'mes':
+                $where = " YEAR(fecha)= $p1 AND month(fecha) = $p2 ";
+                $m = $nota->numberToMes($p2);
+                $titulo = "$m DEl $p1";
+                break;
+            default :
+                $where = "";
+                $titulo = "TODO";
+                break;
+        }
+        $data = $nota->torta($where);
+        return json_encode($data);
+    }
+
 }

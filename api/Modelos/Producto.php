@@ -17,6 +17,7 @@ class Producto extends \conexion {
     var $enser = 0;
     var $exento = 0;
     var $dolar = 0;
+    var $inventario = 1;
 
     public function lista() {
         $pro = array();
@@ -39,9 +40,9 @@ class Producto extends \conexion {
                 'precio3' => (float) $row['precio3'],
                 'cantidad' => (float) $row['cantidad'],
                 'fecha' => $row['fecha_creacion'],
-                'inventario' => $row['inventario'],
-                'exento' => $row['exento'],
-                'dolar' => $row['dolar'],
+                'inventario' => (int) $row['inventario'],
+                'exento' => (boolean) $row['exento'],
+                'dolar' => (float) $row['dolar'],
             );
         }
         return $pro;
@@ -66,16 +67,16 @@ class Producto extends \conexion {
                 'imagen' => $row['imagen'],
                 'estatus' => (int) $row['estatus'],
                 'fecha_creacion' => $row['fecha_creacion'],
-                'inventario' => $row['inventario'],
-                'dolar' => $row['dolar'],
-                'exento' => $row['exento'],
+                'inventario' =>(int)  $row['inventario'],
+                'dolar' =>(float)  $row['dolar'],
+                'exento' =>(boolean)  $row['exento'],
             );
             return $pro;
         }
     }
 
     public function cargar($cod) {
-        $sql = $this->query('SELECT * FROM producto WHERE codigo="' . $cod . '"');
+        $sql = $this->query('SELECT producto.*, unidad.descripcion as medida, tipo_producto.inventario as inventario FROM producto,unidad, tipo_producto WHERE producto.unidad=unidad.codigo AND tipo_producto.codigo = producto.tipo AND producto.codigo="' . $cod . '"');
         while ($row = $sql->fetch_array()) {
             $this->codigo = $row['codigo'];
             $this->departamento = $row['departamento'];
@@ -92,6 +93,7 @@ class Producto extends \conexion {
             $this->estatus = (int) $row['estatus'];
             $this->fecha_creacion = $row['fecha_creacion'];
             $this->dolar = (float) $row['dolar'];
+            $this->inventario = (int) $row['inventario'];
         }
     }
 
@@ -105,17 +107,27 @@ class Producto extends \conexion {
         return ($pre <= $precio);
     }
 
-    function checkCosto($precio, $tasa=1) {
+    function checkCosto($precio, $tasa = 0) {
         $config = new \Config('costo');
         $costo = $config->get();
         $costo = $this->costo;
-        if ($costo['tasa']) {
+        if ($config['tasa'] && $tasa > 0) {
             if ($this->dolar > 0) {
                 $costo = $this->costo / $this->dolar;
-                $precio = $precio / $tasa;
+            } else {
+                $costo = $this->costo / $tasa;
             }
+            $precio = $precio / $tasa;
         }
         return ($costo <= $precio);
+    }
+
+    function igualCosto($precio, $tasa = 1) {
+        return ($this->costo === $precio && $this->dolar === tasa);
+    }
+
+    function igualUtilidad($p1 = 0, $p2 = 0, $p3 = 0) {
+        return ($this->precio1 === $p1 && $this->precio2 === $p2 && $this->precio3 === $p3);
     }
 
     function checkCodigo($cod) {

@@ -59,21 +59,21 @@ class Compra {
 
         // Validar que exista el cod_proveedor
         if ($compras->cod_proveedor == '') {
-            $compras->setError('Debe mandar un proveedor');
+            $compras->setError('DEBE ASIGNAR UN PROVEEDOR');
         }
         // Validar proveedor
         $proveedor = new \Modelos\Proveedor();
         $proveedor->detalles($compras->cod_proveedor);
         if ($proveedor->response == 404) {
-            $compras->setError('El proveedor mandado no existe');
+            $compras->setError('EL PROVEEDOR ASIGNADO NO EXISTE');
         }
         // Validar si existe al menos un item(producto)
         if (count($compras->detalles) == 0) {
-            $compras->setError('No se mandaron productos');
+            $compras->setError('NO SE MANDARON PRODUCTOS');
         }
         // Validar total
         if ($compras->total == 0) {
-            $compras->setError('No se mando el total');
+            $compras->setError('NO SE MANDO EL TOTAL');
         }
         //Validar si hubo errores
         if ($compras->response > 300) {
@@ -212,4 +212,40 @@ class Compra {
         $pdf->ouput('Compra.pdf', $content);
     }
 
+    function torta($rango, $p1, $p2) {
+        $compra = new \Modelos\Compra();
+        $data = array();
+        switch ($rango) {
+            case 'ano':
+                $where = " YEAR(fecha) = $p1 ";
+                $titulo = "AÑO $p1";
+                break;
+            case 'mes':
+                $where = " YEAR(fecha)= $p1 AND month(fecha) = $p2 ";
+                $m = $compra->numberToMes($p2);
+                $titulo = "$m DEl $p1";
+                break;
+            default :
+                $where = "";
+                $titulo = "TODO";
+                break;
+        }
+        $data = $compra->torta($where);
+        return json_encode($data);
+    }
+
+    function linea($rango, $p1, $p2) {
+        $compra = new \Modelos\Compra();
+        $data = array();
+        switch ($rango) {
+            case 'ano':
+                $data = $compra->compraAno($p1);
+                break;
+            case 'mes':
+                $data = $compra->compraMes($p1, $p2);
+                break;
+        }
+        return json_encode($data);
+    }
+    
 }

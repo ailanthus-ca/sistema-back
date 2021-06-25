@@ -47,7 +47,7 @@ class Departamento extends \conexion {
     }
 
     function count($id) {
-        $sql = $this->con->query("SELECT count(*) AS num FROM producto WHERE departamento = '$departamento'");
+        $sql = $this->con->query("SELECT count(*) AS num FROM producto WHERE departamento = '$id'");
         if ($row = $sql->fetch_array()) {
             return (int) $row['num'];
         } else {
