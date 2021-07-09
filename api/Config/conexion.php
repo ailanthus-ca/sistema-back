@@ -76,10 +76,9 @@ class conexion {
     }
 
     public function __construct() {
-        $pass = "";
-        $server = "localhost";
-        $db = "sistema";
-        $this->con = mysqli_connect($server, "root", $pass, $db);
+        $config = new \Config('BD');
+        $data = $config->get();
+        $this->con = mysqli_connect($data["server"], $data["user"], $data["clave"], $data["DB"]);
         $this->con->set_charset('utf8');
         date_default_timezone_set('America/Caracas');
     }

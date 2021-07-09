@@ -286,4 +286,28 @@ class Factura extends \conexion {
         return json_encode($data);
     }
 
+    function utilidad($ano, $mes){
+        $factura = new \Modelos\Factura();
+        $data = array();
+        $data = $factura->utilidad($ano, $mes);
+        return json_encode($data);
+    }
+
+    function equilibrio($ano, $mes){
+        $equilibrio = new \Modelos\Equilibrio();
+        $equilibrio->pto = $equilibrio->postFloat("pto");
+        if ($equilibrio->pto != 0) {
+            $data = $equilibrio->set();
+            return json_encode($data);
+        } else {
+            $data = $equilibrio->get($ano, $mes);
+            return json_encode($data);
+        }        
+    }
+
+    function prueba($ano){
+        $factura = new \Modelos\Factura();
+        return json_encode($factura->prueba($ano));
+    }
+
 }

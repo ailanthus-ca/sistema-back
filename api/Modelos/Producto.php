@@ -109,9 +109,9 @@ class Producto extends \conexion {
 
     function checkCosto($precio, $tasa = 0) {
         $config = new \Config('costo');
-        $costo = $config->get();
+        $costoConfig = $config->get();
         $costo = $this->costo;
-        if ($config['tasa'] && $tasa > 0) {
+        if ($costoConfig['tasa'] && $tasa > 0) {
             if ($this->dolar > 0) {
                 $costo = $this->costo / $this->dolar;
             } else {
@@ -237,6 +237,16 @@ class Producto extends \conexion {
             );
         }
         return $pro;
+    }
+
+    public function totalProductos()
+    {
+        $query = $this->query("SELECT COUNT(*) AS total FROM `producto`");
+        $pen = 0;
+        while ($row = $query->fetch_array()) {
+            $pen = (int) $row['total'];
+        }
+        return $this->getResponse($pen);
     }
 
 }

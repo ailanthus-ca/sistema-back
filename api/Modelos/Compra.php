@@ -297,6 +297,17 @@ class Compra extends \Prototipo\Operaciones {
     }
 
     // -------------------------- GRAFICAS -----------------------------------
+    
+    public function totalCompras()
+    {
+        $query = $this->query("SELECT COUNT(*) AS total FROM `compra`");
+        $pen = 0;
+        while ($row = $query->fetch_array()) {
+            $pen = (int) $row['total'];
+        }
+        return $this->getResponse($pen);
+    }
+
     public function torta($where) {
         $query = $this->query("SELECT "
                 . "estatus AS RANK, "

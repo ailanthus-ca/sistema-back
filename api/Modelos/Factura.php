@@ -246,6 +246,16 @@ class Factura extends \Prototipo\Operaciones {
 
     // ------------------------------------ GRAFICAS ------------------------------------
 
+    public function totalFacturas()
+    {
+        $query = $this->query("SELECT COUNT(*) AS total FROM `factura`");
+        $pen = 0;
+        while ($row = $query->fetch_array()) {
+            $pen = (int) $row['total'];
+        }
+        return $this->getResponse($pen);
+    }
+
     public function torta($where) {
         $query = $this->query("SELECT "
                 . "estatus AS RANK, "
@@ -273,7 +283,6 @@ class Factura extends \Prototipo\Operaciones {
                 . "GROUP BY mes");
         $pen = array();
         while ($row = $query->fetch_array()) {
-            // $pen[] = (float) $row['r'];
             $pen[(int) $row['mes']] = (float) $row['r'];
         }
         return $this->getResponse($pen);
@@ -297,6 +306,36 @@ class Factura extends \Prototipo\Operaciones {
             if (empty($pen[$i])) {
                 $pen[$i] = 0;
             }
+        }
+        return $this->getResponse($pen);
+    }
+
+    public function utilidad($ano, $mes){
+        $query = $this->query("SELECT SUM(subtotal) as ventas, SUM(costo) as costos 
+            FROM factura
+            WHERE MONTH(fecha) = $mes
+            AND estatus = 2
+            AND YEAR(fecha) = $ano");
+        while ($row = $query->fetch_array()) {
+            $ventas = $row['ventas'];
+            $costos = $row['costos'];
+            $prom = round((($ventas-$costos)*100)/$costos);
+        }
+        return $this->getResponse($prom);
+    }
+
+    public function prueba($ano)
+    {
+        $query = $this->query("SELECT `ventas`,`monto`,`equilibrio`.`mes` FROM `mejor_mes`,`equilibrio` 
+            WHERE `mejor_mes`.`mes`=`equilibrio`.`mes` 
+            AND `mejor_mes`.`año`= $ano AND `equilibrio`.`ano`= $ano");
+        $pen = array();
+         while ($row = $query->fetch_array()) {
+            $pen[] = array(
+                $this->numberToMes($row['mes']),
+                (int) $row['monto'],//equilibrio
+                (int) $row['ventas'],//ventas del mes
+            );
         }
         return $this->getResponse($pen);
     }

@@ -36,18 +36,51 @@ class Config {
     }
 
     function get($data) {
-        $config = new \Config($data);
+        $confi=strtolower($data);
+        $config = new \Config($confi);
         return json_encode($config->get());
     }
 
     function set($data) {
+        $confi=strtolower($data);
         $logo = (isset($_POST['logo']) && $_POST['logo'] != null) ? $_POST['logo'] : "";
         if (strlen($logo) > 1000) {
             $_POST['logo'] = $this->base64_to_img($logo);
         }
-        $config = new \Config($data);
+        $config = new \Config($confi);
         $config->setMany($_POST);
         return json_encode($config->cargar());
+    }
+
+    function contadores(){
+        $Cliente = new \Modelos\Cliente();
+        $clientes = $Cliente->totalClientes();
+        $proveedor = new \Modelos\Proveedor;
+        $proveedores = $proveedor->totalProveedores();
+        $compra = new \Modelos\Compra;
+        $compras = $compra->totalCompras();
+        $orden = new \Modelos\Orden;
+        $ordenes = $orden->totalOrdenes();
+        $nota = new \Modelos\Nota;
+        $notas = $nota->totalNotas();
+        $cotizacion = new \Modelos\Cotizacion();
+        $cotizaciones = $cotizacion->totalCotizaciones();
+        $factura = new \Modelos\Factura();
+        $facturas = $factura->totalFacturas();
+        $producto = new \Modelos\Producto;
+        $productos = $producto->totalProductos();
+
+        $contadores = array(
+            'clientes' => $clientes,
+            'proveedores' => $proveedores,
+            'compras' => $compras,
+            'ordenes' => $ordenes,
+            'notas' => $notas,
+            'cotizaciones' => $cotizaciones,
+            'facturas' => $facturas,
+            'inventario' => $productos
+        );
+        return json_encode($contadores);
     }
 
     function base64_to_img($base64_string) {

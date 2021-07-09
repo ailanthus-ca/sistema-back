@@ -59,7 +59,7 @@ class Dolares extends \conexion {
                 'valor' => (float) $row['valor']
             );
         }
-        return $this->getResponse($pen);
+        return $this->getResponse(array_reverse($pen));
     }
 
 }

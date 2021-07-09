@@ -100,99 +100,11 @@ ExpiresDefault A0
 <IfModule mod_rewrite.c>
 
 Options +FollowSymLinks
-RewriteEngine on
+
+RewriteEngine On
+
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-l
 
-RewriteRule ^(.*)$ $1.php
-
-#Compra
-RewriteRule ^nueva_compra vistas/compra/nueva_compra.php
-RewriteRule ^compra vistas/compra/compra.php
-RewriteRule ^ver_compras vistas/compra/compras.php
-#Orden de compra
-RewriteRule ^nueva_orden vistas/orden_compra/nueva_orden.php
-RewriteRule ^orden vistas/orden_compra/orden.php
-RewriteRule ^ver_ordenes vistas/orden_compra/ordenes.php
-#Cotizacion
-RewriteRule ^nueva_cotizacion vistas/cotizacion/nueva_cotizacion.php
-RewriteRule ^cotizacion vistas/cotizacion/cotizacion.php
-RewriteRule ^ver_cotizaciones vistas/cotizacion/cotizaciones.php
-#Factura
-RewriteRule ^nueva_factura vistas/factura/nueva_factura.php
-RewriteRule ^factura vistas/factura/factura.php
-RewriteRule ^ver_facturas vistas/factura/facturas.php
-#Proveedores
-RewriteRule ^nuevo_proveedor vistas/proveedor/nuevo_proveedor.php
-RewriteRule ^ver_proveedores vistas/proveedor/proveedores.php
-#Clientes
-RewriteRule ^nuevo_cliente vistas/cliente/nuevo_cliente.php
-RewriteRule ^ver_clientes vistas/cliente/clientes.php
-#Inventario
-RewriteRule ^ver_productos vistas/inventario/productos.php
-RewriteRule ^nuevo_producto vistas/inventario/nuevo_producto.php
-RewriteRule ^ajuste_inventario vistas/inventario/ajuste_inventario.php
-RewriteRule ^ajuste_utilidad vistas/inventario/ajuste_precio.php
-RewriteRule ^ajuste_precio vistas/inventario/ajuste_producto.php
-#Reportes
-RewriteRule ^reporte_compras vistas/reportes/reporte_compras.php
-RewriteRule ^rep_compras vistas/reportes/rep_compras.php
-RewriteRule ^reporte_ventas vistas/reportes/reporte_ventas.php
-RewriteRule ^rep_ventas vistas/reportes/rep_ventas.php
-RewriteRule ^reporte_ajustes vistas/reportes/reporte_ajustes.php
-RewriteRule ^rep_ajustes vistas/reportes/rep_ajustes.php
-RewriteRule ^reporte_inventario vistas/reportes/reporte_inventario.php
-RewriteRule ^rep_inventario vistas/reportes/rep_inventario.php
-RewriteRule ^seguimiento vistas/reportes/seguimiento.php
-RewriteRule ^seguimiento vistas/reportes/seguimiento.php
-RewriteRule ^rubros vistas/reportes/rubros.php
-RewriteRule ^rubro_pdf vistas/reportes/rubro_pdf.php
-RewriteRule ^reporte_vendedor vistas/reportes/reporte_ventas_us.php
-RewriteRule ^rep_vendedor vistas/reportes/rep_ventas_us.php
-RewriteRule ^rep_vender vistas/reportes/rep_vender.php
-RewriteRule ^rep_seguimiento vistas/reportes/rep_seguimiento.php
-RewriteRule ^historico vistas/reportes/historico.php
-RewriteRule ^rep_historico vistas/reportes/rep_historico.php
-#Usuario
-RewriteRule ^nuevo_usuario vistas/usuario/registro_usuario.php
-RewriteRule ^ver_usuarios vistas/usuario/usuarios.php
-RewriteRule ^perfil vistas/usuario/perfil.php
-#Configuracion
-RewriteRule ^seguimiento vistas/configuracion/.php
-RewriteRule ^conf_empresa vistas/configuracion/conf_empresa.php
-RewriteRule ^conf_factura vistas/configuracion/conf_factura.php
-RewriteRule ^conf_region vistas/configuracion/conf_region.php
-RewriteRule ^conf_ventas vistas/configuracion/conf_ventas.php
-RewriteRule ^horarios vistas/configuracion/horas.php
-RewriteRule ^prueba_factura vistas/configuracion/prueba_factura.php
-RewriteRule ^acerca vistas/configuracion/acerca.php
-#Parametros
-RewriteRule ^moneda vistas/parametros/moneda.php
-RewriteRule ^tipo_producto vistas/parametros/tipo_producto.php
-RewriteRule ^unidades vistas/parametros/unidad.php
-RewriteRule ^departamentos vistas/parametros/departamento.php
-#Panel
-RewriteRule ^panel_ad vistas/panel/panel_ad.php
-RewriteRule ^panel_us vistas/panel/panel_us.php
-#Recuperar clave
-RewriteRule ^resetclave vistas/resetclave/reset_clave.php
-RewriteRule ^restablecer vistas/resetclave/restablecer.php
-RewriteRule ^cambiarclave vistas/resetclave/cambiarclave.php
-
-#notas
-RewriteRule ^nueva_nota vistas/notas/new.php
-RewriteRule ^nota vistas/notas/ver.php
-RewriteRule ^ver_notas vistas/notas/administrar.php
-
-
-
-RewriteRule ^conf_orden vistas/configuracion/conf_empresa.php
-RewriteRule ^conf_compra vistas/configuracion/conf_empresa.php
-RewriteRule ^conf_cotizacion vistas/configuracion/conf_empresa.php
-RewriteRule ^conf_nota vistas/configuracion/conf_empresa.php
-RewriteRule ^conf_ajustes vistas/configuracion/conf_empresa.php
-RewriteRule ^conf_reportes vistas/configuracion/conf_empresa.php
-RewriteRule ^costos vistas/configuracion/conf_empresa.php
-RewriteRule ^roles vistas/configuracion/conf_empresa.php
-RewriteRule ^nuevo_ajuste vistas/configuracion/conf_empresa.php
-
+RewriteRule ^(.+)$ index.php?url=$1 [QSA,e]

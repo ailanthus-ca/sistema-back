@@ -1,10 +1,36 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- * Author:  Ailanthus
- * Created: 22/06/2021
- */
-
+ALTER TABLE `ajusteinv` CHANGE `fecha` `fecha` DATETIME NOT NULL;
+ALTER TABLE `ajusteinv` ADD `estatus` TINYINT NULL AFTER `usuario`;
+ALTER TABLE `compra` CHANGE `fecha` `fecha` DATETIME NOT NULL;
+ALTER TABLE `compra` ADD `dolar` DOUBLE NULL DEFAULT '1' AFTER `estatus`;
+ALTER TABLE `cotizacion` CHANGE `fecha` `fecha` DATETIME NOT NULL;
+ALTER TABLE `detalleajusteinv` ADD `data` TEXT NULL AFTER `descripcion`;
+ALTER TABLE `dolares` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id`);
+ALTER TABLE `factura` CHANGE `fecha` `fecha` DATETIME NOT NULL;
+ALTER TABLE `moneda` ADD `nombre` VARCHAR(80) NULL AFTER `id`;
+ALTER TABLE `notaentrada` CHANGE `fecha` `fecha` DATETIME NOT NULL;
+ALTER TABLE `notasalida` CHANGE `fecha` `fecha` DATETIME NOT NULL;
+ALTER TABLE `ordencompra` CHANGE `fecha` `fecha` DATETIME NOT NULL;
+ALTER TABLE `producto` ADD `exento` TINYINT NULL AFTER `fecha_creacion`, ADD `dolar` DOUBLE NULL AFTER `exento`;
+ALTER TABLE `tipo_producto` ADD `inventario` TINYINT NULL AFTER `estatus`;
+ALTER TABLE `tmp_cotizacion` CHANGE `fecha` `fecha` DATETIME NOT NULL;
+UPDATE `ajusteinv` SET `estatus`= 1 WHERE 1;
+UPDATE `compra` SET `dolar`= 1 WHERE 1;
+UPDATE `producto` SET `exento`= 0,`dolar`= 1 WHERE 1;
+UPDATE `tipo_producto` SET `inventario` = '3' WHERE `tipo_producto`.`codigo` = 1;
+UPDATE `tipo_producto` SET `inventario` = '3' WHERE `tipo_producto`.`codigo` = 2;
+UPDATE `tipo_producto` SET `inventario` = '3' WHERE `tipo_producto`.`codigo` = 3;
+ALTER TABLE `cliente` CHANGE `retencion` `retencion` DOUBLE NOT NULL;
+ALTER TABLE `compra` CHANGE `subtotal` `subtotal` DOUBLE NOT NULL, CHANGE `impuesto` `impuesto` DOUBLE NOT NULL, CHANGE `total` `total` DOUBLE NOT NULL;
+ALTER TABLE `cotizacion` CHANGE `iva` `iva` DOUBLE NOT NULL, CHANGE `subtotal` `subtotal` DOUBLE NOT NULL, CHANGE `total` `total` DOUBLE NOT NULL;
+ALTER TABLE `detallecompra` CHANGE `precio_unit` `precio_unit` DOUBLE NOT NULL, CHANGE `monto` `monto` DOUBLE NOT NULL;
+ALTER TABLE `detallecotizacion` CHANGE `precio_unit` `precio_unit` DOUBLE NOT NULL, CHANGE `monto` `monto` DOUBLE NOT NULL;
+ALTER TABLE `detallefactura` CHANGE `precio_unit` `precio_unit` DOUBLE NOT NULL, CHANGE `monto` `monto` DOUBLE NOT NULL;
+ALTER TABLE `detalleordencompra` CHANGE `precio_unit` `precio_unit` DOUBLE NOT NULL, CHANGE `monto` `monto` DOUBLE NOT NULL;
+ALTER TABLE `equilibrio` CHANGE `monto` `monto` DOUBLE NOT NULL;
+ALTER TABLE `ordencompra` CHANGE `subtotal` `subtotal` DOUBLE NOT NULL, CHANGE `impuesto` `impuesto` DOUBLE NOT NULL, CHANGE `total` `total` DOUBLE NOT NULL;
+ALTER TABLE `tmp_comp_prod` CHANGE `precio_tmp` `precio_tmp` DOUBLE NULL DEFAULT NULL;
+ALTER TABLE `tmp_cotizacion` CHANGE `iva` `iva` DOUBLE NOT NULL, CHANGE `subtotal` `subtotal` DOUBLE NOT NULL, CHANGE `total` `total` DOUBLE NOT NULL;
+ALTER TABLE `tmp_cot_prod` CHANGE `precio_tmp` `precio_tmp` DOUBLE NULL DEFAULT NULL;
+ALTER TABLE `tmp_detalle_cotizacion` CHANGE `precio_unit` `precio_unit` DOUBLE NOT NULL, CHANGE `monto` `monto` DOUBLE NOT NULL;
+ALTER TABLE `tmp_fact_prod` CHANGE `precio_tmp` `precio_tmp` DOUBLE NULL DEFAULT NULL;
+ALTER TABLE `tmp_ord_prod` CHANGE `precio_tmp` `precio_tmp` DOUBLE NULL DEFAULT NULL;

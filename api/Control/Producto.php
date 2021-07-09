@@ -33,11 +33,11 @@ class Producto {
         $dep = new \Modelos\Departamento();
         $num = $dep->count($Producto->departamento);
         //comprobar si el codigo es valido
-        while ($Producto->checkCodigo($Producto->departamento + $num)) {
+        while ($Producto->checkCodigo("$Producto->departamento$num")) {
             $num++;
         }
         //asignar codigo
-        $Producto->codigo = $Producto->departamento + $num;
+        $Producto->codigo = "$Producto->departamento$num";
         //crear y responder
         return json_encode($Producto->nuevo());
     }

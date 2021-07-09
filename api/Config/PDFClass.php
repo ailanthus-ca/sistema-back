@@ -82,7 +82,7 @@ class PDFClass {
                 $this->footer();
             if (isset($data['fecha']))
                 $fecha = new \DateTime($data['fecha']);
-            include DR . '\\Reportes\\' . $this->config . '\\' . $this->version . '.php';
+            include DR . '/Reportes/' . $this->config . '/' . $this->version . '.php';
             ?></page><?php
     }
 

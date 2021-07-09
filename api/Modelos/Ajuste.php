@@ -160,10 +160,11 @@ class Ajuste extends \conexion {
                     'precio2' => (float) $pro->precio2,
                     'precio3' => (float) $pro->precio3)
             ));
+
             $this->query("INSERT INTO detalleajusteinv VALUES ("
                     . "'$id_ajus',"
                     . "'$pro->codigo',"
-                    . "'1,"
+                    . "1,"
                     . "'$pro->comentario',"
                     . "'$data') ");
             $producto->utilidad($pro->codigo, $pro->precio1, $pro->precio2, $pro->precio3);

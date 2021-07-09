@@ -35,6 +35,7 @@ class Auth {
     function close() {
         $auth = new \Auth();
         $auth->close();
+        return 1;
     }
 
     function estado() {

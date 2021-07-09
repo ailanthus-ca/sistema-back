@@ -96,4 +96,16 @@ class Proveedor extends \Prototipo\Entidades {
         }
     }
 
+    // ---------------------- GRAFICAS ---------------------
+
+    public function totalProveedores()
+    {
+        $query = $this->query("SELECT COUNT(*) AS total FROM `proveedor`");
+        $pen = 0;
+        while ($row = $query->fetch_array()) {
+            $pen = (int) $row['total'];
+        }
+        return $this->getResponse($pen);
+    }
+
 }

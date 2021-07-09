@@ -265,6 +265,16 @@ class Nota extends \Prototipo\Operaciones {
 
     // ------------------------------------ GRAFICAS ------------------------------------
 
+    public function totalNotas()
+    {
+        $query = $this->query("SELECT COUNT(*) AS total FROM `notasalida`");
+        $pen = 0;
+        while ($row = $query->fetch_array()) {
+            $pen = (int) $row['total'];
+        }
+        return $this->getResponse($pen);
+    }
+
     public function torta($where) {
         $query = $this->query("SELECT "
                 . "estatus AS RANK, "

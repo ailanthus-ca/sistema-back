@@ -218,4 +218,16 @@ class Orden extends \Prototipo\Operaciones {
         return $this->getResponse($pen);
     }
 
+    // ---------------------------------- GRAFICAS ---------------------------------
+
+    public function totalOrdenes()
+    {
+        $query = $this->query("SELECT COUNT(*) AS total FROM `ordencompra`");
+        $pen = 0;
+        while ($row = $query->fetch_array()) {
+            $pen = (int) $row['total'];
+        }
+        return $this->getResponse($pen);
+    }
+
 }

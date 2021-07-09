@@ -277,5 +277,4 @@ class Cotizacion {
         return json_encode($data);
     }
 
-
 }

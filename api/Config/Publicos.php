@@ -9,7 +9,7 @@
 class Publicos {
 
     public static function Modulos() {
-        return array('USUARIO', 'PRODUCTO', 'MONEDA');
+        return array('USUARIO', 'PRODUCTO', 'MONEDA', 'CONFIG');
     }
 
     public static function USUARIO() {
@@ -22,6 +22,10 @@ class Publicos {
 
     public static function MONEDA() {
         return array('lista', 'detalles');
+    }
+
+    public function CONFIG() {
+        return array('get', 'contadores');
     }
 
 }

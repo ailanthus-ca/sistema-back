@@ -111,4 +111,17 @@ class Cliente extends \Prototipo\Entidades {
         }
     }
 
+    // ---------------------- GRAFICAS ---------------------
+
+    public function totalClientes()
+    {
+        $query = $this->query("SELECT COUNT(*) AS total FROM `cliente`");
+        $pen = 0;
+        while ($row = $query->fetch_array()) {
+            $pen = (int) $row['total'];
+        }
+        return $this->getResponse($pen);
+    }
+
+
 }
