@@ -25,11 +25,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>SISTEMA ADMINISTRATIVO</title>
         <link rel="icon" type="image/svg" sizes="*" href="/logos/logo.svg">
-        <link
-            rel="stylesheet"
-            href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
-            />
-        <link rel="stylesheet" href="/bootstrap/font-awesome/css/font-awesome.min.css" />
+        <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet"/>
+        <link href="/static/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
         <link href="/static/bootstrap.css" rel="stylesheet" />
         <link href="/static/Adminlte.css" rel="stylesheet" />
         <link href="/static/css/2.97503911.chunk.css" rel="stylesheet" />
@@ -194,6 +191,6 @@
             })([]);
         </script>
         <script src="/static/js/2.5ab2cacf.chunk.js"></script>
-        <script src="/static/js/main.ad974ab4.chunk.js"></script>
+        <script src="/static/js/main.de89befa.chunk.js"></script>
     </body>
 </html> 
