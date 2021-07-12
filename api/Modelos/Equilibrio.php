@@ -9,10 +9,10 @@ class Equilibrio extends \conexion {
 		$mes = date("n");
 		$ano = date("Y");
 			//Nuevo punto de equilibrio
-		$this->query("INSERT into equilibrio values(1,$ano, $mes, $this->pto)");
+		$this->query("INSERT into equilibrio values(null,$ano, $mes, $this->pto)");
 			//calculando el mes anterior
 		$mes--;
-		if ($mes_anterior === 0) {
+		if ($mes === 0) {
 			$ano--;
 			$mes=12;
 		} 
@@ -25,7 +25,7 @@ class Equilibrio extends \conexion {
 			$query = $this->query("SELECT SUM(subtotal) AS ventas FROM factura WHERE estatus = 2 AND MONTH(fecha)=$mes AND YEAR(fecha)=$ano");
 			if ($row = $query->fetch_array()) {
 				//Agregando mes anterior 
-				$this->query("INSERT INTO `mejor_mes`(`id`, `ventas`, `mes`, `año`) VALUES (null," . $row['ventas'] . ",$mes_anterior,$año_anterior)");
+				$this->query("INSERT INTO `mejor_mes`(`id`, `ventas`, `mes`, `año`) VALUES (null," . $row['ventas'] . ",$mes,$ano)");
 			}
 		}
 	}

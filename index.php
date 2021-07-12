@@ -8,15 +8,15 @@
             rel="stylesheet"
             href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
             />
-        <link rel="stylesheet" href="/bootstrap/font-awesome/css/font-awesome.min.css" />
-        <link href="/bootstrap.css" rel="stylesheet" />
-        <link href="/adminlte.css" rel="stylesheet" />
+        <link href="/static/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+        <link href="/static/bootstrap.css" rel="stylesheet" />
+        <link href="/static/Adminlte.css" rel="stylesheet" />
     </head>
     <body class="sidebar-mini wysihtml5-supported sidebar-collapse skin-green-light">
         <div id="root" class="wrapper"></div>
-        <script src="http://193.168.1.50:3000/static/js/bundle.js"></script>
-        <script src="http://193.168.1.50:3000/static/js/vendors~main.chunk.js"></script>
-        <script src="http://193.168.1.50:3000/static/js/main.chunk.js"></script>
+        <script src="http://localhost:3000/static/js/bundle.js"></script>
+        <script src="http://localhost:3000/static/js/vendors~main.chunk.js"></script>
+        <script src="http://localhost:3000/static/js/main.chunk.js"></script>
     </body>
 </html>-->
 <html lang="en">
@@ -31,6 +31,7 @@
         <link href="/static/Adminlte.css" rel="stylesheet" />
         <link href="/static/css/2.97503911.chunk.css" rel="stylesheet" />
         <link href="/static/css/main.58c7ce50.chunk.css" rel="stylesheet" />
+
     </head>
     <body class="sidebar-mini wysihtml5-supported sidebar-collapse skin-green-light">
         <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -190,7 +191,8 @@
                 t();
             })([]);
         </script>
-        <script src="/static/js/2.5ab2cacf.chunk.js"></script>
-        <script src="/static/js/main.de89befa.chunk.js"></script>
+        <script src="/static/js/2.0be18b56.chunk.js"></script>
+        <script src="/static/js/main.4c330488.chunk.js"></script>
+
     </body>
 </html> 
