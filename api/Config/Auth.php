@@ -73,7 +73,7 @@ class Auth extends Middleware {
         $token = $this->getBearerToken();
         if (isset($token)) {
             $seccion = $this->getTokenSeccion();
-            if (empty($seccion->fecha)) {
+            if ($seccion!==null) {
                 if ($this->fecha === $seccion->fecha) {
                     $_SESSION['id_usuario'] = (int) $seccion->id_usuario;
                     $_SESSION['usuario'] = (string) $seccion->usuario;
