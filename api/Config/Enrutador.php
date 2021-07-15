@@ -40,10 +40,15 @@ class Enrutador {
             return;
         }
         $validarPermiso = true;
-        if (in_array($obj, \Publicos::Modulos())) {
-            if (in_array($operacion, \Publicos::$per())) {
+        $publicos = new \Publicos;
+        if (in_array($per, $publicos->Modulos)) {
+            if (in_array($operacion, $publicos->$per)) {
                 $validarPermiso = false;
             }
+        }
+        $protegidos = new \Protegidos;
+        if ($protegidos->Permitir($user->permisos, $per, $operacion)) {
+            $validarPermiso = false;
         }
         if ($validarPermiso) {
             if (!in_array($per, $user->permisos)) {

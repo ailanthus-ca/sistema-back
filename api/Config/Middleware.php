@@ -8,7 +8,7 @@
 
 class Middleware {
 
-    public $key = 'qdlWpQDhJIE5LGGYzfDpWYZsuMnvBzBE';
+    protected $key = 'qdlWpQDhJIE5LGGYzfDpWYZsuMnvBzBE';
 
     /**
      * Get header Authorization

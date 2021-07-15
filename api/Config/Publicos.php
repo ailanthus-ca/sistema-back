@@ -8,24 +8,10 @@
 
 class Publicos {
 
-    public static function Modulos() {
-        return array('USUARIO', 'PRODUCTO', 'MONEDA', 'CONFIG');
-    }
-
-    public static function USUARIO() {
-        return array('lista');
-    }
-
-    public static function PRODUCTO() {
-        return array('lista', 'detalles');
-    }
-
-    public static function MONEDA() {
-        return array('lista', 'detalles');
-    }
-
-    public function CONFIG() {
-        return array('get', 'contadores');
-    }
+    public $Modulos = array('USUARIO', 'PRODUCTO', 'MONEDA', 'CONFIG');
+    public $USUARIO = array('lista');
+    public $PRODUCTO = array('lista', 'detalles');
+    public $MONEDA = array('lista', 'detalles');
+    public $CONFIG = array('get', 'contadores');
 
 }
