@@ -25,9 +25,7 @@ class Nota extends \Prototipo\Operaciones {
         $sql = "SELECT "
                 . "notasalida.codigo as codFact,"
                 . " fecha,"
-                . "telefono,"
-                . " correo,"
-                . "contacto,"
+                . "cod_cliente,"
                 . "nombre,"
                 . "total,"
                 . "notasalida.estatus as status,"
@@ -45,10 +43,8 @@ class Nota extends \Prototipo\Operaciones {
             $pen[] = array(
                 'codigo' => (int) $row['codFact'],
                 'fecha' => $row['fecha'],
-                'nombre' => $row['nombre'],
-                'telefono' => $row['telefono'],
-                'correo' => $row['correo'],
-                'contacto' => $row['contacto'],
+                'nombre' => $row['nombre'], 
+                'rif' => $row['cod_cliente'],
                 'monto' => (float) $row['total'],
                 'usuario' => (int) $row['usuario'],
                 'status' => (int) $row['status'],
@@ -212,20 +208,20 @@ class Nota extends \Prototipo\Operaciones {
         return $this->getResponse($pen);
     }
 
-    function listaWhere($where){
+    function listaWhere($where) {
         $pen = array();
-        $query = $this->query("SELECT " 
-            ."notasalida.codigo as codFact, " 
-            ."fecha, "
-            ."nombre, "
-            ."total, "
-            ."nota, "
-            ."notasalida.estatus as status, "
-            ."notasalida.usuario " 
-            ."FROM notasalida,cliente "
-            ."WHERE notasalida.cod_cliente = cliente.codigo "
-            . " $where "
-            ." order by fecha DESC");
+        $query = $this->query("SELECT "
+                . "notasalida.codigo as codFact, "
+                . "fecha, "
+                . "nombre, "
+                . "total, "
+                . "nota, "
+                . "notasalida.estatus as status, "
+                . "notasalida.usuario "
+                . "FROM notasalida,cliente "
+                . "WHERE notasalida.cod_cliente = cliente.codigo "
+                . " $where "
+                . " order by fecha DESC");
         while ($row = $query->fetch_array()) {
             $pen[] = array(
                 'codigo' => (int) $row['codFact'],
@@ -265,8 +261,7 @@ class Nota extends \Prototipo\Operaciones {
 
     // ------------------------------------ GRAFICAS ------------------------------------
 
-    public function totalNotas()
-    {
+    public function totalNotas() {
         $query = $this->query("SELECT COUNT(*) AS total FROM `notasalida`");
         $pen = 0;
         while ($row = $query->fetch_array()) {

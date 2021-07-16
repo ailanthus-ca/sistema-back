@@ -8,10 +8,10 @@
 
 class Publicos {
 
-    public $Modulos = array('USUARIO', 'PRODUCTO', 'MONEDA', 'CONFIG');
+    public $Modulos = array('USUARIO', 'PRODUCTO', 'MONEDA', 'CONFIG','DEPARTAMENTO');
     public $USUARIO = array('lista');
     public $PRODUCTO = array('lista', 'detalles');
+    public $DEPARTAMENTO = array('lista', 'detalles');
     public $MONEDA = array('lista', 'detalles');
     public $CONFIG = array('get', 'contadores');
-
 }
