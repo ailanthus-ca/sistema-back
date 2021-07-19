@@ -34,8 +34,8 @@
                 case "COSTO":
                 case "UTILIDAD":
                     ?>
-                    <th class="col-1" style="text-align: center;">ANTERIOR</th>
-                    <th class="col-1" style="text-align:center;" >ACTUAL</th>
+                    <th class="col-2" style="text-align: center;">ANTERIOR</th>
+                    <th class="col-2" style="text-align:center;" >ACTUAL</th>
                     <th class="col-1" style="text-align:center;" >VIGENTE</th> 
                     <?php
                     break;
@@ -48,40 +48,49 @@
         foreach ($data['detalles'] as $pro) {
             ?><tr>
                 <td class="col-1" style=" text-align: center; ;"><?php echo $pro['codigo']; ?></td>
-                <td class="col-5" style=" width: 40%; max-width: 40%; overflow: hidden; text-align: left; "><?php echo $pro['descripcion']; ?></td>
+                <td class="col-6" style=" width: 40%; max-width: 40%; overflow: hidden; text-align: left; "><?php echo $pro['descripcion']; ?></td>
                 <?php
                 switch ($data["tipo"]) {
                     case "ENTRADA":
                     case "SALIDA":
                         ?> 
-                        <td class="col-1" style=" text-align: center; ;"><?php echo $pro['medida']; ?></td>
-                        <td class="col-1" style=" text-align: center; "><?php echo $pro['unidades']; ?></td>
+                        <td class="col-2" style=" text-align: center; ;"><?php echo $pro['medida']; ?></td>
+                        <td class="col-3" style=" text-align: center; "><?php echo $pro['unidades']; ?></td>
                         <?php
                         break;
                     case "COSTO":
-                        ?><th class="col-1" style="text-align: center;">
-                            ANTERIOR
-                        </th><th class="col-1" style="text-align: center;">
-                            ANTERIOR
-                        </th><th class="col-1" style="text-align: center;">
-                            ANTERIOR
-                        </th><?php
+                        ?>
+                        <td class="col-2" style=" text-align: center; "><?php echo $pro['data']->costo; ?></td>
+                        <td class="col-2" style=" text-align: center; "><?php echo $pro['unidades']; ?></td>
+                        <?php if ($pro['unidades'] == $pro['costo']): ?>
+                            <td class="col-1" style=" text-align: center; ">SI</td>
+                        <?php else: ?>
+                            <td class="col-1" style=" text-align: center; ">NO</td>
+                        <?php endif ?>
+                        <?php
                         break;
                     case "UTILIDAD":
-                        ?><th class="col-1" style="text-align: center;">
-                            ANTERIOR
-                        </th><th class="col-1" style="text-align: center;">
-                            ANTERIOR
-                        </th><th class="col-1" style="text-align: center;">
-                            ANTERIOR
-                        </th><?php
+                        ?>
+                        <td class="col-2" style=" text-align: center; ">
+                            <?php echo number_format($pro['data']->previo->precio1,2, ',', '.');  ?><br>
+                            <?php echo number_format($pro['data']->previo->precio2,2, ',', '.');  ?><br>
+                            <?php echo number_format($pro['data']->previo->precio3,2, ',', '.');  ?>                               
+                        </td>
+                        <td class="col-2" style=" text-align: center; ">
+                            <?php echo number_format($pro['data']->actual->precio1,2, ',', '.');  ?><br>
+                            <?php echo number_format($pro['data']->actual->precio2,2, ',', '.');  ?><br>
+                            <?php echo number_format($pro['data']->actual->precio3,2, ',', '.');  ?>                               
+                        </td>
+                        <?php
+                       if ($pro['data']->actual->precio1 == $pro['precio1'] && $pro['data']->actual->precio2 == $pro['precio2'] && $pro['data']->actual->precio3 == $pro['precio3']) {
+                        ?><td class="col-1" style=" text-align: center; ">SI</td><?php
+                        } else {
+                        ?><td class="col-1" style=" text-align: center; ">NO</td><?php
+                        } 
+                                                                        
                         break;
                 }
                 ?>
-                <td class="col-1" style=" text-align: center; ;"><?php echo $pro['medida']; ?></td>
-                <td class="col-1" style=" text-align: center; "><?php echo $pro['unidades']; ?></td>
-                <td class="col-2" style=" text-align: right; "><?php echo number_format($pro['precio'], 2, ',', '.'); ?></td>
-                <td class="col-2" style=" text-align: right;"><?php echo number_format($pro['unidades'] * $pro['precio'], 2, ',', '.'); ?></td>
             </tr><?php
         }
         ?>
