@@ -66,4 +66,14 @@ class Ajuste {
         return json_encode($ajuste->cancelar($id));
     }
 
+    function PDF($id) {
+        $compras = new \Modelos\Ajuste;
+        $data = $compras->detalles($id);
+        $pdf = new \PDF\Ajuste;
+        ob_start();
+        $pdf->ver($data);
+        $content = ob_get_clean();
+        $pdf->ouput('Compra.pdf', $content);
+    }
+
 }
