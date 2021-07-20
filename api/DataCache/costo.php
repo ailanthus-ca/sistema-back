@@ -1,5 +1,5 @@
 <?php 
  return array(
-    'costo' => 1,
+    'costo' => 2,
     'tasa' => true,
 );

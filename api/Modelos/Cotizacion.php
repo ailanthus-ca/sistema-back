@@ -9,7 +9,7 @@ class Cotizacion extends \Prototipo\Operaciones {
 
     public function lista() {
         $pen = array();
-        $sql = "SELECT cotizacion.codigo as codFact,telefono,correo,contacto, fecha, nombre,total,cotizacion.estatus as status, nota,usuario,tasa   FROM cotizacion,cliente WHERE cotizacion.cod_cliente = cliente.codigo order by fecha desc";
+        $sql = "SELECT cotizacion.codigo as codFact, fecha,cod_cliente,nombre,total,cotizacion.estatus as status, usuario,tasa   FROM cotizacion,cliente WHERE cotizacion.cod_cliente = cliente.codigo order by fecha desc";
         $query = $this->query($sql);
         while ($row = $query->fetch_array()) {
             $detalle = array();
@@ -18,18 +18,15 @@ class Cotizacion extends \Prototipo\Operaciones {
                 $detalle[] = $row2['codProducto'];
             }
             $pen[] = array(
-                'codigo' => (int) $row['codFact'],
-                'fecha' => $row['fecha'],
-                'nombre' => $row['nombre'],
-                'telefono' => $row['telefono'],
-                'correo' => $row['correo'],
-                'contacto' => $row['contacto'],
-                'monto' => (float) $row['total'],
-                'status' => (int) $row['status'],
-                'nota' => $row['nota'],
-                'usuario' => (int) $row['usuario'],
-                'tasa' => (float) $row['tasa'],
-                'detalles' => $detalle,
+                (int) $row['codFact'],
+                $row['cod_cliente'],
+                $row['nombre'],                
+                $row['fecha'],
+                (float) $row['total'],
+                (int) $row['usuario'],                
+                (int) $row['status'],
+                $detalle,
+                (float) $row['tasa'],
             );
         }
         return $this->getResponse($pen);

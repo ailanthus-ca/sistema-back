@@ -41,14 +41,14 @@ class Nota extends \Prototipo\Operaciones {
                 $detalle[] = $row2['producto'];
             }
             $pen[] = array(
-                'codigo' => (int) $row['codFact'],
-                'fecha' => $row['fecha'],
-                'nombre' => $row['nombre'], 
-                'rif' => $row['cod_cliente'],
-                'monto' => (float) $row['total'],
-                'usuario' => (int) $row['usuario'],
-                'status' => (int) $row['status'],
-                'detalles' => $detalle
+                (int) $row['codFact'],
+                $row['cod_cliente'],
+                $row['nombre'], 
+                $row['fecha'],
+                (float) $row['total'],
+                (int) $row['usuario'],
+                (int) $row['status'],
+                $detalle
             );
         }
         return $this->getResponse($pen);

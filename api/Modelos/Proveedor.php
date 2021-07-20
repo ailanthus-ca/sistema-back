@@ -16,18 +16,19 @@ namespace Modelos;
 class Proveedor extends \Prototipo\Entidades {
 
     var $estado = 'Proveedor';
+
     function lista() {
         $cl = array();
         $sql = $this->con->query('SELECT * FROM proveedor');
         while ($row = $sql->fetch_array()) {
             $cl[] = array(
-                'codigo' => $row['codigo'],
-                'nombre' => $row['nombre'],
-                'telefono' => $row['telefono'],
-                'correo' => $row['correo'],
-                'contacto' => $row['contacto'],
-                'direccion' => $row['direccion'],
-                'estatus' => (int) $row['estatus']);
+                $row['codigo'],
+                $row['nombre'],
+                $row['telefono'],
+                $row['correo'],
+                $row['contacto'],
+                $row['direccion'],
+                (int) $row['estatus']);
         }
         return $this->getResponse($cl);
     }
@@ -98,8 +99,7 @@ class Proveedor extends \Prototipo\Entidades {
 
     // ---------------------- GRAFICAS ---------------------
 
-    public function totalProveedores()
-    {
+    public function totalProveedores() {
         $query = $this->query("SELECT COUNT(*) AS total FROM `proveedor`");
         $pen = 0;
         while ($row = $query->fetch_array()) {

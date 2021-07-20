@@ -15,7 +15,7 @@ class Factura extends \Prototipo\Operaciones {
 
     function lista() {
         $pen = array();
-        $sql = "SELECT factura.codigo as codFact, fecha,telefono, correo,contacto,nombre,total,factura.estatus as status,factura.usuario  FROM factura,cliente WHERE factura.cod_cliente = cliente.codigo order by fecha DESC ";
+        $sql = "SELECT factura.codigo as codFact, fecha,cod_cliente,nombre,total,factura.estatus as status,factura.usuario  FROM factura,cliente WHERE factura.cod_cliente = cliente.codigo order by fecha DESC ";
         $query = $this->query($sql);
         while ($row = $query->fetch_array()) {
             $detalle = array();
@@ -24,16 +24,14 @@ class Factura extends \Prototipo\Operaciones {
                 $detalle[] = $row2['codProducto'];
             }
             $pen[] = array(
-                'codigo' => (int) $row['codFact'],
-                'fecha' => $row['fecha'],
-                'nombre' => $row['nombre'],
-                'telefono' => $row['telefono'],
-                'correo' => $row['correo'],
-                'contacto' => $row['contacto'],
-                'monto' => (float) $row['total'],
-                'usuario' => (int) $row['usuario'],
-                'status' => (int) $row['status'],
-                'detalles' => $detalle
+                (int) $row['codFact'],
+                $row['cod_cliente'],
+                $row['nombre'],
+                $row['fecha'],
+                (float) $row['total'],
+                (int) $row['usuario'],
+                (int) $row['status'],
+                $detalle
             );
         }
         return $this->getResponse($pen);

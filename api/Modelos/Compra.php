@@ -16,16 +16,11 @@ class Compra extends \Prototipo\Operaciones {
         $pen = array();
         $query = $this->query("SELECT DISTINCT "
                 . "compra.codigo as codFact,"
-                . "telefono,correo,contacto, "
                 . "fecha,"
+                . "cod_proveedor,"
                 . " nombre,"
                 . "total,"
-                . "cod_documento,"
-                . "fecha_documento,"
-                . "nun_control,"
                 . "compra.estatus as status,"
-                . "compra.nota,"
-                . "compra.dolar,"
                 . "compra.usuario  "
                 . "FROM compra,proveedor "
                 . "WHERE compra.cod_proveedor = proveedor.codigo order by fecha DESC ");
@@ -36,21 +31,14 @@ class Compra extends \Prototipo\Operaciones {
                 $detalle[] = $row2['cod_producto'];
             }
             $pen[] = array(
-                'codigo' => (int) $row['codFact'],
-                'fecha' => $row['fecha'],
-                'nombre' => $row['nombre'],
-                'telefono' => $row['telefono'],
-                'correo' => $row['correo'],
-                'contacto' => $row['contacto'],
-                'cod_documento' => $row['cod_documento'],
-                'fecha_documento' => $row['fecha_documento'],
-                'nun_control' => $row['nun_control'],
-                'monto' => (float) $row['total'],
-                'nota' => $row['nota'],
-                'dolar' => $row['dolar'],
-                'usuario' => (int) $row['usuario'],
-                'status' => (int) $row['status'],
-                'detalles' => $detalle
+                (int) $row['codFact'],
+                $row['cod_proveedor'],
+                $row['nombre'],
+                $row['fecha'],              
+                (float) $row['total'],
+                (int) $row['usuario'],
+                (int) $row['status'],
+                $detalle
             );
         }
         return $this->getResponse($pen);

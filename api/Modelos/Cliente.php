@@ -24,15 +24,15 @@ class Cliente extends \Prototipo\Entidades {
         $sql = $this->query('SELECT * FROM cliente');
         while ($row = $sql->fetch_array()) {
             $cl[] = array(
-                'codigo' => $row['codigo'],
-                'nombre' => $row['nombre'],
-                'telefono' => $row['telefono'],
-                'correo' => $row['correo'],
-                'contacto' => $row['contacto'],
-                'direccion' => $row['direccion'],
-                'tipo_contribuyente' => $row['tipo_contribuyente'],
-                'retencion' => (float) $row['retencion'],
-                'estatus' => (int) $row['estatus']);
+                $row['codigo'],
+                $row['nombre'],
+                $row['telefono'],
+                $row['correo'],
+                $row['contacto'],
+                $row['direccion'],
+                $row['tipo_contribuyente'],
+                (float) $row['retencion'],
+                (int) $row['estatus']);
         }
         return $this->getResponse($cl);
     }
@@ -113,8 +113,7 @@ class Cliente extends \Prototipo\Entidades {
 
     // ---------------------- GRAFICAS ---------------------
 
-    public function totalClientes()
-    {
+    public function totalClientes() {
         $query = $this->query("SELECT COUNT(*) AS total FROM `cliente`");
         $pen = 0;
         while ($row = $query->fetch_array()) {
@@ -122,6 +121,5 @@ class Cliente extends \Prototipo\Entidades {
         }
         return $this->getResponse($pen);
     }
-
 
 }

@@ -155,4 +155,19 @@ class Producto {
         $pdf->ouput('Compra.pdf', $content);
     }
 
+    function costo($cod, $pre) {
+        $Producto = new \Modelos\Producto();
+        $Producto->cargar($cod);
+        $dolar = new \Modelos\Dolares();
+        $tasa = $dolar->valor();
+        return json_encode(array(
+            'costoDolarNuevo' => number_format($pre / $tasa, 2, ',', '.'),
+            'costoNuevo' => number_format($pre , 2, ',', '.'),
+            'costoAnte' => number_format($Producto->costo , 2, ',', '.'),
+            'costoDolarAnte' => number_format($Producto->costo / $Producto->dolar, 2, ',', '.'),
+            'tasaProducto' => number_format($Producto->dolar, 2, ',', '.'),
+            'tasaActual' => number_format($tasa, 2, ',', '.'),
+            'funtion' => $Producto->checkCosto($pre, $tasa)));
+    }
+
 }

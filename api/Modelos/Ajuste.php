@@ -31,14 +31,14 @@ class Ajuste extends \conexion {
                 $detalle[] = $row2['cod_producto'];
             }
             $data[] = array(
-                'codigo' => (int) $row['codFact'],
-                'usuario' => (int) $row['usuario'],
-                'nombre' => $row['nombre'],
-                'tipo' => $row['tipo_ajuste'],
-                'fecha' => $row['fecha'],
-                'nota' => $row['nota'],
-                'status' => (int) $row['estatus'],
-                'detalles' => $detalle
+                 (int) $row['codFact'],
+                 (int) $row['usuario'],
+                 $row['nombre'],
+                 $row['tipo_ajuste'],
+                 $row['fecha'],
+                 $row['nota'],
+                 (int) $row['estatus'],
+                 $detalle
             );
         }
         return $this->getResponse($data);

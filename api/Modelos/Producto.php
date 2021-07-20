@@ -26,23 +26,23 @@ class Producto extends \conexion {
                 . 'WHERE producto.unidad=unidad.codigo AND tipo_producto.codigo = producto.tipo');
         while ($row = $sql->fetch_array()) {
             $pro[] = array(
-                'codigo' => $row['codigo'],
-                'departamento' => $row['departamento'],
-                'descripcion' => $row['descripcion'],
-                'estatus' => (int) $row['estatus'],
-                'enser' => (int) $row['enser'],
-                'tipo' => (int) $row['tipo'],
-                'unidad' => (int) $row['unidad'],
-                'medida' => $row['medida'],
-                'costo' => (float) $row['costo'],
-                'precio1' => (float) $row['precio1'],
-                'precio2' => (float) $row['precio2'],
-                'precio3' => (float) $row['precio3'],
-                'cantidad' => (float) $row['cantidad'],
-                'fecha' => $row['fecha_creacion'],
-                'inventario' => (int) $row['inventario'],
-                'exento' => (boolean) $row['exento'],
-                'dolar' => (float) $row['dolar'],
+                $row['codigo'],
+                $row['departamento'],
+                $row['descripcion'],
+                (int) $row['estatus'],
+                (int) $row['enser'],
+                (int) $row['tipo'],
+                (int) $row['unidad'],
+                $row['medida'],
+                (float) $row['costo'],
+                (float) $row['precio1'],
+                (float) $row['precio2'],
+                (float) $row['precio3'],
+                (float) $row['cantidad'],
+                $row['fecha_creacion'],
+                (int) $row['inventario'],
+                (boolean) $row['exento'],
+                (float) $row['dolar'],
             );
         }
         return $pro;
@@ -67,9 +67,9 @@ class Producto extends \conexion {
                 'imagen' => $row['imagen'],
                 'estatus' => (int) $row['estatus'],
                 'fecha_creacion' => $row['fecha_creacion'],
-                'inventario' =>(int)  $row['inventario'],
-                'dolar' =>(float)  $row['dolar'],
-                'exento' =>(boolean)  $row['exento'],
+                'inventario' => (int) $row['inventario'],
+                'dolar' => (float) $row['dolar'],
+                'exento' => (boolean) $row['exento'],
             );
             return $pro;
         }
@@ -111,12 +111,8 @@ class Producto extends \conexion {
         $config = new \Config('costo');
         $costoConfig = $config->get();
         $costo = $this->costo;
-        if ($costoConfig['tasa'] && $tasa > 0) {
-            if ($this->dolar > 0) {
-                $costo = $this->costo / $this->dolar;
-            } else {
-                $costo = $this->costo / $tasa;
-            }
+        if ($costoConfig['tasa'] && $tasa > 0 && $this->dolar > 0) {
+            $costo = $this->costo / $this->dolar;
             $precio = $precio / $tasa;
         }
         return ($costo <= $precio);
@@ -239,8 +235,7 @@ class Producto extends \conexion {
         return $pro;
     }
 
-    public function totalProductos()
-    {
+    public function totalProductos() {
         $query = $this->query("SELECT COUNT(*) AS total FROM `producto`");
         $pen = 0;
         while ($row = $query->fetch_array()) {
