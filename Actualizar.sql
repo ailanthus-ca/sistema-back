@@ -34,3 +34,9 @@ ALTER TABLE `tmp_cot_prod` CHANGE `precio_tmp` `precio_tmp` DOUBLE NULL DEFAULT 
 ALTER TABLE `tmp_detalle_cotizacion` CHANGE `precio_unit` `precio_unit` DOUBLE NOT NULL, CHANGE `monto` `monto` DOUBLE NOT NULL;
 ALTER TABLE `tmp_fact_prod` CHANGE `precio_tmp` `precio_tmp` DOUBLE NULL DEFAULT NULL;
 ALTER TABLE `tmp_ord_prod` CHANGE `precio_tmp` `precio_tmp` DOUBLE NULL DEFAULT NULL;
+-- // Fecha: 21/07/2021
+ALTER TABLE `factura` CHANGE `observacion` `observacion` VARCHAR(600) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
+ALTER TABLE `ajusteinv` CHANGE `nota` `nota` VARCHAR(600) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+ALTER TABLE `cotizacion` CHANGE `nota` `nota` VARCHAR(600) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+ALTER TABLE `detalleajusteinv` CHANGE `descripcion` `descripcion` VARCHAR(250) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+ALTER TABLE `ordencompra` CHANGE `nota` `nota` VARCHAR(600) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;

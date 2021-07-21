@@ -117,26 +117,26 @@ class Compra extends \Prototipo\Operaciones {
         //;
         $productos = new \Modelos\Producto();
         foreach ($this->detalles as $iten) {
-            $monto = $iten->unidades * $iten->precio;
-            $this->query("INSERT INTO `detallecompra` VALUES("
-                    . "$cod_compra,"
-                    . "'$iten->codigo',"
-                    . "$iten->unidades,"
-                    . "$iten->precio,"
-                    . "$monto)");
-            $config = new \Config('costo');
-            $productos->cargar($iten->codigo);
+        	$monto = $iten->unidades * $iten->precio;
+        	$this->query("INSERT INTO `detallecompra` VALUES("
+        		. "$cod_compra,"
+        		. "'$iten->codigo',"
+        		. "$iten->unidades,"
+        		. "$iten->precio,"
+        		. "$monto)");
+        	$config = new \Config('costo');
+        	$productos->cargar($iten->codigo);
 
-            if ($productos->inventario !== 1) {
-                $productos->entrada($iten->codigo, $iten->unidades);
-            }
-            $costo = $config->get();
-            if ($costo['costo'] < 3) {
-                if ($costo['costo'] === 2 && $productos->checkCosto($iten->precio, $tasa))
-                    $productos->costo($iten->codigo, $iten->precio, $tasa);
-                else
-                    $productos->costo($iten->codigo, $iten->precio, $tasa);
-            }
+        	if ($productos->inventario !== 1) {
+        		$productos->entrada($iten->codigo, $iten->unidades);
+        	}
+        	$costo = $config->get();
+        	if ($costo['costo'] < 3) {
+        		if ($costo['costo'] === 2 && $productos->checkCosto($iten->precio, $tasa))
+        			$productos->costo($iten->codigo, $iten->precio, $tasa);
+        		elseif($costo['costo'] ===1)
+        			$productos->costo($iten->codigo, $iten->precio, $tasa);
+        	}            
         }
         if ($this->id_orden > 0) {
             $orden = new \Modelos\Orden();

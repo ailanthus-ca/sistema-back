@@ -22,11 +22,11 @@ class Ajuste {
 
         // Validar si existe tipo de ajuste
         if ($ajuste->tipo_ajuste == '') {
-            $ajuste->setError('Se debe agregar un tipo de ajuste');
+            $ajuste->setError('SE DEBE AGREGAR UN TIPO DE AJUSTE');
         }
         // Validar si existe nota
         if ($ajuste->nota == '') {
-            $ajuste->setError('Se debe agregar una nota para la descripción del ajuste');
+            $ajuste->setError('SE DEBE AGREGAR UNA NOTA EN LA DESCRIPCION DEL AJUSTE');
         }
         //Validar si hubo errores
         if ($ajuste->response > 300) {

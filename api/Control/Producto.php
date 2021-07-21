@@ -156,6 +156,8 @@ class Producto {
     }
 
     function costo($cod, $pre) {
+        $config = new \Config('costo');
+        $costo = $config->get();
         $Producto = new \Modelos\Producto();
         $Producto->cargar($cod);
         $dolar = new \Modelos\Dolares();
@@ -167,7 +169,9 @@ class Producto {
             'costoDolarAnte' => number_format($Producto->costo / $Producto->dolar, 2, ',', '.'),
             'tasaProducto' => number_format($Producto->dolar, 2, ',', '.'),
             'tasaActual' => number_format($tasa, 2, ',', '.'),
-            'funtion' => $Producto->checkCosto($pre, $tasa)));
+            'funtion' => $Producto->checkCosto($pre, $tasa),
+            'validacion' => ($costo['costo'] === 2 && $Producto->checkCosto($pre, $tasa))
+        ));
     }
 
 }
