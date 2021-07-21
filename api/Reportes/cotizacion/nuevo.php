@@ -74,6 +74,9 @@
                     <strong>TIEMPO DE ENTREGA:&nbsp; </strong> <?php echo $data['tiempo_entrega'] ?>	
                 </div><br/>
                 <div class="col-8" style="padding-bottom: 2px;padding-top: 2px">
+                    <strong>DATOS DE PAGO:&nbsp; </strong> <?php echo $company['pago'] ?>    
+                </div><br/>
+                <div class="col-8" style="padding-bottom: 2px;padding-top: 2px">
                     <strong>NOTA:&nbsp; </strong><?php echo $data['nota']; ?>
                 </div>
             </td>            

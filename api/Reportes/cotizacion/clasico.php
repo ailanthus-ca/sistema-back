@@ -100,7 +100,10 @@
                 </tr>
                 <tr class="style-none">
                     <td class="style-none"  style="width: 80%;"><strong style="font-size: 7pt;">TIEMPO DE ENTREGA:&nbsp; </strong> <?php echo $data['tiempo_entrega'] ?></td>      	
-                </tr>		    
+                </tr>	
+                <tr class="style-none">
+                    <td class="style-none"  style="width: 80%;"><strong style="font-size: 7pt;">DATOS DE PAGO:&nbsp; </strong> <?php echo $company['pago']  ?></td>       
+                </tr>   	    
                 <tr class="style-none">
                     <td class="style-none"  style="width: 80%;"><strong style="font-size: 7pt;">NOTA:&nbsp; </strong><?php echo $data['nota']; ?></td> 
                 </tr>      	
