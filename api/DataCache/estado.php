@@ -10,7 +10,7 @@
     'Nota' => 1,
     'Orden' => 1,
     'Plantilla' => 1,
-    'Producto' => 80,
+    'Producto' => 86,
     'Proveedor' => 1,
     'Tipo' => 47,
     'Unidad' => 4,

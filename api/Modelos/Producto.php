@@ -68,7 +68,7 @@ class Producto extends \conexion {
                 'estatus' => (int) $row['estatus'],
                 'fecha_creacion' => $row['fecha_creacion'],
                 'inventario' => (int) $row['inventario'],
-                'dolar' => (float) $row['dolar'],
+                'tasa' => (float) $row['dolar'],
                 'exento' => (boolean) $row['exento'],
             );
             return $pro;

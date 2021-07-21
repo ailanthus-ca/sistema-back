@@ -68,6 +68,8 @@ class PDFClass {
     function ver($data) {
         $config = new \Config('region');
         $region = $config->get();
+        $config = new \Config('empresa');
+        $company = $config->get();
         $this->style();
         $encabezado = '';
         $piepagina = '';
@@ -85,5 +87,4 @@ class PDFClass {
             include DR . '/Reportes/' . $this->config . '/' . $this->version . '.php';
             ?></page><?php
     }
-
 }
