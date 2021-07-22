@@ -28,7 +28,7 @@ class Producto {
         $Producto->enser = $Producto->postIntenger('enser');
         $Producto->excento = $Producto->postString('excento');
         $Producto->dolar = $Producto->postFloat('dolar');
-        //validaciones
+
         //cantidad de productos por categoria
         $dep = new \Modelos\Departamento();
         $num = $dep->count($Producto->departamento);
@@ -38,7 +38,33 @@ class Producto {
         }
         //asignar codigo
         $Producto->codigo = "$Producto->departamento$num";
-        //crear y responder
+       
+        // Validaciones
+        if ($Producto->departamento == '') {
+            $Producto->setError('DEBE SELECCIONAR UN DEPARTAMENTO');
+        }
+
+        if ($Producto->descripcion == '') {
+            $Producto->setError('DEBE AGREGAR UNA DESCRIPCION');
+        }
+
+        if ($Producto->unidad == '') {
+            $Producto->setError('DEBE SELECCIONAR UNA UNIDAD DE MEDIDA');
+        }
+
+        if ($Producto->tipo == '') {
+            $Producto->setError('DEBE SELECCIONAR UN TIPO DE PRODUCTO');
+        }
+
+        if ($Producto->costo == '') {
+            $Producto->setError('DEBE INGRESAR UN COSTO');
+        }
+
+        //Validar si hubo errores
+        if ($Producto->response > 300) {
+            return json_encode($Producto->getResponse());
+        }
+
         return json_encode($Producto->nuevo());
     }
 
