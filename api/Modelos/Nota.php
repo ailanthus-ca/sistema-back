@@ -66,12 +66,13 @@ class Nota extends \Prototipo\Operaciones {
             $usuario = new Usuario();
             $usuario = $usuario->detalles($row['usuario']);
             $notasalida['usuario'] = $usuario['nombre'];
-            $notasalida['cod_usuario'] = $row['usuario'];
+            $notasalida['cod_usuario'] = (int) $row['usuario'];
             //datos de nota de entrega
-            $notasalida['codigo'] = $row['codigo'];
+            $notasalida['codigo'] = (int) $row['codigo'];
             $notasalida['cod_cliente'] = $row['cod_cliente'];
             $notasalida['fecha'] = $row['fecha'];
             $notasalida['nota'] = $row['nota'];
+            $notasalida['status'] = (int) $row['estatus'];
             //detalle de nota de entrega
             $notasalida['detalles'] = array();
             $sql = "SELECT * from detallesnotas where nota = '" . $notasalida['codigo'] . "'";

@@ -160,6 +160,7 @@ class Compra extends \Prototipo\Operaciones {
         $data = $estado->get();
         $data['Compra'] = $data['Compra'] + 1;
         $data->setMany($data);
+        $this->actualizarEstado();
         return 1;
     }
 
@@ -173,6 +174,7 @@ class Compra extends \Prototipo\Operaciones {
         $data = $estado->get();
         $data['Compra'] = $data['Compra'] + 1;
         $data->setMany($data);
+        $this->actualizarEstado();
         return 1;
     }
 
