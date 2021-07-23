@@ -70,6 +70,8 @@ class PDFClass {
         $region = $config->get();
         $config = new \Config('empresa');
         $company = $config->get();
+        $config = new \Config('ventas');
+        $ventas = $config->get();
         $this->style();
         $encabezado = '';
         $piepagina = '';

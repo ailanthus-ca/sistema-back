@@ -6,7 +6,7 @@
     'margen_der' => 20,
     'nota' => '',
     'tipo_papel' => 'LETTER',
-    'version' => 'clasico',
+    'version' => 'nuevo',
     'encabezado' => true,
     'piepagina' => true,
 );

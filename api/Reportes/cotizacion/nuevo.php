@@ -64,6 +64,14 @@
     <tfoot>
         <tr>
             <td colspan="4" rowspan="3" class="condiciones">
+                <div class="col-8" style="padding-bottom: 2px;padding-top: 2px">
+                    <strong>GARANTIA DE LOS PRODUCTOS:&nbsp; </strong>
+                     <?php echo $ventas['garantia'] ?>    
+                </div><br/><br/>
+                <div class="col-8" style="padding-bottom: 2px;padding-top: 2px">
+                    <strong>OBSERVACION GENERAL:&nbsp; </strong>
+                     <?php echo $ventas['observacion'] ?>    
+                </div><br/>
             </td>            
             <td style="text-align: right; "><strong> SUB TOTAL: </strong></td>
             <td style="text-align: right; "> <?php echo number_format($subtotal, 2, ',', '.'); ?></td>
@@ -78,6 +86,9 @@
     </tfoot>
 </table>
 <br/><br/>
+<div class="col-12">
+    <span style="font-size:10px;font-weight:bold;color: #34495e;"><strong>CONDICIONES</strong></span>
+</div><br/>
 <div class="col-12 bordered">
     <div class="col-12" style="padding-bottom: 2px;padding-top: 2px">
         <strong>FORMA DE PAGO:&nbsp; </strong> <?php echo $data['forma_pago'] ?>    
