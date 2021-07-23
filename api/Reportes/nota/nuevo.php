@@ -66,20 +66,13 @@
     </tbody>
     <tfoot>
         <tr>
-            <td colspan="4" rowspan="3" class="condiciones">
+            <td colspan="4" class="condiciones">
                 <div class="col-8">
                     <strong>NOTA:&nbsp; </strong><br/><?php echo $data['nota']; ?>
                 </div>
             </td>            
-            <td style="text-align: right; "><strong> SUB TOTAL: </strong></td>
+            <td style="text-align: right; "><strong> TOTAL: </strong></td>
             <td style="text-align: right; "> <?php echo number_format($subtotal, 2, ',', '.'); ?></td>
-        </tr>
-        <tr>
-            <td style="text-align: right; "><strong> IVA <?php echo $region['impuesto']; ?>%: </strong></td>
-            <td style="text-align: right; "> <?php echo number_format($subtotal * $region['impuesto'] / 100, 2, ',', '.'); ?></td>
-        </tr><tr>
-            <td style="text-align: right; "><strong> TOTAL:</strong></td>
-            <td style="text-align: right; "> <?php echo number_format($subtotal * (1 + $region['impuesto'] / 100), 2, ',', '.'); ?></td>
         </tr>
     </tfoot>
 </table>

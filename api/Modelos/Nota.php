@@ -36,7 +36,7 @@ class Nota extends \Prototipo\Operaciones {
         $query = $this->query($sql);
         while ($row = $query->fetch_array()) {
             $detalle = array();
-            $sql = $this->query('SELECT producto FROM detallesnotas WHERE nota = ' . $row['codFact']);
+            $sql = $this->query('SELECT producto FROM detallesNotas WHERE nota = ' . $row['codFact']);
             while ($row2 = $sql->fetch_array()) {
                 $detalle[] = $row2['producto'];
             }
@@ -75,7 +75,7 @@ class Nota extends \Prototipo\Operaciones {
             $notasalida['status'] = (int) $row['estatus'];
             //detalle de nota de entrega
             $notasalida['detalles'] = array();
-            $sql = "SELECT * from detallesnotas where nota = '" . $notasalida['codigo'] . "'";
+            $sql = "SELECT * from detallesNotas where nota = '" . $notasalida['codigo'] . "'";
             $query = $this->query($sql);
             while ($row = $query->fetch_array()) {
                 $producto = new Producto();
@@ -106,7 +106,7 @@ class Nota extends \Prototipo\Operaciones {
             }
 
             $notasalida['detalles'] = array();
-            $sql = "SELECT * from detallesnotas where nota = '" . $notasalida['codigo'] . "'";
+            $sql = "SELECT * from detallesNotas where nota = '" . $notasalida['codigo'] . "'";
             $query = $this->query($sql);
             while ($row = $query->fetch_array()) {
                 $producto = new Producto();
