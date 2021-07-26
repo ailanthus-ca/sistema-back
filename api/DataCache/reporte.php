@@ -4,8 +4,8 @@
     'margen_inf' => 15,
     'margen_izq' => 15,
     'margen_der' => 15,
-    'encabezado' => true,
-    'piepagina' => true,
+    'encabezado' => false,
+    'piepagina' => false,
     'tipo_papel' => 'LETTER',
     'version' => 1,
 );
