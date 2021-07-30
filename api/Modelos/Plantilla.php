@@ -82,6 +82,7 @@ class Plantilla extends \Prototipo\Operaciones {
 
     public function guardar($id_cotizacion) {
         if ($id_cotizacion > 0) {
+            echo $id_cotizacion;
             return $this->actualizar($id_cotizacion);
         } else {
             return $this->nuevo();

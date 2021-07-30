@@ -20,10 +20,10 @@ class Cotizacion extends \Prototipo\Operaciones {
             $pen[] = array(
                 (int) $row['codFact'],
                 $row['cod_cliente'],
-                $row['nombre'],                
+                $row['nombre'],
                 $row['fecha'],
                 (float) $row['total'],
-                (int) $row['usuario'],                
+                (int) $row['usuario'],
                 (int) $row['status'],
                 $detalle,
                 (float) $row['tasa'],
@@ -123,6 +123,7 @@ class Cotizacion extends \Prototipo\Operaciones {
 
     public function guardar() {
         $plantilla_id = $this->postIntenger('plantilla');
+        $plantilla = new \Modelos\Plantilla;
         return $plantilla->guardar($plantilla_id);
     }
 
@@ -263,9 +264,8 @@ class Cotizacion extends \Prototipo\Operaciones {
     }
 
     // ---------------------------------------- GRAFICAS -------------------------------------------------
-    
-    public function totalCotizaciones()
-    {
+
+    public function totalCotizaciones() {
         $query = $this->query("SELECT COUNT(*) AS total FROM `cotizacion`");
         $pen = 0;
         while ($row = $query->fetch_array()) {
