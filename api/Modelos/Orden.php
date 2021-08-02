@@ -121,8 +121,7 @@ class Orden extends \Prototipo\Operaciones {
     }
 
     public function seguimiento($id) {
-        // $id_usuario = $_SESSION['id_usuario'];
-        $sql = "SELECT descripcion,nombre,fecha,correo FROM orden_seguimiento,usuario where usuario=codigo AND cod_cotizacion = $id";
+        $sql = "SELECT descripcion,nombre,fecha,correo FROM orden_seguimiento,usuario where usuario=codigo AND cod_orden = $id";
         $query = $this->query($sql);
         $cotizacion = array();
         while ($row = $query->fetch_array()) {
@@ -138,8 +137,7 @@ class Orden extends \Prototipo\Operaciones {
 
     public function seguimiento_nuevo($id, $descripcion) {
         $id_usuario = $_SESSION['id_usuario'];
-        $fecha = date('Y-m-d H:i:s');
-        $sql = "INSERT INTO orden_seguimiento (cod_orden,descripcion,usuario,fecha) VALUES ($id,UPPER('$descripcion'),$id_usuario,'$fecha')";
+        $sql = "INSERT INTO orden_seguimiento (cod_orden,descripcion,usuario,fecha) VALUES ($id,UPPER('$descripcion'),$id_usuario,NOW())";
         $query = $this->query($sql);
         return $this->getResponse(1);
     }

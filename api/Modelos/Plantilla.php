@@ -24,13 +24,8 @@ class Plantilla extends \Prototipo\Operaciones {
         $sql = "SELECT tmp_cotizacion.codigo as codFact, fecha, nombre,total,tmp_cotizacion.estatus as status, nota,usuario   "
                 . "FROM tmp_cotizacion,usuario"
                 . " WHERE tmp_cotizacion.usuario = usuario.codigo order by fecha desc";
-        $query = $this->query($sql) or die($this->con->error);
-        while ($row = mysqli_fetch_array($query)) {
-            $detalle = array();
-            $sql = $this->query('SELECT codProducto FROM detallecotizacion WHERE codCotizacion = ' . $row['codFact']);
-            while ($row2 = $sql->fetch_array()) {
-                $detalle[] = $row2['codProducto'];
-            }
+        $query = $this->query($sql);
+        while ($row = $query->fetch_array()) {
             $pen[] = array(
                 'codigo' => $row['codFact'],
                 'fecha' => $row['fecha'],
@@ -39,7 +34,6 @@ class Plantilla extends \Prototipo\Operaciones {
                 'status' => (int) $row['status'],
                 'nota' => $row['nota'],
                 'usuario' => (int) $row['usuario'],
-                'detalles' => $detalle,
             );
         }
         return $this->getResponse($pen);
@@ -73,7 +67,7 @@ class Plantilla extends \Prototipo\Operaciones {
                 $detalle = $producto->ver($row['codProducto']);
                 $detalle['unidades'] = (float) $row['cantidad'];
                 $detalle['precio'] = (float) $row['precio_unit'];
-                $detalle['comentario'] =  $row['comentario'];
+                $detalle['comentario'] = $row['comentario'];
                 $cotizacion['detalles'][] = $detalle;
             }
         }

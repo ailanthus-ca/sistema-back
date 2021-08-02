@@ -65,14 +65,14 @@ class Orden {
     }
 
     function seguimiento($id) {
-        $Cotizacion = new \Modelos\Orden();
-        return json_encode($Cotizacion->seguimiento($id));
+        $Orden = new \Modelos\Orden();
+        return json_encode($Orden->seguimiento($id));
     }
 
     function seguimiento_nuevo($id) {
-        $Cotizacion = new \Modelos\Orden();
-        $descripcion = $Cotizacion->postString('descripcion');
-        return json_encode($Cotizacion->seguimiento_nuevo($id, $descripcion));
+        $Orden = new \Modelos\Orden();
+        $descripcion = $Orden->postString('descripcion');
+        return json_encode($Orden->seguimiento_nuevo($id, $descripcion));
     }
 
     function PDF($id) {
