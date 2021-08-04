@@ -7,6 +7,6 @@
     'correo' => 'VENTAS@AILANTHUS-SISTEMS.COM',
     'web' => 'WWW.AILANTHUS-SISTEMS.COM',
     'pago' => 'CHEQUE A NOMBRE DE AILANTHUS SISTEMS C.A O DEPOSITO CUENTA CORRIENTE BANESCO 0134-1000-38-0001005079',
-    'logo' => 'isotipo plano rgb res300 jpg.jpg',
+    'logo' => 'post-1628087048.png',
     'eslogan' => 'TECNOLOGÍA TOTAL EN INGENIERÍA Y SERVICIO',
 );

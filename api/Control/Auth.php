@@ -55,4 +55,10 @@ class Auth {
         return json_encode(array('factura' => $factura->cargar(), 'region' => $region->cargar(), 'empresa' => $empresa->cargar(), 'ventas' => $ventas->cargar()));
     }
 
+    function getConfig() {
+        $empresa = new \Config('empresa');
+        return json_encode($empresa->get());
+        
+    }
+
 }
