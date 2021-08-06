@@ -7,11 +7,11 @@ use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 class PDFClass {
 
     var $config = 'reporte';
-    private $tipo = 'LETTER';
-    private $encabezado = true;
-    private $piepagina = true;
+    protected $tipo = 'LETTER';
+    protected $encabezado = true;
+    protected $piepagina = true;
     var $version = 1;
-    private $margenes = array(15, 15, 15, 15);
+    protected $margenes = array(15, 15, 15, 15);
 
     public function __construct() {
         $config = new \Config($this->config);

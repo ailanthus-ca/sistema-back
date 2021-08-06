@@ -2,7 +2,6 @@
 <div style="text-align: left;">
     <span style="font-size:10px;font-weight:bold"><strong>DATOS DEL CLIENTE</strong></span>
 </div>
-
 <table class="style-none" border="0" cellspacing="3" style="width: 100%; font-size: 7pt;">
     <tr  class="style-none">
         <td  class="style-none" style="width: 100%;">	
@@ -42,10 +41,12 @@
 <table  class="border-clasico" border="1" cellspacing="0" style="width: 100%; text-align: left; font-size: 7pt;">    
     <tr  class="border-clasico">
         <th  class="border-clasico" style="width: 10%;text-align:center;" >CANTIDAD</th>
-        <th  class="border-clasico" style="width: 50%;text-align: center;">DESCRIPCION</th>
+        <th  class="border-clasico" style="width: <?php echo ($precios) ? 51 : 70 ?>%;text-align: center;">DESCRIPCION</th>
         <th  class="border-clasico" style="width: 10%;text-align: center;">UND</th>
-        <th  class="border-clasico" style="width: 15%;text-align: center;">PRECIO</th>
-        <th  class="border-clasico" style="width: 15%;text-align: center;">TOTAL</th>
+        <?php if ($precios) { ?>
+            <th  class="border-clasico" style="width: 15%;text-align: center;">PRECIO</th>
+            <th  class="border-clasico" style="width: 15%;text-align: center;">TOTAL</th>
+        <?php } ?>
     </tr>
     <?php
     $subtotal = 0;
@@ -53,27 +54,29 @@
         $subtotal += $pro['unidades'] * $pro['precio'];
         ?><tr  class="border-clasico">
             <td  class="border-clasico" style=" text-align: center; height: 15px; vertical-align: middle;"><?php echo $pro['unidades']; ?></td>
-            <td  class="border-clasico" style=" width: 40%; max-width: 40%; overflow: hidden; text-align: left; height: 15px; vertical-align: middle;"><?php echo $pro['descripcion']; ?></td>
+            <td  class="border-clasico" style=" width: <?php echo ($precios) ? 51 : 80 ?>%; max-width: <?php echo ($precios) ? 51 : 70 ?>%; overflow: hidden; text-align: left; height: 15px; vertical-align: middle;"><?php echo $pro['descripcion']; ?></td>
             <td  class="border-clasico" style=" text-align: center; height: 15px; vertical-align: middle;;"><?php echo $pro['medida']; ?></td>
-            <td  class="border-clasico" style=" text-align: right; height: 15px; vertical-align: middle;"><?php echo number_format($pro['precio'], 2, ',', '.'); ?></td>
-            <td  class="border-clasico" style=" text-align: right; height: 15px; vertical-align: middle;"><?php echo number_format($pro['unidades'] * $pro['precio'], 2, ',', '.'); ?></td>
-        </tr><?php
-    }
-    ?>
-</table>
-<table cellspacing="3" style="width: 100%; font-size: 7pt;">
-    <tr  class="style-none">
-        <th  class="style-none" style="width: 10%;text-align:center;"></th>
-        <th  class="style-none" style="width: 50%; text-align: center;"></th>
-        <th  class="style-none" style="width: 10%;text-align: center;"></th>
-        <th  class="style-none" style="width: 15%;text-align: center;"></th>
-        <th  class="style-none" style="width: 15%;text-align: center;"></th>
-    </tr>
-    <tr  class="style-none">
-        <td  class="style-none" colspan="4" style=" text-align: right;"><strong> TOTAL: </strong></td>
-        <td  class="style-none" style="widtd: 15%; text-align: right;"> <?php echo number_format($subtotal, 2, ',', '.'); ?></td>
-    </tr>
-</table>
+            <?php if ($precios) { ?>
+                <td  class="border-clasico" style=" text-align: right; height: 15px; vertical-align: middle;"><?php echo number_format($pro['precio'], 2, ',', '.'); ?></td>
+                <td  class="border-clasico" style=" text-align: right; height: 15px; vertical-align: middle;"><?php echo number_format($pro['unidades'] * $pro['precio'], 2, ',', '.'); ?></td>
+            <?php } ?>
+        </tr><?php } ?>
+</table>           
+<?php if ($precios) { ?>
+    <table cellspacing="3" style="width: 100%; font-size: 7pt;">
+        <tr  class="style-none">
+            <th  class="style-none" style="width: 10%;text-align:center;"></th>
+            <th  class="style-none" style="width: 50%; text-align: center;"></th>
+            <th  class="style-none" style="width: 10%;text-align: center;"></th>
+            <th  class="style-none" style="width: 15%;text-align: center;"></th>
+            <th  class="style-none" style="width: 15%;text-align: center;"></th>
+        </tr>
+        <tr  class="style-none">
+            <td  class="style-none" colspan="4" style=" text-align: right;"><strong> TOTAL: </strong></td>
+            <td  class="style-none" style="widtd: 15%; text-align: right;"> <?php echo number_format($subtotal, 2, ',', '.'); ?></td>
+        </tr>
+    </table>
+<?php } ?>
 <br>
 <div style="text-align: left;">
     <span style="font-size:10px;font-weight:bold"><strong>CONDICIONES</strong></span>

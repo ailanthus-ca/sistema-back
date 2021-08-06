@@ -84,6 +84,15 @@ class Nota extends \conexion {
         $content = ob_get_clean();
         $pdf->ouput('Compra.pdf', $content);
     }
+    function PDFSP($id) {
+        $Nota = new \Modelos\Nota();
+        $data = $Nota->detalles($id);
+        $pdf = new \PDF\Nota();
+        ob_start();
+        $pdf->ver($data,false);
+        $content = ob_get_clean();
+        $pdf->ouput('Compra.pdf', $content);
+    }
 
     function reporte($rango, $p1, $p2) {
         $Factura = new \Modelos\Nota();

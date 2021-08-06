@@ -42,11 +42,13 @@
     <thead>
         <tr>
             <th class="col-1" style="text-align: center;">COD</th>
-            <th class="col-5" style="text-align: center;">DESCRIPCION</th>
+            <th class="col-<?php echo ($precios) ? 5 : 9 ?>" style="text-align: center;">DESCRIPCION</th>
             <th class="col-1" style="text-align: center;">UND</th>
             <th class="col-1" style="text-align:center;" >CANT</th>
-            <th class="col-2" style="text-align: center;">PRECIO</th>
-            <th class="col-2" style="text-align: center;">TOTAL</th>
+            <?php if ($precios) { ?>
+                <th class="col-2" style="text-align: center;">PRECIO</th>
+                <th class="col-2" style="text-align: center;">TOTAL</th>
+            <?php } ?>
         </tr>
     </thead>
     <tbody>
@@ -55,24 +57,23 @@
             $subtotal += $pro['unidades'] * $pro['precio'];
             ?><tr>
                 <td class="col-1" style=" text-align: center; ;"><?php echo $pro['codigo']; ?></td>
-                <td class="col-5" style=" width: 40%; max-width: 40%; overflow: hidden; text-align: left; "><?php echo $pro['descripcion']; ?></td>
+                <td class="col-<?php echo ($precios) ? 5 : 9 ?>" style=" width: 40%; max-width: 40%; overflow: hidden; text-align: left; "><?php echo $pro['descripcion']; ?></td>
                 <td class="col-1" style=" text-align: center; ;"><?php echo $pro['medida']; ?></td>
                 <td class="col-1" style=" text-align: center; "><?php echo $pro['unidades']; ?></td>
-                <td class="col-2" style=" text-align: right; "><?php echo number_format($pro['precio'], 2, ',', '.'); ?></td>
-                <td class="col-2" style=" text-align: right;"><?php echo number_format($pro['unidades'] * $pro['precio'], 2, ',', '.'); ?></td>
-            </tr><?php
-        }
-        ?>
+                <?php if ($precios) { ?>
+                    <td class="col-2" style=" text-align: right; "><?php echo number_format($pro['precio'], 2, ',', '.'); ?></td>
+                    <td class="col-2" style=" text-align: right;"><?php echo number_format($pro['unidades'] * $pro['precio'], 2, ',', '.'); ?></td>
+                <?php } ?></tr><?php } ?>
     </tbody>
     <tfoot>
         <tr>
-            <td colspan="4" class="condiciones">
-                <div class="col-8">
-                    <strong>NOTA:&nbsp; </strong><br/><?php echo $data['nota']; ?>
-                </div>
-            </td>            
-            <td style="text-align: right; "><strong> TOTAL: </strong></td>
-            <td style="text-align: right; "> <?php echo number_format($subtotal, 2, ',', '.'); ?></td>
+            <td colspan="4" class="condiciones col-8">
+                <strong>NOTA:&nbsp; </strong><br/><?php echo $data['nota']; ?>
+            </td>
+            <?php if ($precios) { ?>
+                <td class="col-2" style="text-align: right; "><strong> TOTAL: </strong></td>
+                <td class="col-2" style="text-align: right; "> <?php echo number_format($subtotal, 2, ',', '.'); ?></td> 
+            <?php } ?>
         </tr>
     </tfoot>
 </table>

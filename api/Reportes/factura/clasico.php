@@ -52,26 +52,19 @@
             <td  class="style-none" style=" width: 10%;text-align: center; height: 15px; vertical-align: middle;;"><?php echo $pro['medida']; ?></td>
             <td  class="style-none" style=" width: 15%;text-align: right; height: 15px; vertical-align: middle;"><?php echo number_format($pro['precio'], 2, ',', '.'); ?></td>
             <td  class="style-none" style=" width: 20%;text-align: right; height: 15px; vertical-align: middle;"><?php echo number_format($pro['unidades'] * $pro['precio'], 2, ',', '.'); ?></td>
-
-        </tr><?php
-    }
-    ?>
-
+        </tr><?php } ?>
 </table>
 <div style="width: 102%">
     <hr/>
 </div>
 <table  class="style-none" cellspacing="3" style="width: 100%; font-size: 7pt;">
-
     <tr  class="style-none">
         <th  class="style-none" style="width: 10%;text-align:center;"></th>
         <th  class="style-none" style="width: 50%; text-align: center;"></th>
         <th  class="style-none" style="width: 10%;text-align: center;"></th>
         <th  class="style-none" style="width: 15%;text-align: center;"></th>
         <th  class="style-none" style="width: 15%;text-align: center;"></th>
-
     </tr>
-
     <tr  class="style-none">
         <td  class="style-none" rowspan="5" colspan="3" style="width: 60%; text-align: left; font-size: 7pt;">
             <strong>OBSERVACION:</strong> <?php echo $data['nota']; ?>
@@ -86,5 +79,4 @@
         <td  class="style-none" style="widtd: 85%; text-align: right;"><strong> TOTAL COMPRA:</strong></td>
         <td  class="style-none" style="widtd: 15%; text-align: right;"> <?php echo number_format($subtotal + $data['impuesto'], 2, ',', '.'); ?></td>
     </tr>
-
 </table>

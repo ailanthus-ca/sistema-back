@@ -9,7 +9,7 @@
     'tiempo_entrega' => '',
     'validez' => '',
     'tipo_papel' => 'LETTER',
-    'version' => 'nuevo',
+    'version' => 'mecica',
     'encabezado' => true,
     'piepagina' => true,
 );
