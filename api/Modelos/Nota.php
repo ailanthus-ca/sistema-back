@@ -43,7 +43,7 @@ class Nota extends \Prototipo\Operaciones {
             $pen[] = array(
                 (int) $row['codFact'],
                 $row['cod_cliente'],
-                $row['nombre'], 
+                $row['nombre'],
                 $row['fecha'],
                 (float) $row['total'],
                 (int) $row['usuario'],
@@ -139,7 +139,8 @@ class Nota extends \Prototipo\Operaciones {
         foreach ($this->detalles as $pro) {
             $this->query("INSERT INTO detallesNotas VALUES " .
                     "('$nota','$pro->codigo',$pro->unidades,$pro->precio) ");
-            $producto->salida($pro->codigo, $pro->unidades);
+            if ($producto->inventario !== 1)
+                $producto->salida($pro->codigo, $pro->unidades);
         }
         $this->actualizarEstado();
         return $this->getResponse($nota);

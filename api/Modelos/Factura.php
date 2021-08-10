@@ -113,7 +113,7 @@ class Factura extends \Prototipo\Operaciones {
                 . "2)");
 
         $producto = new Producto();
-        
+
         foreach ($this->detalles as $pro) {
             $monto = $pro->unidades * $pro->precio;
             $this->query("INSERT INTO detallefactura VALUES " .
@@ -122,12 +122,8 @@ class Factura extends \Prototipo\Operaciones {
                     . "$pro->unidades,"
                     . "$pro->precio,"
                     . "$monto )");
-            
             $producto->cargar($pro->codigo);
-            if ($producto->inventario !== 1) 
-                $producto->entrada($pro->codigo, $pro->unidades);
-            
-            if ($this->nota === 0)
+            if ($producto->inventario !== 1 && $this->nota === 0)
                 $producto->salida($pro->codigo, $pro->unidades);
         }
         $this->actualizarEstado();
@@ -244,8 +240,7 @@ class Factura extends \Prototipo\Operaciones {
 
     // ------------------------------------ GRAFICAS ------------------------------------
 
-    public function totalFacturas()
-    {
+    public function totalFacturas() {
         $query = $this->query("SELECT COUNT(*) AS total FROM `factura`");
         $pen = 0;
         while ($row = $query->fetch_array()) {
@@ -308,7 +303,7 @@ class Factura extends \Prototipo\Operaciones {
         return $this->getResponse($pen);
     }
 
-    public function utilidad($ano, $mes){
+    public function utilidad($ano, $mes) {
         $query = $this->query("SELECT SUM(subtotal) as ventas, SUM(costo) as costos 
             FROM factura
             WHERE MONTH(fecha) = $mes
@@ -317,22 +312,21 @@ class Factura extends \Prototipo\Operaciones {
         while ($row = $query->fetch_array()) {
             $ventas = $row['ventas'];
             $costos = $row['costos'];
-            $prom = round((($ventas-$costos)*100)/$costos);
+            $prom = round((($ventas - $costos) * 100) / $costos);
         }
         return $this->getResponse($prom);
     }
 
-    public function prueba($ano)
-    {
+    public function prueba($ano) {
         $query = $this->query("SELECT `ventas`,`monto`,`equilibrio`.`mes` FROM `mejor_mes`,`equilibrio` 
             WHERE `mejor_mes`.`mes`=`equilibrio`.`mes` 
             AND `mejor_mes`.`año`= $ano AND `equilibrio`.`ano`= $ano");
         $pen = array();
-         while ($row = $query->fetch_array()) {
+        while ($row = $query->fetch_array()) {
             $pen[] = array(
                 $this->numberToMes($row['mes']),
-                (int) $row['monto'],//equilibrio
-                (int) $row['ventas'],//ventas del mes
+                (int) $row['monto'], //equilibrio
+                (int) $row['ventas'], //ventas del mes
             );
         }
         return $this->getResponse($pen);
