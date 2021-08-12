@@ -252,7 +252,6 @@ class Factura extends \conexion {
 
     function torta($rango, $p1, $p2) {
         $factura = new \Modelos\Factura();
-        $data = array();
         switch ($rango) {
             case 'ano':
                 $where = " YEAR(fecha) = $p1 ";
@@ -286,14 +285,13 @@ class Factura extends \conexion {
         return json_encode($data);
     }
 
-    function utilidad($ano, $mes){
+    function utilidad($ano, $mes) {
         $factura = new \Modelos\Factura();
-        $data = array();
         $data = $factura->utilidad($ano, $mes);
         return json_encode($data);
     }
 
-    function equilibrio($ano, $mes){
+    function equilibrio($ano, $mes) {
         $equilibrio = new \Modelos\Equilibrio();
         $equilibrio->pto = $equilibrio->postFloat("pto");
         if ($equilibrio->pto != 0) {
@@ -302,12 +300,18 @@ class Factura extends \conexion {
         } else {
             $data = $equilibrio->get($ano, $mes);
             return json_encode($data);
-        }        
+        }
     }
 
-    function prueba($ano){
+    function prueba($ano) {
         $factura = new \Modelos\Factura();
         return json_encode($factura->prueba($ano));
+    }
+
+    function mejor_mes() {
+        $factura = new \Modelos\Factura();
+        $factura->guardar_mes();
+        return json_encode(array('mejor' => $factura->mejor_mes(), 'actual' => $factura->mes_actual()));
     }
 
 }

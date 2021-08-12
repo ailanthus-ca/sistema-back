@@ -332,4 +332,43 @@ class Factura extends \Prototipo\Operaciones {
         return $this->getResponse($pen);
     }
 
+    public function mes_actual() {
+        $mes = date("n");
+        $ano = date("Y");
+        $query = $this->query("SELECT SUM(subtotal) AS ventas FROM factura WHERE estatus = 2 AND MONTH(fecha)=$mes AND YEAR(fecha)=$ano");
+        if ($row = $query->fetch_array()) {
+            return (int) $row['ventas'];
+        }
+        return 0;
+    }
+
+    public function mejor_mes() {
+        $query = $this->query("SELECT max( ventas ) AS ventas, mes,año FROM mejor_mes");
+        $mejor = array('ventas' => 0, 'mes' => 0, 'ano' => 0);
+        if ($row = $query->fetch_array()) {
+            $mejor = array('ventas' => (int) $row['ventas'], 'mes' => (int) $row['mes'], 'ano' => (int) $row['ano']);
+        }
+        return $mejor;
+    }
+
+    public function guardar_mes() {
+        $mes = date("n");
+        $ano = date("Y");
+        if ($mes == 1) {
+            $mes = 12;
+            $ano = $ano - 1;
+        } else {
+            $mes = $mes - 1;
+        }
+        $query = $this->query("SELECT ventas FROM mejor_mes WHERE mes= $mes AND año= $ano");
+        if ($row = $query->fetch_array()) {
+            
+        } else {
+            $query = $this->query("SELECT SUM(subtotal) AS ventas FROM factura WHERE estatus = 2 AND MONTH(fecha)=$mes AND YEAR(fecha)='$ano'");
+            if ($row = $query->fetch_array()) {
+                $this->query("INSERT INTO `mejor_mes`(`id`, `ventas`, `mes`, `año`) VALUES (null," . $row['ventas'] . ",$mes,$ano)");
+            }
+        }
+    }
+
 }
