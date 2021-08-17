@@ -284,8 +284,8 @@ class Cotizacion extends \Prototipo\Operaciones {
         $pen = array();
         while ($row = $query->fetch_array()) {
             $pen[] = array(
-                'cantidad' => $row['CANT'],
-                'estatus' => $row['RANK']
+                'cantidad' => (int) $row['CANT'],
+                'estatus' => (int) $row['RANK']
             );
         }
         return $this->getResponse($pen);
