@@ -253,14 +253,14 @@ class Factura extends \Prototipo\Operaciones {
         $query = $this->query("SELECT "
                 . "estatus AS RANK, "
                 . "COUNT(estatus) AS CANT "
-                . "FROM compra "
+                . "FROM factura "
                 . "WHERE $where "
                 . "GROUP BY estatus");
         $pen = array();
         while ($row = $query->fetch_array()) {
             $pen[] = array(
-                'cantidad' => $row['CANT'],
-                'estatus' => $row['RANK']
+                'cantidad' => (int) $row['CANT'],
+                'estatus' => (int) $row['RANK']
             );
         }
         return $this->getResponse($pen);
@@ -296,11 +296,14 @@ class Factura extends \Prototipo\Operaciones {
         }
         $dias = date('t', strtotime("$ano-$mes-1"));
         for ($i = 1; $i <= $dias; $i++) {
-            if (empty($pen[$i])) {
+            if (empty($pen[$i]))
                 $pen[$i] = 0;
-            }
         }
-        return $this->getResponse($pen);
+        $data = array();
+        foreach ($pen as $key => $value) {
+            $data[] = array($key, $value);
+        }
+        return $this->getResponse($data);
     }
 
     public function utilidad($ano, $mes) {
@@ -343,10 +346,10 @@ class Factura extends \Prototipo\Operaciones {
     }
 
     public function mejor_mes() {
-        $query = $this->query("SELECT max( ventas ) AS ventas, mes,año FROM mejor_mes");
+        $query = $this->query("SELECT ventas,mes,año FROM mejor_mes,(SELECT MAX(ventas) as v FROM mejor_mes) as m WHERE v=ventas");
         $mejor = array('ventas' => 0, 'mes' => 0, 'ano' => 0);
         if ($row = $query->fetch_array()) {
-            $mejor = array('ventas' => (int) $row['ventas'], 'mes' => (int) $row['mes'], 'ano' => (int) $row['ano']);
+            $mejor = array('ventas' => (int) $row['ventas'], 'mes' => $this->numberToMes($row['mes']), 'ano' => (int) $row['año']);
         }
         return $mejor;
     }

@@ -6,7 +6,7 @@
     'Cotizacion' => 20,
     'Departamento' => 14,
     'Dolares' => 6,
-    'Factura' => 8,
+    'Factura' => 9,
     'Nota' => 4,
     'Orden' => 2,
     'Plantilla' => 4,

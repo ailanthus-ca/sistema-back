@@ -3,8 +3,8 @@
 namespace Modelos;
 
 class Compra extends \Prototipo\Operaciones {
-    var $estado = 'Compra';
 
+    var $estado = 'Compra';
     var $id_orden = 0;
     var $cod_proveedor = '';
     var $cod_documento = '';
@@ -34,7 +34,7 @@ class Compra extends \Prototipo\Operaciones {
                 (int) $row['codFact'],
                 $row['cod_proveedor'],
                 $row['nombre'],
-                $row['fecha'],              
+                $row['fecha'],
                 (float) $row['total'],
                 (int) $row['usuario'],
                 (int) $row['status'],
@@ -117,26 +117,26 @@ class Compra extends \Prototipo\Operaciones {
         //;
         $productos = new \Modelos\Producto();
         foreach ($this->detalles as $iten) {
-        	$monto = $iten->unidades * $iten->precio;
-        	$this->query("INSERT INTO `detallecompra` VALUES("
-        		. "$cod_compra,"
-        		. "'$iten->codigo',"
-        		. "$iten->unidades,"
-        		. "$iten->precio,"
-        		. "$monto)");
-        	$config = new \Config('costo');
-        	$productos->cargar($iten->codigo);
+            $monto = $iten->unidades * $iten->precio;
+            $this->query("INSERT INTO `detallecompra` VALUES("
+                    . "$cod_compra,"
+                    . "'$iten->codigo',"
+                    . "$iten->unidades,"
+                    . "$iten->precio,"
+                    . "$monto)");
+            $config = new \Config('costo');
+            $productos->cargar($iten->codigo);
 
-        	if ($productos->inventario !== 1) {
-        		$productos->entrada($iten->codigo, $iten->unidades);
-        	}
-        	$costo = $config->get();
-        	if ($costo['costo'] < 3) {
-        		if ($costo['costo'] === 2 && $productos->checkCosto($iten->precio, $tasa))
-        			$productos->costo($iten->codigo, $iten->precio, $tasa);
-        		elseif($costo['costo'] ===1)
-        			$productos->costo($iten->codigo, $iten->precio, $tasa);
-        	}            
+            if ($productos->inventario !== 1) {
+                $productos->entrada($iten->codigo, $iten->unidades);
+            }
+            $costo = $config->get();
+            if ($costo['costo'] < 3) {
+                if ($costo['costo'] === 2 && $productos->checkCosto($iten->precio, $tasa))
+                    $productos->costo($iten->codigo, $iten->precio, $tasa);
+                elseif ($costo['costo'] === 1)
+                    $productos->costo($iten->codigo, $iten->precio, $tasa);
+            }
         }
         if ($this->id_orden > 0) {
             $orden = new \Modelos\Orden();
@@ -287,9 +287,8 @@ class Compra extends \Prototipo\Operaciones {
     }
 
     // -------------------------- GRAFICAS -----------------------------------
-    
-    public function totalCompras()
-    {
+
+    public function totalCompras() {
         $query = $this->query("SELECT COUNT(*) AS total FROM `compra`");
         $pen = 0;
         while ($row = $query->fetch_array()) {
@@ -308,8 +307,8 @@ class Compra extends \Prototipo\Operaciones {
         $pen = array();
         while ($row = $query->fetch_array()) {
             $pen[] = array(
-                'cantidad' => $row['CANT'],
-                'estatus' => $row['RANK']
+                'cantidad' => (int) $row['CANT'],
+                'estatus' => (int) $row['RANK']
             );
         }
         return $this->getResponse($pen);
