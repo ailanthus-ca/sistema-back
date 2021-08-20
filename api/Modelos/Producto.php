@@ -165,12 +165,12 @@ class Producto extends \conexion {
     }
 
     public function entrada($cod, $can) {
-        $this->query("UPDATE producto set cantidad = cantidad + ('$can') WHERE codigo = '$cod'");
+        $this->query("UPDATE producto set cantidad = cantidad + $can WHERE codigo = '$cod'");
         $this->actualizarEstado();
     }
 
     public function salida($cod, $can) {
-        $this->query("UPDATE producto set cantidad = cantidad - ('$can') WHERE codigo = '$cod'");
+        $this->query("UPDATE producto set cantidad = cantidad - $can WHERE codigo = '$cod'");
         $this->actualizarEstado();
     }
 

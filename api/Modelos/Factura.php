@@ -131,14 +131,11 @@ class Factura extends \Prototipo\Operaciones {
     }
 
     function cancelar($id) {
-        $sql = "UPDATE `factura` SET `estatus`= 0 WHERE codigo = $id";
-        $query = $this->query($sql);
-        $sql2 = $this->query("select * from detallefactura where codFactura = '$id' ");
+        $this->query("UPDATE `factura` SET `estatus`= 0 WHERE codigo = $id");
         $producto = new Producto();
-        while ($row = $sql2->fetch_array()) {
-            $cod = $row['codProducto'];
-            $cantidad = intval($row['cantidad']);
-            $producto->entrada($cod, $cantidad);
+        $query = $this->query("select * from detallefactura where codFactura = $id ");
+        while ($row = $query->fetch_array()) {
+            $producto->entrada($row['codProducto'],(float) $row['cantidad']);
         }
         $this->actualizarEstado();
         return $this->getResponse(1);
