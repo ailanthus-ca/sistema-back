@@ -309,9 +309,11 @@ class Factura extends \conexion {
     }
 
     function mejor_mes() {
+        $nota = new Nota();
         $factura = new \Modelos\Factura();
+        $total = $factura->mes_actual() + $nota->mes_actual();
         $factura->guardar_mes();
-        return json_encode(array('mejor' => $factura->mejor_mes(), 'actual' => $factura->mes_actual()));
+        return json_encode(array('mejor' => $factura->mejor_mes(), 'actual' => $total));
     }
 
 }

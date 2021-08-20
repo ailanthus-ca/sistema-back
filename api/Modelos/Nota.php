@@ -261,6 +261,16 @@ class Nota extends \Prototipo\Operaciones {
         return $this->getResponse($pen);
     }
 
+    public function mes_actual() {
+        $mes = date("n");
+        $ano = date("Y");
+        $query = $this->query("SELECT SUM(total) AS ventas FROM notasalida WHERE estatus = 1 AND MONTH(fecha)=$mes AND YEAR(fecha)=$ano");
+        if ($row = $query->fetch_array()) {
+            return (int) $row['ventas'];
+        }
+        return 0;
+    }
+
     // ------------------------------------ GRAFICAS ------------------------------------
 
     public function totalNotas() {

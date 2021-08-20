@@ -15,8 +15,8 @@
     </head>
     <body class="sidebar-mini wysihtml5-supported sidebar-collapse skin-green-light">
         <div id="root" class="wrapper"></div>
-        <script src="http://sisapi-v2.test:3000/static/js/bundle.js"></script>
-        <script src="http://sisapi-v2.test:3000/static/js/vendors~main.chunk.js"></script>
-        <script src="http://sisapi-v2.test:3000/static/js/main.chunk.js"></script>
+        <script src="http://sisapi-v2.test:3000/static/js/bundle.js?hash=<?= rand( 1,  5000) ?>"></script>
+        <script src="http://sisapi-v2.test:3000/static/js/vendors~main.chunk.js?hash=<?= rand( 1,  5000) ?>"></script>
+        <script src="http://sisapi-v2.test:3000/static/js/main.chunk.js?hash=<?= rand( 1,  5000) ?>"></script>
     </body>
 </html>

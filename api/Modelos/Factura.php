@@ -367,10 +367,9 @@ class Factura extends \Prototipo\Operaciones {
         if ($row = $query->fetch_array()) {
             
         } else {
-            $query = $this->query("SELECT SUM(subtotal) AS ventas FROM factura WHERE estatus = 2 AND MONTH(fecha)=$mes AND YEAR(fecha)='$ano'");
-            if ($row = $query->fetch_array()) {
-                $this->query("INSERT INTO `mejor_mes`(`id`, `ventas`, `mes`, `año`) VALUES (null," . $row['ventas'] . ",$mes,$ano)");
-            }
+            $nota = new Nota();
+            $total = $this->mes_actual() + $nota->mes_actual();
+            $this->query("INSERT INTO `mejor_mes`(`id`, `ventas`, `mes`, `año`) VALUES (null,$total,$mes,$ano)");
         }
     }
 
