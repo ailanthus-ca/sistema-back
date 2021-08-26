@@ -48,8 +48,8 @@ class Cliente extends \Prototipo\Entidades {
                 'contacto' => $row['contacto'],
                 'direccion' => $row['direccion'],
                 'tipo_contribuyente' => $row['tipo_contribuyente'],
-                'retencion' => $row['retencion'],
-                'estatus' => $row['estatus'],
+                'retencion' => (float) $row['retencion'],
+                'estatus' => (int) $row['estatus'],
             );
             return $this->getResponse($data);
         } else {
