@@ -43,7 +43,7 @@ class Proveedor extends \Prototipo\Entidades {
                 'correo' => $row['correo'],
                 'contacto' => $row['contacto'],
                 'direccion' => $row['direccion'],
-                'estatus' => $row['estatus']);
+                'estatus' => (int)  $row['estatus']);
         }
         return $this->getResponse($data);
     }

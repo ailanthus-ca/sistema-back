@@ -45,9 +45,12 @@ class Cliente {
         if ($Cliente->tipo_contribuyente == '') {
             $Cliente->setError('No se mando un tipo de contribuyente');
         }
-        // Validar que exista una retencion
-        if ($Cliente->retencion == 0) {
-            $Cliente->setError('No se mando ninguna retención');
+        // Validar que exista el contacto
+        if ($Cliente->tipo_contribuyente == 'ESPECIAL') {
+            // Validar que exista una retencion
+            if ($Cliente->retencion == 0) {
+                $Cliente->setError('No se mando ninguna retención');
+            }
         }
         //Validar si hubo errores
         if ($Cliente->response > 300) {
