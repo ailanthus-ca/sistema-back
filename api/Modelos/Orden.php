@@ -142,23 +142,23 @@ class Orden extends \Prototipo\Operaciones {
         return $this->getResponse(1);
     }
 
-    function listaWhere($where){
+    function listaWhere($where) {
         $pen = array();
         $query = $this->query("SELECT "
-            ."ordencompra.codigo as codFact, "
-            ."telefono, "
-            ."correo, "
-            ."contacto, " 
-            ."fecha, "
-            ."nombre, "
-            ."total, "
-            ."ordencompra.estatus as status, " 
-            ."nota, "
-            ."usuario " 
-            ."FROM ordencompra,proveedor " 
-            ."WHERE ordencompra.cod_proveedor = proveedor.codigo "
-            ." $where "
-            ."order by fecha DESC");
+                . "ordencompra.codigo as codFact, "
+                . "telefono, "
+                . "correo, "
+                . "contacto, "
+                . "fecha, "
+                . "nombre, "
+                . "total, "
+                . "ordencompra.estatus as status, "
+                . "nota, "
+                . "usuario "
+                . "FROM ordencompra,proveedor "
+                . "WHERE ordencompra.cod_proveedor = proveedor.codigo "
+                . " $where "
+                . "order by fecha DESC");
         while ($row = $query->fetch_array()) {
             $pen[] = array(
                 'codigo' => (int) $row['codFact'],
@@ -186,7 +186,7 @@ class Orden extends \Prototipo\Operaciones {
                 . "ordencompra.usuario, "
                 . "detalleordencompra.cantidad, "
                 . "detalleordencompra.precio_unit "
-                . "FROM ordencompra, cliente, detalleordencompra "
+                . "FROM ordencompra, proveedor, detalleordencompra "
                 . "WHERE ordencompra.cod_proveedor = proveedor.codigo "
                 . "AND detalleordencompra.cod_orden = ordencompra.codigo "
                 . "AND detalleordencompra.cod_producto = '$codigo' "
@@ -213,10 +213,32 @@ class Orden extends \Prototipo\Operaciones {
         return $this->getResponse($pen);
     }
 
+    function productos($where) {
+        $query = $this->query("SELECT "
+                . "producto.codigo as codigo, "
+                . "producto.descripcion as descripcion, "
+                . "SUM( detalleordencompra.cantidad ) as cantidad, "
+                . "SUM( detalleordencompra.precio_unit*detalleordencompra.cantidad ) as monto "
+                . "FROM detalleordencompra,  producto, ordencompra WHERE "
+                . "producto.codigo = detalleordencompra.cod_producto AND "
+                . "ordencompra.codigo = detalleordencompra.cod_orden "
+                . "$where "
+                . "GROUP BY `producto`.`codigo`");
+        $pen = array();
+        while ($row = $query->fetch_array()) {
+            $pen[] = array(
+                'codigo' => $row['codigo'],
+                'descripcion' => $row['descripcion'],
+                'cantidad' => (float) $row['cantidad'],
+                'monto' => (float) $row['monto'],
+            );
+        }
+        return $this->getResponse($pen);
+    }
+
     // ---------------------------------- GRAFICAS ---------------------------------
 
-    public function totalOrdenes()
-    {
+    public function totalOrdenes() {
         $query = $this->query("SELECT COUNT(*) AS total FROM `ordencompra`");
         $pen = 0;
         while ($row = $query->fetch_array()) {

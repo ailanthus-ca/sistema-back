@@ -31,14 +31,14 @@ class Ajuste extends \conexion {
                 $detalle[] = $row2['cod_producto'];
             }
             $data[] = array(
-                 (int) $row['codFact'],
-                 (int) $row['usuario'],
-                 $row['nombre'],
-                 $row['tipo_ajuste'],
-                 $row['fecha'],
-                 $row['nota'],
-                 (int) $row['estatus'],
-                 $detalle
+                (int) $row['codFact'],
+                (int) $row['usuario'],
+                $row['nombre'],
+                $row['tipo_ajuste'],
+                $row['fecha'],
+                $row['nota'],
+                (int) $row['estatus'],
+                $detalle
             );
         }
         return $this->getResponse($data);
@@ -112,7 +112,7 @@ class Ajuste extends \conexion {
                     . "'$pro->unidades',"
                     . "'$pro->comentario',"
                     . "'') ");
-            $producto->entrada($pro->codigo, $pro->unidades);
+            $producto->cargarStock($pro->codigo);
         }
     }
 
@@ -125,7 +125,7 @@ class Ajuste extends \conexion {
                     . "'$pro->unidades',"
                     . "'$pro->comentario',"
                     . "'') ");
-            $producto->salida($pro->codigo, $pro->unidades);
+            $producto->cargarStock($pro->codigo);
         }
     }
 
@@ -174,14 +174,14 @@ class Ajuste extends \conexion {
     function deshacerEntrada($detalles) {
         $producto = new Producto();
         foreach ($detalles as $pro) {
-            $producto->salida($pro['codigo'], $pro['unidades']);
+            $producto->cargarStock($pro->codigo);
         }
     }
 
     function deshacerSalida($detalles) {
         $producto = new Producto();
         foreach ($detalles as $pro) {
-            $producto->entrada($pro['codigo'], $pro['unidades']);
+            $producto->cargarStock($pro->codigo);
         }
     }
 
@@ -242,6 +242,34 @@ class Ajuste extends \conexion {
             );
         }
         return $this->getResponse($pen);
+    }
+
+    function salidasValidas($codigo, $where = '') {
+        $query = $this->query("SELECT "
+                . "SUM( cantidad ) as cantidad "
+                . "FROM detalleajusteinv, ajusteinv WHERE "
+                . "cod_producto = '$codigo' AND "
+                . "codigo = cod_ajuste AND "
+                . "tipo_ajuste = 'SALIDA' AND $where "
+                . "estatus = 1");
+        while ($row = $query->fetch_array()) {
+            return (float) $row['cantidad'];
+        }
+        return 0;
+    }
+
+    function entradasValidas($codigo, $where = '') {
+        $query = $this->query("SELECT "
+                . "SUM( cantidad ) as cantidad "
+                . "FROM detalleajusteinv, ajusteinv WHERE "
+                . "cod_producto = '$codigo' AND "
+                . "codigo = cod_ajuste AND "
+                . "tipo_ajuste = 'ENTRADA' AND $where "
+                . "estatus = 1");
+        while ($row = $query->fetch_array()) {
+            return (float) $row['cantidad'];
+        }
+        return 0;
     }
 
 }

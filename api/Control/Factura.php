@@ -20,8 +20,8 @@ class Factura extends \conexion {
         $Factura->porc_impuesto = $Factura->postString('porc_impuesto');
         $Factura->costo = $Factura->postString('costo');
         $Factura->condicion = $Factura->postString('condicion');
-        $Factura->id_cotizacion = $Factura->postString('id_cotizacion');
-        $Factura->id_nota = $Factura->postString('id_nota');
+        $Factura->id_cotizacion = $Factura->postIntenger('id_cotizacion');
+        $Factura->id_nota = $Factura->postIntenger('id_nota');
         $Factura->nota = $Factura->postString("nota");
         $Factura->impuesto = $Factura->postFloat("impuesto");
         $Factura->subtotal = $Factura->postFloat("subtotal");
@@ -137,7 +137,7 @@ class Factura extends \conexion {
 
     function reporteVendedor($user, $rango, $p1, $p2) {
         $Factura = new \Modelos\Factura();
-        $where = " AND factura.usuario=$user AND factura.estatus = 2";
+        $where = " AND factura.usuario=$user AND factura.estatus > 0 ";
         $usuario = new \Modelos\Usuario();
         $userData = $usuario->detalles($user);
         $titulo = $userData['nombre'] . '<br>';
@@ -159,7 +159,8 @@ class Factura extends \conexion {
                 break;
         }
         $data = array(
-            'facturas' => $Factura->listaWhere($where),
+            'lista' => $Factura->listaWhere($where),
+            'operacion' => 'VENDEDOR',
             'titulo' => $titulo
         );
         $pdf = new \PDF\Reportes();

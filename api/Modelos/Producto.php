@@ -164,13 +164,9 @@ class Producto extends \conexion {
         return $this->getResponse($this->ver($id));
     }
 
-    public function entrada($cod, $can) {
-        $this->query("UPDATE producto set cantidad = cantidad + $can WHERE codigo = '$cod'");
-        $this->actualizarEstado();
-    }
-
-    public function salida($cod, $can) {
-        $this->query("UPDATE producto set cantidad = cantidad - $can WHERE codigo = '$cod'");
+    public function cargarStock($cod) {
+        $cant = $this->calcularStock($cod);
+        $this->query("UPDATE producto set cantidad = $cant WHERE codigo = '$cod'");
         $this->actualizarEstado();
     }
 
@@ -242,6 +238,36 @@ class Producto extends \conexion {
             $pen = (int) $row['total'];
         }
         return $this->getResponse($pen);
+    }
+
+    public function calcularStock($cod) {
+        $fac = new Factura();
+        $not = new Nota();
+        $com = new Compra();
+        $aju = new Ajuste();
+        //salidas
+        $factu = $fac->salidasValidas($cod);
+        $notas = $not->salidasValidas($cod);
+        $ajuSa = $aju->salidasValidas($cod);
+        //entradas
+        $ajuEn = $aju->entradasValidas($cod);
+        $compr = $com->entradasValidas($cod);
+        return ($ajuEn + $compr) - ($factu + $notas + $ajuSa);
+    }
+
+    public function stockAfecha($cod, $where) {
+        $fac = new Factura();
+        $not = new Nota();
+        $com = new Compra();
+        $aju = new Ajuste();
+        //salidas
+        $factu = $fac->salidasValidas($cod, $where);
+        $notas = $not->salidasValidas($cod, $where);
+        $ajuSa = $aju->salidasValidas($cod, $where);
+        //entradas
+        $ajuEn = $aju->entradasValidas($cod, $where);
+        $compr = $com->entradasValidas($cod, $where);
+        return ($ajuEn + $compr) - ($factu + $notas + $ajuSa);
     }
 
 }

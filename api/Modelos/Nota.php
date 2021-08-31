@@ -140,7 +140,7 @@ class Nota extends \Prototipo\Operaciones {
             $this->query("INSERT INTO detallesNotas VALUES " .
                     "('$nota','$pro->codigo',$pro->unidades,$pro->precio) ");
             if ($producto->inventario !== 1)
-                $producto->salida($pro->codigo, $pro->unidades);
+                $producto->cargarStock($pro->codigo);
         }
         $this->actualizarEstado();
         return $this->getResponse($nota);
@@ -148,12 +148,10 @@ class Nota extends \Prototipo\Operaciones {
 
     function cancelar($id) {
         $query = $this->query("UPDATE `notasalida` SET `estatus`= 0 WHERE codigo = $id");
-        $sql2 = $this->query("select * from detallesnotas where nota = '$id' ");
+        $sql2 = $this->query("select * from detallesNotas where nota = '$id' ");
         $producto = new Producto();
         while ($row = $sql2->fetch_array()) {
-            $cod = $row['producto'];
-            $cantidad = intval($row['cantidad']);
-            $producto->entrada($cod, $cantidad);
+            $producto->cargarStock($row['producto']);
         }
         $this->actualizarEstado();
         return $this->getResponse(1);
@@ -181,11 +179,11 @@ class Nota extends \Prototipo\Operaciones {
                 . "total, "
                 . "notasalida.estatus as status, "
                 . "notasalida.usuario, "
-                . "detallesnotas.cantidad, "
-                . "detallesnotas.precio "
-                . "FROM notasalida, detallesnotas, cliente "
+                . "detallesNotas.cantidad, "
+                . "detallesNotas.precio "
+                . "FROM notasalida, detallesNotas, cliente "
                 . "WHERE notasalida.cod_cliente = cliente.codigo "
-                . "AND detallesnotas.nota = notasalida.codigo "
+                . "AND detallesNotas.nota = notasalida.codigo "
                 . "AND producto = '$codigo' "
                 . "$where "
                 . "order by fecha DESC ");
@@ -242,11 +240,11 @@ class Nota extends \Prototipo\Operaciones {
         $query = $this->query("SELECT "
                 . "producto.codigo as codigo, "
                 . "producto.descripcion as descripcion, "
-                . "SUM( detallesnotas.cantidad ) as cantidad, "
-                . "SUM( detallesnotas.precio*detallesnotas.cantidad ) as monto "
-                . "FROM detallesnotas,  producto, notasalida WHERE "
-                . "producto.codigo = detallesnotas.producto AND "
-                . "notasalida.codigo = detallesnotas.nota "
+                . "SUM( detallesNotas.cantidad ) as cantidad, "
+                . "SUM( detallesNotas.precio*detallesNotas.cantidad ) as monto "
+                . "FROM detallesNotas,  producto, notasalida WHERE "
+                . "producto.codigo = detallesNotas.producto AND "
+                . "notasalida.codigo = detallesNotas.nota "
                 . "$where "
                 . "GROUP BY `producto`.`codigo`");
         $pen = array();
@@ -267,6 +265,19 @@ class Nota extends \Prototipo\Operaciones {
         $query = $this->query("SELECT SUM(total) AS ventas FROM notasalida WHERE estatus = 1 AND MONTH(fecha)=$mes AND YEAR(fecha)=$ano");
         if ($row = $query->fetch_array()) {
             return (int) $row['ventas'];
+        }
+        return 0;
+    }
+
+    function salidasValidas($codigo, $where = '') {
+        $query = $this->query("SELECT "
+                . "SUM( cantidad ) as cantidad "
+                . "FROM detallesNotas, notasalida WHERE "
+                . "producto = '$codigo' AND $where "
+                . "codigo = nota AND "
+                . "estatus = 1");
+        while ($row = $query->fetch_array()) {
+            return (float) $row['cantidad'];
         }
         return 0;
     }

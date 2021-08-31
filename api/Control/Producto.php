@@ -38,7 +38,7 @@ class Producto {
         }
         //asignar codigo
         $Producto->codigo = "$Producto->departamento$num";
-       
+
         // Validaciones
         if ($Producto->departamento == '') {
             $Producto->setError('DEBE SELECCIONAR UN DEPARTAMENTO');
@@ -140,35 +140,51 @@ class Producto {
         $ajuste = new \Modelos\Ajuste();
         $where = '';
         $titulo = "DESDE EL INICIO DE LOS TIEMPOS";
+        $fecha = '';
+        $inicio = '';
         switch ($rango) {
             case 'ano':
                 $where = " AND YEAR(fecha) = $p1 ";
                 $titulo = "AÑO $p1";
+                $inicio = "$p1-1-1";
+                $fecha = "fecha < '$inicio' AND ";
                 break;
             case 'mes':
                 $where = " AND YEAR(fecha)= $p1 AND month(fecha) = $p2 ";
                 $m = $compras->numberToMes($p2);
                 $titulo = "$m DEl $p1";
+                $inicio = "$p1-$p2-1";
+                $fecha = "fecha < '$inicio' AND ";
                 break;
             case 'rango':
                 $date1 = new \DateTime($p1);
                 $date2 = new \DateTime($p2);
                 $where = "AND fecha between '$p1' AND '$p2' ";
                 $titulo = "DESDE " . $date1->format("d-m-Y") . " HASTA " . $date2->format("d-m-Y");
+                $inicio = "$p1";
+                $fecha = "fecha < '$p1' AND ";
                 break;
         }
-
+        $producto = new \Modelos\Producto();
+        $pro = $producto->ver($cod);
+        $stock = $producto->stockAfecha($cod, $fecha);
+        $pen = array(
+            'operacion' => 'STOCK',
+            'tipo' => 'ENTRADA',
+            'orden' => 0,
+            'fecha' => $inicio,
+            'codigo' => '000000',
+            'nombre' => "INICIO DEL REPORTE",
+            'cantidad' => $stock
+        );
         $com = $compras->listaWithProducto($cod, $where . ' AND compra.estatus > 0');
         $fac = $factura->listaWithProducto($cod, $where . ' AND factura.estatus > 0');
         $not = $nota->listaWithProducto($cod, $where . ' AND notasalida.estatus > 0');
         $aju = $ajuste->listaWithProducto($cod, $where);
-        $operaciones = array_merge($com, $fac, $not, $aju);
+        $operaciones = array_merge(array($pen),$com, $fac, $not, $aju);
         usort($operaciones, function ($a, $b) {
             return $a['orden'] - $b['orden'];
         });
-
-        $producto = new \Modelos\Producto();
-        $pro = $producto->ver($cod);
         $data = array(
             'operaciones' => $operaciones,
             'title' => $pro['descripcion'] . '<br>' . $titulo
@@ -190,8 +206,8 @@ class Producto {
         $tasa = $dolar->valor();
         return json_encode(array(
             'costoDolarNuevo' => number_format($pre / $tasa, 2, ',', '.'),
-            'costoNuevo' => number_format($pre , 2, ',', '.'),
-            'costoAnte' => number_format($Producto->costo , 2, ',', '.'),
+            'costoNuevo' => number_format($pre, 2, ',', '.'),
+            'costoAnte' => number_format($Producto->costo, 2, ',', '.'),
             'costoDolarAnte' => number_format($Producto->costo / $Producto->dolar, 2, ',', '.'),
             'tasaProducto' => number_format($Producto->dolar, 2, ',', '.'),
             'tasaActual' => number_format($tasa, 2, ',', '.'),

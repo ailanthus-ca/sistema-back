@@ -126,9 +126,8 @@ class Compra extends \Prototipo\Operaciones {
                     . "$monto)");
             $config = new \Config('costo');
             $productos->cargar($iten->codigo);
-
             if ($productos->inventario !== 1) {
-                $productos->entrada($iten->codigo, $iten->unidades);
+                $producto->cargarStock($iten->codigo);
             }
             $costo = $config->get();
             if ($costo['costo'] < 3) {
@@ -147,19 +146,12 @@ class Compra extends \Prototipo\Operaciones {
     }
 
     function cancelar($id) {
-        $sql = "UPDATE `compra` SET `estatus`= 0 WHERE codigo = $id";
-        $query = $this->query($sql);
+        $query = $this->query("UPDATE `compra` SET `estatus`= 0 WHERE codigo = $id");
         $sql2 = $this->query("select * from detallecompra where cod_compra = '$id' ");
         $productos = new \Modelos\Producto();
         while ($row = $sql2->fetch_array()) {
-            $cod = $row['cod_producto'];
-            $cantidad = intval($row['cantidad']);
-            $productos->salida($cod, $cantidad);
+            $productos->cargarStock($row['cod_producto']);
         }
-        $estado = new \Config('estado');
-        $data = $estado->get();
-        $data['Compra'] = $data['Compra'] + 1;
-        $data->setMany($data);
         $this->actualizarEstado();
         return 1;
     }
@@ -284,6 +276,19 @@ class Compra extends \Prototipo\Operaciones {
             );
         }
         return $this->getResponse($pen);
+    }
+
+    function entradasValidas($codigo, $where = '') {
+        $query = $this->query("SELECT "
+                . "SUM( cantidad ) as cantidad "
+                . "FROM detallecompra, compra WHERE "
+                . "cod_producto = '$codigo' AND "
+                . "codigo = cod_compra AND $where "
+                . "estatus > 0");
+        while ($row = $query->fetch_array()) {
+            return (float) $row['cantidad'];
+        }
+        return 0;
     }
 
     // -------------------------- GRAFICAS -----------------------------------

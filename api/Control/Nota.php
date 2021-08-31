@@ -198,7 +198,7 @@ class Nota extends \conexion {
             $titulo .= '<br> DEL DEPARTAMENTO ' . $row['descripcion'];
         }
         $data = array(
-            'itens' => $nota->productos($where . ' AND notasalida.estatus > 0'),
+            'itens' => $nota->productos($where . ' AND notasalida.estatus = 1'),
             'titulo' => $titulo,
             'operacion' => 'NOTA DE ENTREGA'
         );

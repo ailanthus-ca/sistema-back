@@ -77,14 +77,6 @@ class Factura extends \Prototipo\Operaciones {
     }
 
     function nuevo() {
-        $this->getCondiciones();
-        $this->cod_cliente = $this->postString('cod_cliente');
-        $this->porc_impuesto = $this->postString('porc_impuesto');
-        $this->costo = $this->postString('costo');
-        $this->condicion = $this->postString('condicion');
-        $this->id_cotizacion = $this->postString('id_cotizacion');
-        $this->id_nota = $this->postString('id_nota');
-
         if ($this->id_nota > 0) {
             $nota = new Nota();
             $this->user = $nota->procesar($this->id_nota);
@@ -124,7 +116,7 @@ class Factura extends \Prototipo\Operaciones {
                     . "$monto )");
             $producto->cargar($pro->codigo);
             if ($producto->inventario !== 1 && $this->id_nota === 0)
-                $producto->salida($pro->codigo, $pro->unidades);
+                $producto->cargarStock($pro->codigo);
         }
         $this->actualizarEstado();
         return $this->getResponse($num_factura);
@@ -135,7 +127,7 @@ class Factura extends \Prototipo\Operaciones {
         $producto = new Producto();
         $query = $this->query("select * from detallefactura where codFactura = $id ");
         while ($row = $query->fetch_array()) {
-            $producto->entrada($row['codProducto'],(float) $row['cantidad']);
+            $producto->cargarStock($row['codProducto']);
         }
         $this->actualizarEstado();
         return $this->getResponse(1);
@@ -233,6 +225,19 @@ class Factura extends \Prototipo\Operaciones {
             );
         }
         return $this->getResponse($pen);
+    }
+
+    function salidasValidas($codigo, $where = '') {
+        $query = $this->query("SELECT "
+                . "SUM( cantidad ) as cantidad "
+                . "FROM detallefactura, factura WHERE "
+                . "codProducto = '$codigo' AND $where "
+                . "codigo = codFactura AND "
+                . "estatus > 0");
+        while ($row = $query->fetch_array()) {
+            return (float) $row['cantidad'];
+        }
+        return 0;
     }
 
     // ------------------------------------ GRAFICAS ------------------------------------

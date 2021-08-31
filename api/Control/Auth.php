@@ -60,5 +60,5 @@ class Auth {
         return json_encode($empresa->get());
         
     }
-
+    
 }

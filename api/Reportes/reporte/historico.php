@@ -25,7 +25,7 @@
                     echo $date->format("d/m/Y");
                     ?></td>
                 <td class="col-1" style="text-align: center"><?php echo $row['operacion']; ?></td>
-                <td class="col-1" style="text-align: center"><?php echo $row['codigo']; ?></td>
+                <td class="col-1" style="text-align: center"><?php echo str_pad($row['codigo'], 6, "0", STR_PAD_LEFT) ?></td>
                 <td class="col-6"><?php echo $row['nombre']; ?></td>
                 <td class="col-1" style="text-align: right"><?php
                     if ($row['tipo'] == 'ENTRADA') {

@@ -43,11 +43,11 @@ class Usuario extends \conexion {
                 ));
             } else {
                 header("HTTP/1.0 401 Success");
-                return array('error' => 'clave errada');
+                return array('error' => 'CLAVE ERRADA');
             }
         } else {
             header("HTTP/1.0 401 Success");
-            return array('error' => 'correo no existe');
+            return array('error' => 'CORREO NO EXISTE');
         }
     }
 
