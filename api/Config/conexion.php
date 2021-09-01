@@ -66,8 +66,7 @@ class conexion {
             return new dataFech($row);
         } else {
             return new dataFech('error');
-            $this->setError($sql);
-            $this->setError($this->con->error);
+            $this->setError(array('sql' => array($sql, $this->con->error)));
         }
     }
 

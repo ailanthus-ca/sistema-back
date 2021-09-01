@@ -9,40 +9,37 @@ class Usuario {
         return json_encode($Usuario->lista());
     }
 
-    function detalles($id){
+    function detalles($id) {
         $Usuario = new \Modelos\Usuario();
         return json_encode($Usuario->detalles($id));
     }
 
-    function nuevo(){
+    function nuevo() {
         $Usuario = new \Modelos\Usuario();
         $Usuario->nombre = $Usuario->postString("nombre");
         $Usuario->correo = $Usuario->postString("correo");
         $Usuario->clave = $Usuario->postString("clave");
         $Usuario->nivel = $Usuario->postString("nivel");
 
+
         if ($Usuario->nombre == '') {
-            $Usuario->setError('El nombre es requerido');
+            $Usuario->setError(array('nombre' => 'El nombre es requerido'));
+        }
+
+        if ($Usuario->nivel < 0) {
+            $Usuario->setError(array('nivel' => 'El rol es requerido'));
         }
 
         if ($Usuario->correo == '') {
-            $Usuario->setError('El email es requerido');
+            $Usuario->setError(array('correo' => 'El email es requerido'));
+        } elseif (!filter_var($Usuario->correo, FILTER_VALIDATE_EMAIL)) {
+            $Usuario->setError(array('correo' => 'Email mal escrito'));
+        } elseif ($Usuario->checkCorreo($Usuario->correo)) {
+            $Usuario->setError(array('correo' => 'Este email ya esta siendo usado'));
         }
-
-        if (!filter_var($Usuario->correo, FILTER_VALIDATE_EMAIL)) {
-            $Usuario->setError('Email mal escrito');
-        }
-
-        if ($Usuario->checkCorreo($Usuario->correo)) {
-            $Usuario->setError('Este email ya esta siendo usado');
-        }        
 
         if ($Usuario->clave == '') {
-            $Usuario->setError('La clave es requerida');
-        }
-
-        if($Usuario->nivel == '') {
-            $Usuario->setError('El nivel es requerido');
+            $Usuario->setError(array('clave' => 'La clave es requerida'));
         }
 
         //Validar si hubo errores
@@ -53,41 +50,34 @@ class Usuario {
         return json_encode($Usuario->nuevo());
     }
 
-    function actualizar($id){
+    function actualizar($id) {
         $Usuario = new \Modelos\Usuario();
         $Usuario->nombre = $Usuario->postString("nombre");
         $Usuario->correo = $Usuario->postString("correo");
         $Usuario->clave = $Usuario->postString("clave");
-        $Usuario->nivel = $Usuario->postString("nivel");
+        $Usuario->nivel = $Usuario->postIntenger("nivel");
 
         // Validar que exista codigo
         if (!$Usuario->checkCodigo($id)) {
-            $Usuario->setError('El usuario no existe');
+            $Usuario->setError(array('id' => 'El usuario no existe'));
         }
 
         if ($Usuario->nombre == '') {
-            $Usuario->setError('El nombre es requerido');
+            $Usuario->setError(array('nombre' => 'El nombre es requerido'));
+        }
+
+        if ($Usuario->nivel < 0) {
+            $Usuario->setError(array('nivel' => 'El rol es requerido'));
         }
 
         if ($Usuario->correo == '') {
-            $Usuario->setError('El email es requerido');
+            $Usuario->setError(array('correo' => 'El email es requerido'));
+        } elseif (!filter_var($Usuario->correo, FILTER_VALIDATE_EMAIL)) {
+            $Usuario->setError(array('correo' => 'Email mal escrito'));
+        } elseif ($Usuario->checkCorreo($Usuario->correo)) {
+            $Usuario->setError(array('correo' => 'Este email ya esta siendo usado'));
         }
-
-        if (!filter_var($Usuario->correo, FILTER_VALIDATE_EMAIL)) {
-            $Usuario->setError('Email mal escrito');
-        }
-
-        if ($Usuario->checkCorreo($Usuario->correo)) {
-            $Usuario->setError('Este email ya esta siendo usado');
-        }
-
-        if ($Usuario->clave == '') {
-            $Usuario->setError('La clave es requerida');
-        }
-
-        if($Usuario->nivel == '') {
-            $Usuario->setError('El nivel es requerido');
-        }
+        
         //Validar si hubo errores
         if ($Usuario->response > 300) {
             return json_encode($Usuario->getResponse());
@@ -96,7 +86,7 @@ class Usuario {
         return json_encode($Usuario->actualizar($id));
     }
 
-    function cancelar($id){
+    function cancelar($id) {
         $Usuario = new \Modelos\Usuario();
         return json_encode($Usuario->cancelar($id));
     }
@@ -139,7 +129,7 @@ class Usuario {
         return json_encode($role->actualizarRol($id));
     }
 
-    function eliminar_rol($id){
+    function eliminar_rol($id) {
         $role = new \Modelos\Auth();
         $role->eliminarRol($id);
     }

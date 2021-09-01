@@ -14,7 +14,7 @@
     'Proveedor' => 1,
     'Tipo' => 47,
     'Unidad' => 4,
-    'Usuario' => 59,
+    'Usuario' => 63,
     'Moneda' => 14,
     'Ajuste' => 421,
 );

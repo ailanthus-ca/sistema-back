@@ -20,7 +20,7 @@ class Usuario extends \conexion {
                 'nombre' => $row['nombre'],
                 'correo' => $row['correo'],
                 'rol' => $row['rol'],
-                'nivel' =>(int)  $row['nivel'],
+                'nivel' => (int) $row['nivel'],
                 'estado' => (int) $row['estatus']
             );
         }
@@ -76,8 +76,7 @@ class Usuario extends \conexion {
         }
     }
 
-    function checkCorreo($correo)
-    {
+    function checkCorreo($correo) {
         $sql = $this->query("SELECT COUNT(*) AS exist FROM `usuario` WHERE correo = '$correo'");
         if ($row = $sql->fetch_array()) {
             return boolval($row['exist']);
@@ -89,7 +88,7 @@ class Usuario extends \conexion {
         // $clave = \crypt($this->clave, $mi->key);
         $clave = \crypt($this->clave);
         $this->query("INSERT INTO usuario VALUES("
-                ."null,"
+                . "null,"
                 . "UPPER('$this->nombre'), "
                 . "UPPER('$this->correo'), "
                 . "'$clave', "
@@ -101,6 +100,16 @@ class Usuario extends \conexion {
     }
 
     function actualizar($id) {
+        $this->query("UPDATE usuario SET " .
+                "nombre = UPPER('$this->nombre'), " .
+                "correo = UPPER('$this->correo'), " .
+                "nivel = '$this->nivel'" .
+                "WHERE codigo = $id ");
+        $this->actualizarEstado();
+        return $this->getResponse($this->detalles($id));
+    }
+
+    function CambiarClave() {
         $this->query("UPDATE usuario SET " .
                 "nombre = UPPER('$this->nombre'), " .
                 "correo = UPPER('$this->correo'), " .
