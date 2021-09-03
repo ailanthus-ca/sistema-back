@@ -41,23 +41,23 @@ class Producto {
 
         // Validaciones
         if ($Producto->departamento == '') {
-            $Producto->setError('DEBE SELECCIONAR UN DEPARTAMENTO');
+            $Producto->setError(array('departamento' =>'DEBE SELECCIONAR UN DEPARTAMENTO'));
         }
 
         if ($Producto->descripcion == '') {
-            $Producto->setError('DEBE AGREGAR UNA DESCRIPCION');
+            $Producto->setError(array('descripcion' =>'DEBE AGREGAR UNA DESCRIPCION'));
         }
 
-        if ($Producto->unidad == '') {
-            $Producto->setError('DEBE SELECCIONAR UNA UNIDAD DE MEDIDA');
+        if ($Producto->unidad == 0) {
+            $Producto->setError(array('unidad' =>'DEBE SELECCIONAR UNA UNIDAD DE MEDIDA'));
         }
 
-        if ($Producto->tipo == '') {
-            $Producto->setError('DEBE SELECCIONAR UN TIPO DE PRODUCTO');
+        if ($Producto->tipo == 0 ){
+            $Producto->setError(array('tipo' =>'DEBE SELECCIONAR UN TIPO DE PRODUCTO'));
         }
 
-        if ($Producto->costo == '') {
-            $Producto->setError('DEBE INGRESAR UN COSTO');
+        if ($Producto->costo == 0) {
+            $Producto->setError(array('costo' =>'DEBE INGRESAR UN COSTO'));
         }
 
         //Validar si hubo errores
@@ -75,7 +75,7 @@ class Producto {
         $Producto->unidad = $Producto->postIntenger('unidad');
         // Validar que exista codigo
         if (!$Producto->checkCodigo($id)) {
-            $Producto->setError('Producto no existe');
+            $Producto->setError(array('codigo' =>'Producto no existe'));
         }
         //Validar si hubo errores
         if ($Producto->response > 300) {

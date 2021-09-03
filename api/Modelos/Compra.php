@@ -127,7 +127,7 @@ class Compra extends \Prototipo\Operaciones {
             $config = new \Config('costo');
             $productos->cargar($iten->codigo);
             if ($productos->inventario !== 1) {
-                $producto->cargarStock($iten->codigo);
+                $productos->cargarStock($iten->codigo);
             }
             $costo = $config->get();
             if ($costo['costo'] < 3) {

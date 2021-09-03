@@ -77,8 +77,8 @@ class Nota extends \Prototipo\Operaciones {
             $notasalida['detalles'] = array();
             $sql = "SELECT * from detallesNotas where nota = '" . $notasalida['codigo'] . "'";
             $query = $this->query($sql);
+            $producto = new Producto();
             while ($row = $query->fetch_array()) {
-                $producto = new Producto();
                 $detalle = $producto->ver($row['producto']);
                 $detalle['unidades'] = (float) $row['cantidad'];
                 $detalle['precio'] = (float) $row['precio'];

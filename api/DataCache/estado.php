@@ -11,7 +11,7 @@
     'Orden' => 2,
     'Plantilla' => 4,
     'Producto' => 126,
-    'Proveedor' => 1,
+    'Proveedor' => 10,
     'Tipo' => 47,
     'Unidad' => 4,
     'Usuario' => 63,

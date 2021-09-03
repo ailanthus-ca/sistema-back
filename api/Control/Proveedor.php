@@ -25,19 +25,22 @@ class Proveedor {
 
         // Validar que exista el codigo
         if ($Proveedor->codigo == '') {
-            $Proveedor->setError('No se mando RIF/cédula');
+            $Proveedor->setError(array('codigo' => 'No se mando RIF/cédula'));
+        }
+        if($Proveedor->checkCodigo($Proveedor->codigo)){
+            $Proveedor->setError(array('codigo' => 'ya existe este RIF/cédula'));            
         }
         // Validar que exista el nombre
         if ($Proveedor->nombre == '') {
-            $Proveedor->setError('No se mando el nombre');
+            $Proveedor->setError(array('nombre' => 'No se mando el nombre'));
         }
         // Validar que exista el correo
-        if ($Proveedor->email == '') {
-            $Proveedor->setError('No se mando un email');
+        if ($Proveedor->telefono == '') {
+            $Proveedor->setError(array('telefono' => 'No se mando un telefono'));
         }
         // Validar que exista el contacto
         if ($Proveedor->contacto == '') {
-            $Proveedor->setError('No se mando un contacto');
+            $Proveedor->setError(array('contacto' => 'No se mando un contacto'));
         }
         //Validar si hubo errores
         if ($Proveedor->response > 300) {
@@ -60,21 +63,21 @@ class Proveedor {
         $Proveedor->contacto = $Proveedor->postString("contacto");
         $Proveedor->direccion = $Proveedor->postString("direccion");
 
-        // Validar que exista proveedor
-        if (!$Proveedor->checkCodigo($id)) {
-            return $Proveedor->setError('El proveedor no existe');
+        // Validar que exista el codigo
+        if ($Proveedor->codigo == '') {
+            $Proveedor->setError(array('codigo' => 'No se mando RIF/cédula'));
         }
         // Validar que exista el nombre
         if ($Proveedor->nombre == '') {
-            $Proveedor->setError('No se mando el nombre');
+            $Proveedor->setError(array('nombre' => 'No se mando el nombre'));
         }
         // Validar que exista el correo
         if ($Proveedor->email == '') {
-            $Proveedor->setError('No se mando un email');
+            $Proveedor->setError(array('email' => 'No se mando un email'));
         }
         // Validar que exista el contacto
         if ($Proveedor->contacto == '') {
-            $Proveedor->setError('No se mando un contacto');
+            $Proveedor->setError(array('contacto' => 'No se mando un contacto'));
         }
         //Validar si hubo errores
         if ($Proveedor->response > 300) {
