@@ -198,7 +198,7 @@ class Producto {
     }
 
     function ForceStock($cod) {
-        $Producto = new \Modelos\Producto();
+        $producto = new \Modelos\Producto();
         $producto->cargarStock($cod);
         return json_encode($producto->calcularStock($cod));
     }
