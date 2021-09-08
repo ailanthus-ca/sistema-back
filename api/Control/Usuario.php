@@ -86,6 +86,11 @@ class Usuario {
         return json_encode($Usuario->actualizar($id));
     }
 
+    function clave($id){
+        $Usuario = new \Modelos\Usuario();
+        $Usuario->clave = $Usuario->postString("clave");
+        return json_encode($Usuario->clave($id));        
+    }
     function cancelar($id) {
         $Usuario = new \Modelos\Usuario();
         return json_encode($Usuario->cancelar($id));

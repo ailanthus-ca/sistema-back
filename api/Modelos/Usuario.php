@@ -51,6 +51,14 @@ class Usuario extends \conexion {
         }
     }
 
+    function clave($id) {
+        $clave = \crypt($this->clave);
+        $this->query("UPDATE usuario SET " .
+                "clave = '$clave', " .
+                "WHERE codigo = $id ");
+        return $this->getResponse(1);
+    }
+
     function detalles($id) {
         $sql = $this->query("SELECT * FROM usuario WHERE codigo = $id");
         if ($row = $sql->fetch_array()) {
