@@ -107,11 +107,11 @@ class Producto {
                 $titulo .= ' PARA LA VENTA';
         }
         if ($min !== "-1") {
-            $where .= " and cantidad > $min";
+            $where .= " and cantidad >= $min";
             $titulo .= " COM ESTOCK MAYOR A $min";
         }
         if ($max !== "-1") {
-            $where .= " and cantidad > $max";
+            $where .= " and cantidad <= $max";
             $titulo .= " COM ESTOCK MENOR A $max";
         }
         if ($tipo !== "-1") {

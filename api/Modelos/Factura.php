@@ -269,16 +269,10 @@ class Factura extends \Prototipo\Operaciones {
     }
 
     public function ventaAno($ano) {
-        $query = $this->query("SELECT "
-                . "SUM(subtotal) AS r,"
-                . "MONTH(fecha) AS mes "
-                . "FROM factura WHERE "
-                . "YEAR(fecha)=$ano AND "
-                . "estatus = 2 "
-                . "GROUP BY mes");
+        $query = $this->query("SELECT equilibrio.mes as mes,r as monto,equilibrio.monto as equi FROM equilibrio, (SELECT SUM(subtotal) AS r,MONTH(fecha) AS mes FROM factura WHERE YEAR(fecha)=$ano AND estatus = 2 GROUP BY mes) as f WHERE f.mes=equilibrio.mes AND equilibrio.ano=$ano");
         $pen = array();
         while ($row = $query->fetch_array()) {
-            $pen[(int) $row['mes']] = (float) $row['r'];
+            $pen[] = array((int) $row['mes'],(float) $row['monto'],(float) $row['equi']);
         }
         return $this->getResponse($pen);
     }
