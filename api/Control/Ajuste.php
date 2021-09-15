@@ -42,7 +42,7 @@ class Ajuste {
             $producto = new \Modelos\Producto();
             foreach ($data['detalles'] as $pro) {
                 $producto->cargar($pro['codigo']);
-                if ($producto->checkStock($pro['unidades']))
+                if (!$producto->checkStock($pro['unidades']))
                     $ajuste->setError('NO HAY EL STOCK PARA REALIZAR LA OPERACION');
             }
         }
