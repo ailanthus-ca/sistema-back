@@ -10,6 +10,16 @@ namespace Modelos;
 
 class NotaDebito extends \conexion {
 
+    //Cliente o Proveedor
+    var $ente = "";
+    var $id_ente = "";
+    //Factura o Compra
+    var $id_relecion = "";
+    var $relacion = "";
+    //-- --//
+    var $descripcion = "";
+    var $emitida = true;
+
     function lista() {
         
     }
