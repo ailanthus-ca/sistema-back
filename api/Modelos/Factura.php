@@ -15,7 +15,7 @@ class Factura extends \Prototipo\Operaciones {
 
     function lista() {
         $pen = array();
-        $sql = "SELECT factura.codigo as codFact, fecha,cod_cliente,nombre,total,factura.estatus as status,factura.usuario  FROM factura,cliente WHERE factura.cod_cliente = cliente.codigo order by fecha DESC ";
+        $sql = "SELECT * FROM factura_lista";
         $query = $this->query($sql);
         while ($row = $query->fetch_array()) {
             $detalle = array();

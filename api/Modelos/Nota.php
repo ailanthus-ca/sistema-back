@@ -22,17 +22,7 @@ class Nota extends \Prototipo\Operaciones {
 
     function lista() {
         $pen = array();
-        $sql = "SELECT "
-                . "notasalida.codigo as codFact,"
-                . " fecha,"
-                . "cod_cliente,"
-                . "nombre,"
-                . "total,"
-                . "notasalida.estatus as status,"
-                . "notasalida.usuario "
-                . "FROM notasalida,cliente WHERE "
-                . "notasalida.cod_cliente = cliente.codigo "
-                . "order by fecha DESC ";
+        $sql = "SELECT * FROM nota_lista";
         $query = $this->query($sql);
         while ($row = $query->fetch_array()) {
             $detalle = array();

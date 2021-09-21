@@ -14,16 +14,7 @@ class Compra extends \Prototipo\Operaciones {
 
     public function lista() {
         $pen = array();
-        $query = $this->query("SELECT DISTINCT "
-                . "compra.codigo as codFact,"
-                . "fecha,"
-                . "cod_proveedor,"
-                . " nombre,"
-                . "total,"
-                . "compra.estatus as status,"
-                . "compra.usuario  "
-                . "FROM compra,proveedor "
-                . "WHERE compra.cod_proveedor = proveedor.codigo order by fecha DESC ");
+        $query = $this->query("SELECT * FROM compra_lista");
         while ($row = $query->fetch_array()) {
             $detalle = array();
             $sql = $this->query("SELECT cod_producto FROM detallecompra WHERE cod_compra = " . $row['codFact']);
