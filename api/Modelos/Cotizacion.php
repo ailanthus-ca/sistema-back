@@ -9,8 +9,7 @@ class Cotizacion extends \Prototipo\Operaciones {
 
     public function lista() {
         $pen = array();
-        $sql = "SELECT cotizacion.codigo as codFact, fecha,cod_cliente,nombre,total,cotizacion.estatus as status, usuario,tasa   FROM cotizacion,cliente WHERE cotizacion.cod_cliente = cliente.codigo order by fecha desc";
-        $query = $this->query($sql);
+        $query = $this->query("SELECT * FROM cotizacion_lista");
         while ($row = $query->fetch_array()) {
             $detalle = array();
             $sql = $this->query('SELECT codProducto FROM detallecotizacion WHERE codCotizacion = ' . $row['codFact']);

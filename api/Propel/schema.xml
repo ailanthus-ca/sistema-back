@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database name="default" defaultIdMethod="native" defaultPhpNamingMethod="underscore">
+  <table name="ajusteinv" idMethod="native" phpName="Ajusteinv">
+    <column name="codigo" phpName="Codigo" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="tipo_ajuste" phpName="TipoAjuste" type="VARCHAR" size="20" required="true"/>
+    <column name="fecha" phpName="Fecha" type="TIMESTAMP" required="true"/>
+    <column name="nota" phpName="Nota" type="VARCHAR" size="200" required="true"/>
+    <column name="usuario" phpName="Usuario" type="INTEGER" required="true"/>
+    <column name="estatus" phpName="Estatus" type="TINYINT"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="cliente" idMethod="native" phpName="Cliente">
+    <column name="codigo" phpName="Codigo" type="VARCHAR" size="20" primaryKey="true" required="true"/>
+    <column name="nombre" phpName="Nombre" type="VARCHAR" size="75" required="true"/>
+    <column name="correo" phpName="Correo" type="VARCHAR" size="50" required="true"/>
+    <column name="direccion" phpName="Direccion" type="VARCHAR" size="150"/>
+    <column name="contacto" phpName="Contacto" type="VARCHAR" size="50" required="true"/>
+    <column name="telefono" phpName="Telefono" type="VARCHAR" size="120"/>
+    <column name="tipo_contribuyente" phpName="TipoContribuyente" type="VARCHAR" size="50" required="true"/>
+    <column name="retencion" phpName="Retencion" type="DOUBLE" required="true"/>
+    <column name="estatus" phpName="Estatus" type="BOOLEAN" size="1" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="compra" idMethod="native" phpName="Compra">
+    <column name="codigo" phpName="Codigo" type="INTEGER" primaryKey="true" required="true"/>
+    <column name="cod_proveedor" phpName="CodProveedor" type="VARCHAR" size="50" required="true"/>
+    <column name="cod_documento" phpName="CodDocumento" type="VARCHAR" size="50"/>
+    <column name="nun_control" phpName="NunControl" type="VARCHAR" size="50"/>
+    <column name="fecha" phpName="Fecha" type="TIMESTAMP" required="true"/>
+    <column name="fecha_documento" phpName="FechaDocumento" type="DATE"/>
+    <column name="subtotal" phpName="Subtotal" type="DOUBLE" required="true"/>
+    <column name="impuesto" phpName="Impuesto" type="DOUBLE" required="true"/>
+    <column name="total" phpName="Total" type="DOUBLE" required="true"/>
+    <column name="nota" phpName="Nota" type="VARCHAR" size="600"/>
+    <column name="usuario" phpName="Usuario" type="INTEGER" required="true"/>
+    <column name="estatus" phpName="Estatus" type="BOOLEAN" size="1" required="true"/>
+    <column name="dolar" phpName="Dolar" type="DOUBLE" defaultValue="1"/>
+    <foreign-key foreignTable="proveedor" name="compra_ibfk_1">
+      <reference local="cod_proveedor" foreign="codigo"/>
+    </foreign-key>
+    <index name="cod_proveedor">
+      <index-column name="cod_proveedor"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="conf_empresa" idMethod="native" phpName="ConfEmpresa">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="nombre" phpName="Nombre" type="VARCHAR" size="150" required="true"/>
+    <column name="numero_fiscal" phpName="NumeroFiscal" type="VARCHAR" size="50" required="true"/>
+    <column name="direccion" phpName="Direccion" type="VARCHAR" size="150" required="true"/>
+    <column name="telefono" phpName="Telefono" type="VARCHAR" size="150" required="true"/>
+    <column name="correo" phpName="Correo" type="VARCHAR" size="150" required="true"/>
+    <column name="web" phpName="Web" type="VARCHAR" size="150" required="true"/>
+    <column name="pago" phpName="Pago" type="VARCHAR" size="250" required="true"/>
+    <column name="logo" phpName="Logo" type="VARCHAR" size="250" required="true"/>
+    <column name="eslogan" phpName="Eslogan" type="VARCHAR" size="150" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="conf_factura" idMethod="native" phpName="ConfFactura">
+    <column name="id" phpName="Id" type="INTEGER" size="1" primaryKey="true" required="true"/>
+    <column name="num_factura" phpName="NumFactura" type="INTEGER" required="true"/>
+    <column name="tipo_papel" phpName="TipoPapel" type="VARCHAR" size="25" required="true"/>
+    <column name="margen_sup" phpName="MargenSup" type="VARCHAR" size="10" required="true"/>
+    <column name="margen_inf" phpName="MargenInf" type="VARCHAR" size="10" required="true"/>
+    <column name="margen_izq" phpName="MargenIzq" type="VARCHAR" size="10" required="true"/>
+    <column name="margen_der" phpName="MargenDer" type="VARCHAR" size="10" required="true"/>
+    <column name="inicial" phpName="Inicial" type="BOOLEAN" size="1" required="true"/>
+    <column name="observacion" phpName="Observacion" type="VARCHAR" size="300" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="conf_region" idMethod="native" phpName="ConfRegion">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="codigo_fiscal" phpName="CodigoFiscal" type="VARCHAR" size="50" required="true"/>
+    <column name="moneda" phpName="Moneda" type="VARCHAR" size="20" required="true"/>
+    <column name="impuesto" phpName="Impuesto" type="DOUBLE" size="12" scale="2" required="true"/>
+    <column name="imp_esp" phpName="ImpEsp" type="BOOLEAN" size="1" required="true"/>
+    <column name="impuesto1" phpName="Impuesto1" type="DOUBLE" size="12" scale="2" required="true"/>
+    <column name="monto1" phpName="Monto1" type="DOUBLE" size="12" scale="2" required="true"/>
+    <column name="impuesto2" phpName="Impuesto2" type="DOUBLE" size="12" scale="2" required="true"/>
+    <column name="monto2" phpName="Monto2" type="DOUBLE" size="12" scale="2" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="conf_venta" idMethod="native" phpName="ConfVenta">
+    <column name="codigo" phpName="Codigo" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="garantia" phpName="Garantia" type="VARCHAR" size="150" required="true"/>
+    <column name="observacion" phpName="Observacion" type="VARCHAR" size="150" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="configuracion" idMethod="native" phpName="Configuracion">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="cod_usuario" phpName="CodUsuario" type="INTEGER" required="true"/>
+    <column name="descripcion" phpName="Descripcion" type="VARCHAR" size="100" required="true"/>
+    <column name="fecha" phpName="Fecha" type="TIMESTAMP" required="true"/>
+    <foreign-key foreignTable="usuario" name="configuracion_ibfk_1" onDelete="CASCADE">
+      <reference local="cod_usuario" foreign="codigo"/>
+    </foreign-key>
+    <index name="cod_usuario">
+      <index-column name="cod_usuario"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="cotizacion" idMethod="native" phpName="Cotizacion">
+    <column name="codigo" phpName="Codigo" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="cod_cliente" phpName="CodCliente" type="VARCHAR" size="20" required="true"/>
+    <column name="fecha" phpName="Fecha" type="TIMESTAMP" required="true"/>
+    <column name="iva" phpName="Iva" type="DOUBLE" required="true"/>
+    <column name="subtotal" phpName="Subtotal" type="DOUBLE" required="true"/>
+    <column name="total" phpName="Total" type="DOUBLE" required="true"/>
+    <column name="forma_pago" phpName="FormaPago" type="VARCHAR" size="120" required="true"/>
+    <column name="tiempo_entrega" phpName="TiempoEntrega" type="VARCHAR" size="120" required="true"/>
+    <column name="validez" phpName="Validez" type="VARCHAR" size="120" required="true"/>
+    <column name="nota" phpName="Nota" type="VARCHAR" size="250" required="true"/>
+    <column name="tasa" phpName="Tasa" type="FLOAT"/>
+    <column name="estatus" phpName="Estatus" type="BOOLEAN" size="1" required="true"/>
+    <column name="usuario" phpName="Usuario" type="INTEGER" size="1" required="true"/>
+    <foreign-key foreignTable="cliente" name="cotizacion_ibfk_1" onDelete="CASCADE">
+      <reference local="cod_cliente" foreign="codigo"/>
+    </foreign-key>
+    <index name="cod_cliente">
+      <index-column name="cod_cliente"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="cotizacion_seguimiento" idMethod="native" phpName="CotizacionSeguimiento">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="cod_cotizacion" phpName="CodCotizacion" type="INTEGER" required="true"/>
+    <column name="descripcion" phpName="Descripcion" type="VARCHAR" size="300" required="true"/>
+    <column name="usuario" phpName="Usuario" type="INTEGER" required="true"/>
+    <column name="fecha" phpName="Fecha" type="TIMESTAMP" required="true"/>
+    <foreign-key foreignTable="cotizacion" name="cotizacion_seguimiento_ibfk_1" onDelete="CASCADE">
+      <reference local="cod_cotizacion" foreign="codigo"/>
+    </foreign-key>
+    <foreign-key foreignTable="usuario" name="cotizacion_seguimiento_ibfk_2">
+      <reference local="usuario" foreign="codigo"/>
+    </foreign-key>
+    <index name="cod_cotizacion">
+      <index-column name="cod_cotizacion"/>
+    </index>
+    <index name="usuario">
+      <index-column name="usuario"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="departamento" idMethod="native" phpName="Departamento">
+    <column name="codigo" phpName="Codigo" type="VARCHAR" size="4" primaryKey="true" required="true"/>
+    <column name="descripcion" phpName="Descripcion" type="VARCHAR" size="150" required="true"/>
+    <column name="estatus" phpName="Estatus" type="BOOLEAN" size="1" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="detalleajusteinv" idMethod="native" phpName="Detalleajusteinv">
+    <column name="cod_ajuste" phpName="CodAjuste" type="INTEGER" primaryKey="true" required="true"/>
+    <column name="cod_producto" phpName="CodProducto" type="VARCHAR" size="20" primaryKey="true" required="true"/>
+    <column name="cantidad" phpName="Cantidad" type="INTEGER" required="true"/>
+    <column name="descripcion" phpName="Descripcion" type="VARCHAR" size="150" required="true"/>
+    <column name="data" phpName="Data" type="LONGVARCHAR"/>
+    <foreign-key foreignTable="ajusteinv" name="detalleajusteinv_ibfk_1" onDelete="CASCADE">
+      <reference local="cod_ajuste" foreign="codigo"/>
+    </foreign-key>
+    <foreign-key foreignTable="producto" name="detalleajusteinv_ibfk_2" onDelete="CASCADE">
+      <reference local="cod_producto" foreign="codigo"/>
+    </foreign-key>
+    <index name="cod_producto">
+      <index-column name="cod_producto"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="detallecompra" idMethod="native" phpName="Detallecompra">
+    <column name="cod_compra" phpName="CodCompra" type="INTEGER" primaryKey="true" required="true"/>
+    <column name="cod_producto" phpName="CodProducto" type="VARCHAR" size="50" primaryKey="true" required="true"/>
+    <column name="cantidad" phpName="Cantidad" type="INTEGER" required="true"/>
+    <column name="precio_unit" phpName="PrecioUnit" type="DOUBLE" required="true"/>
+    <column name="monto" phpName="Monto" type="DOUBLE" required="true"/>
+    <foreign-key foreignTable="producto" name="detallecompra_ibfk_2" onDelete="CASCADE">
+      <reference local="cod_producto" foreign="codigo"/>
+    </foreign-key>
+    <foreign-key foreignTable="compra" name="detallecompra_ibfk_3" onDelete="CASCADE">
+      <reference local="cod_compra" foreign="codigo"/>
+    </foreign-key>
+    <index name="cod_producto">
+      <index-column name="cod_producto"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="detallecotizacion" idMethod="native" phpName="Detallecotizacion">
+    <column name="codCotizacion" phpName="Codcotizacion" type="INTEGER" primaryKey="true" required="true"/>
+    <column name="codProducto" phpName="Codproducto" type="VARCHAR" size="20" primaryKey="true" required="true"/>
+    <column name="cantidad" phpName="Cantidad" type="INTEGER" required="true"/>
+    <column name="precio_unit" phpName="PrecioUnit" type="DOUBLE" required="true"/>
+    <column name="monto" phpName="Monto" type="DOUBLE" required="true"/>
+    <column name="comentario" phpName="Comentario" type="VARCHAR" size="250" required="true"/>
+    <foreign-key foreignTable="cotizacion" name="detallecotizacion_ibfk_1" onDelete="CASCADE">
+      <reference local="codCotizacion" foreign="codigo"/>
+    </foreign-key>
+    <foreign-key foreignTable="producto" name="detallecotizacion_ibfk_2">
+      <reference local="codProducto" foreign="codigo"/>
+    </foreign-key>
+    <index name="codProducto">
+      <index-column name="codProducto"/>
+    </index>
+    <unique name="codFactura">
+      <unique-column name="codCotizacion"/>
+      <unique-column name="codProducto"/>
+    </unique>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="detallefactura" idMethod="native" phpName="Detallefactura">
+    <column name="codFactura" phpName="Codfactura" type="INTEGER" primaryKey="true" required="true"/>
+    <column name="codProducto" phpName="Codproducto" type="VARCHAR" size="20" primaryKey="true" required="true"/>
+    <column name="cantidad" phpName="Cantidad" type="INTEGER" required="true"/>
+    <column name="precio_unit" phpName="PrecioUnit" type="DOUBLE" required="true"/>
+    <column name="monto" phpName="Monto" type="DOUBLE" required="true"/>
+    <foreign-key foreignTable="producto" name="detallefactura_ibfk_2">
+      <reference local="codProducto" foreign="codigo"/>
+    </foreign-key>
+    <index name="codProducto">
+      <index-column name="codProducto"/>
+    </index>
+    <unique name="codFactura">
+      <unique-column name="codFactura"/>
+      <unique-column name="codProducto"/>
+    </unique>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="detalleordencompra" idMethod="native" phpName="Detalleordencompra">
+    <column name="cod_orden" phpName="CodOrden" type="INTEGER" primaryKey="true" required="true"/>
+    <column name="cod_producto" phpName="CodProducto" type="VARCHAR" size="20" primaryKey="true" required="true"/>
+    <column name="precio_unit" phpName="PrecioUnit" type="DOUBLE" required="true"/>
+    <column name="cantidad" phpName="Cantidad" type="INTEGER" required="true"/>
+    <column name="monto" phpName="Monto" type="DOUBLE" required="true"/>
+    <foreign-key foreignTable="producto" name="detalleordencompra_ibfk_2" onDelete="CASCADE">
+      <reference local="cod_producto" foreign="codigo"/>
+    </foreign-key>
+    <foreign-key foreignTable="ordencompra" name="detalleordencompra_ibfk_3" onDelete="CASCADE">
+      <reference local="cod_orden" foreign="codigo"/>
+    </foreign-key>
+    <index name="cod_producto">
+      <index-column name="cod_producto"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="detallesEntrada" idMethod="native" phpName="Detallesentrada">
+    <column name="nota" phpName="Nota" type="INTEGER" size="10" required="true"/>
+    <column name="producto" phpName="Producto" type="VARCHAR" size="20" required="true"/>
+    <column name="cantidad" phpName="Cantidad" type="FLOAT" required="true"/>
+    <column name="precio" phpName="Precio" type="DOUBLE" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="detallesNotas" idMethod="native" phpName="Detallesnotas">
+    <column name="nota" phpName="Nota" type="INTEGER" size="10" required="true"/>
+    <column name="producto" phpName="Producto" type="VARCHAR" size="20" required="true"/>
+    <column name="cantidad" phpName="Cantidad" type="FLOAT" required="true"/>
+    <column name="precio" phpName="Precio" type="DOUBLE" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="dolares" idMethod="native" phpName="Dolares">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="valor" phpName="Valor" type="FLOAT" required="true"/>
+    <column name="fecha" phpName="Fecha" type="TIMESTAMP" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="equilibrio" idMethod="native" phpName="Equilibrio">
+    <column name="codigo" phpName="Codigo" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="ano" phpName="Ano" type="INTEGER" required="true"/>
+    <column name="mes" phpName="Mes" type="INTEGER" required="true"/>
+    <column name="monto" phpName="Monto" type="DOUBLE" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="factura" idMethod="native" phpName="Factura">
+    <column name="codigo" phpName="Codigo" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="cod_cliente" phpName="CodCliente" type="VARCHAR" size="20" required="true"/>
+    <column name="fecha" phpName="Fecha" type="TIMESTAMP" required="true"/>
+    <column name="condicion" phpName="Condicion" type="VARCHAR" size="20" required="true"/>
+    <column name="porc_impuesto" phpName="PorcImpuesto" type="DOUBLE" required="true"/>
+    <column name="costo" phpName="Costo" type="DOUBLE" required="true"/>
+    <column name="iva" phpName="Iva" type="DOUBLE" required="true"/>
+    <column name="subtotal" phpName="Subtotal" type="DOUBLE" required="true"/>
+    <column name="total" phpName="Total" type="DOUBLE" required="true"/>
+    <column name="observacion" phpName="Observacion" type="VARCHAR" size="300" required="true"/>
+    <column name="usuario" phpName="Usuario" type="INTEGER" required="true"/>
+    <column name="estatus" phpName="Estatus" type="BOOLEAN" size="1" required="true"/>
+    <index name="cod_cliente">
+      <index-column name="cod_cliente"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="mejor_mes" idMethod="native" phpName="MejorMes">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="ventas" phpName="Ventas" type="DOUBLE" required="true"/>
+    <column name="mes" phpName="Mes" type="INTEGER" size="3" required="true"/>
+    <column name="ano" phpName="Ano" type="INTEGER" size="4" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="moneda" idMethod="native" phpName="Moneda">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="nombre" phpName="Nombre" type="VARCHAR" size="80"/>
+    <column name="descripcion" phpName="Descripcion" type="VARCHAR" size="5" required="true"/>
+    <column name="estatus" phpName="Estatus" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="notaentrada" idMethod="native" phpName="Notaentrada">
+    <column name="codigo" phpName="Codigo" type="INTEGER" required="true"/>
+    <column name="cod_proveedor" phpName="CodProveedor" type="VARCHAR" size="20" required="true"/>
+    <column name="fecha" phpName="Fecha" type="TIMESTAMP" required="true"/>
+    <column name="total" phpName="Total" type="DOUBLE" required="true"/>
+    <column name="nota" phpName="Nota" type="VARCHAR" size="600" required="true"/>
+    <column name="estatus" phpName="Estatus" type="INTEGER" required="true"/>
+    <column name="usuario" phpName="Usuario" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="notasalida" idMethod="native" phpName="Notasalida">
+    <column name="codigo" phpName="Codigo" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="cod_cliente" phpName="CodCliente" type="VARCHAR" size="20" required="true"/>
+    <column name="fecha" phpName="Fecha" type="TIMESTAMP" required="true"/>
+    <column name="total" phpName="Total" type="DOUBLE" required="true"/>
+    <column name="nota" phpName="Nota" type="VARCHAR" size="600" required="true"/>
+    <column name="estatus" phpName="Estatus" type="INTEGER" required="true"/>
+    <column name="usuario" phpName="Usuario" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="orden_seguimiento" idMethod="native" phpName="OrdenSeguimiento">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="cod_orden" phpName="CodOrden" type="INTEGER" required="true"/>
+    <column name="descripcion" phpName="Descripcion" type="VARCHAR" size="300" required="true"/>
+    <column name="usuario" phpName="Usuario" type="INTEGER" required="true"/>
+    <column name="fecha" phpName="Fecha" type="TIMESTAMP" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="ordencompra" idMethod="native" phpName="Ordencompra">
+    <column name="codigo" phpName="Codigo" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="cod_proveedor" phpName="CodProveedor" type="VARCHAR" size="50" required="true"/>
+    <column name="fecha" phpName="Fecha" type="TIMESTAMP" required="true"/>
+    <column name="subtotal" phpName="Subtotal" type="DOUBLE" required="true"/>
+    <column name="impuesto" phpName="Impuesto" type="DOUBLE" required="true"/>
+    <column name="total" phpName="Total" type="DOUBLE" required="true"/>
+    <column name="forma_pago" phpName="FormaPago" type="VARCHAR" size="120" required="true"/>
+    <column name="tiempo_entrega" phpName="TiempoEntrega" type="VARCHAR" size="120" required="true"/>
+    <column name="validez" phpName="Validez" type="VARCHAR" size="120" required="true"/>
+    <column name="nota" phpName="Nota" type="VARCHAR" size="250" required="true"/>
+    <column name="usuario" phpName="Usuario" type="INTEGER" required="true"/>
+    <column name="estatus" phpName="Estatus" type="BOOLEAN" size="1" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="permisos" idMethod="native" phpName="Permisos">
+    <column name="id" phpName="Id" type="INTEGER" required="true"/>
+    <column name="nombre" phpName="Nombre" type="VARCHAR" size="100" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="permisos_roles" idMethod="native" phpName="PermisosRoles">
+    <column name="id_permiso" phpName="IdPermiso" type="INTEGER" required="true"/>
+    <column name="id_role" phpName="IdRole" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="producto" idMethod="native" phpName="Producto">
+    <column name="codigo" phpName="Codigo" type="VARCHAR" size="20" primaryKey="true" required="true"/>
+    <column name="departamento" phpName="Departamento" type="VARCHAR" size="4" required="true"/>
+    <column name="descripcion" phpName="Descripcion" type="VARCHAR" size="300" required="true"/>
+    <column name="tipo" phpName="Tipo" type="VARCHAR" size="2" required="true"/>
+    <column name="enser" phpName="Enser" type="BOOLEAN" size="1" required="true"/>
+    <column name="unidad" phpName="Unidad" type="VARCHAR" size="2" required="true"/>
+    <column name="costo" phpName="Costo" type="DOUBLE" required="true"/>
+    <column name="precio1" phpName="Precio1" type="DOUBLE" required="true"/>
+    <column name="precio2" phpName="Precio2" type="DOUBLE" required="true"/>
+    <column name="precio3" phpName="Precio3" type="DOUBLE" required="true"/>
+    <column name="cantidad" phpName="Cantidad" type="INTEGER" required="true"/>
+    <column name="imagen" phpName="Imagen" type="VARCHAR" size="200" required="true"/>
+    <column name="estatus" phpName="Estatus" type="BOOLEAN" size="1" required="true"/>
+    <column name="fecha_creacion" phpName="FechaCreacion" type="TIMESTAMP" required="true"/>
+    <column name="exento" phpName="Exento" type="TINYINT"/>
+    <column name="dolar" phpName="Dolar" type="DOUBLE"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="proveedor" idMethod="native" phpName="Proveedor">
+    <column name="codigo" phpName="Codigo" type="VARCHAR" size="50" primaryKey="true" required="true"/>
+    <column name="nombre" phpName="Nombre" type="VARCHAR" size="150" required="true"/>
+    <column name="correo" phpName="Correo" type="VARCHAR" size="150" required="true"/>
+    <column name="direccion" phpName="Direccion" type="VARCHAR" size="300"/>
+    <column name="contacto" phpName="Contacto" type="VARCHAR" size="50" required="true"/>
+    <column name="telefono" phpName="Telefono" type="VARCHAR" size="120"/>
+    <column name="estatus" phpName="Estatus" type="BOOLEAN" size="1" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="resetclave" idMethod="native" phpName="Resetclave">
+    <column name="id_usuario" phpName="IdUsuario" type="INTEGER" required="true"/>
+    <column name="nombre" phpName="Nombre" type="VARCHAR" size="150" required="true"/>
+    <column name="token" phpName="Token" type="VARCHAR" size="250" required="true"/>
+    <column name="creado" phpName="Creado" type="TIMESTAMP" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="roles" idMethod="native" phpName="Roles">
+    <column name="id" phpName="Id" type="INTEGER" required="true"/>
+    <column name="nombre" phpName="Nombre" type="VARCHAR" size="100" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="tempnotas" idMethod="native" phpName="Tempnotas">
+    <column name="productor" phpName="Productor" type="VARCHAR" size="20" required="true"/>
+    <column name="catidad" phpName="Catidad" type="FLOAT" required="true"/>
+    <column name="precio" phpName="Precio" type="INTEGER" required="true"/>
+    <column name="usuario" phpName="Usuario" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="tipo_producto" idMethod="native" phpName="TipoProducto">
+    <column name="codigo" phpName="Codigo" type="INTEGER" size="3" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="descripcion" phpName="Descripcion" type="VARCHAR" size="120" required="true"/>
+    <column name="estatus" phpName="Estatus" type="BOOLEAN" size="1" required="true"/>
+    <column name="inventario" phpName="Inventario" type="TINYINT"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="tmp_comp_prod" idMethod="native" phpName="TmpCompProd">
+    <column name="id_tmp" phpName="IdTmp" type="BIGINT" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="id_producto" phpName="IdProducto" type="VARCHAR" size="10"/>
+    <column name="cantidad_tmp" phpName="CantidadTmp" type="INTEGER" size="50"/>
+    <column name="precio_tmp" phpName="PrecioTmp" type="DOUBLE"/>
+    <column name="descripcion_tmp" phpName="DescripcionTmp" type="VARCHAR" size="250"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="tmp_cot_prod" idMethod="native" phpName="TmpCotProd">
+    <column name="id_tmp" phpName="IdTmp" type="BIGINT" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="id_producto" phpName="IdProducto" type="VARCHAR" size="10"/>
+    <column name="cantidad_tmp" phpName="CantidadTmp" type="INTEGER" size="50"/>
+    <column name="precio_tmp" phpName="PrecioTmp" type="DOUBLE"/>
+    <column name="descripcion_tmp" phpName="DescripcionTmp" type="VARCHAR" size="250"/>
+    <column name="usuario_tmp" phpName="UsuarioTmp" type="VARCHAR" size="10" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="tmp_cotizacion" idMethod="native" phpName="TmpCotizacion">
+    <column name="codigo" phpName="Codigo" type="INTEGER" size="6" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="cod_cliente" phpName="CodCliente" type="VARCHAR" size="20" required="true"/>
+    <column name="fecha" phpName="Fecha" type="TIMESTAMP" required="true"/>
+    <column name="iva" phpName="Iva" type="DOUBLE" required="true"/>
+    <column name="subtotal" phpName="Subtotal" type="DOUBLE" required="true"/>
+    <column name="total" phpName="Total" type="DOUBLE" required="true"/>
+    <column name="forma_pago" phpName="FormaPago" type="VARCHAR" size="50" required="true"/>
+    <column name="tiempo_entrega" phpName="TiempoEntrega" type="VARCHAR" size="50" required="true"/>
+    <column name="validez" phpName="Validez" type="VARCHAR" size="50" required="true"/>
+    <column name="nota" phpName="Nota" type="VARCHAR" size="250" required="true"/>
+    <column name="estatus" phpName="Estatus" type="BOOLEAN" size="1" required="true"/>
+    <column name="usuario" phpName="Usuario" type="INTEGER" required="true"/>
+    <index name="cod_cliente">
+      <index-column name="cod_cliente"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="tmp_detalle_cotizacion" idMethod="native" phpName="TmpDetalleCotizacion">
+    <column name="codCotizacion" phpName="Codcotizacion" type="INTEGER" size="6" primaryKey="true" required="true"/>
+    <column name="codProducto" phpName="Codproducto" type="VARCHAR" size="8" primaryKey="true" required="true"/>
+    <column name="cantidad" phpName="Cantidad" type="INTEGER" required="true"/>
+    <column name="precio_unit" phpName="PrecioUnit" type="DOUBLE" required="true"/>
+    <column name="monto" phpName="Monto" type="DOUBLE" required="true"/>
+    <column name="comentario" phpName="Comentario" type="VARCHAR" size="250" required="true"/>
+    <index name="codProducto">
+      <index-column name="codProducto"/>
+    </index>
+    <unique name="codFactura">
+      <unique-column name="codCotizacion"/>
+      <unique-column name="codProducto"/>
+    </unique>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="tmp_fact_prod" idMethod="native" phpName="TmpFactProd">
+    <column name="id_tmp" phpName="IdTmp" type="BIGINT" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="id_producto" phpName="IdProducto" type="VARCHAR" size="10"/>
+    <column name="cantidad_tmp" phpName="CantidadTmp" type="INTEGER" size="50"/>
+    <column name="precio_tmp" phpName="PrecioTmp" type="DOUBLE"/>
+    <column name="descripcion_tmp" phpName="DescripcionTmp" type="VARCHAR" size="250"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="tmp_ord_prod" idMethod="native" phpName="TmpOrdProd">
+    <column name="id_tmp" phpName="IdTmp" type="BIGINT" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="id_producto" phpName="IdProducto" type="VARCHAR" size="10"/>
+    <column name="cantidad_tmp" phpName="CantidadTmp" type="INTEGER" size="50"/>
+    <column name="precio_tmp" phpName="PrecioTmp" type="DOUBLE"/>
+    <column name="descripcion_tmp" phpName="DescripcionTmp" type="VARCHAR" size="250"/>
+    <column name="usuario_tmp" phpName="UsuarioTmp" type="VARCHAR" size="10" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="unidad" idMethod="native" phpName="Unidad">
+    <column name="codigo" phpName="Codigo" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="descripcion" phpName="Descripcion" type="VARCHAR" size="120" required="true"/>
+    <column name="estatus" phpName="Estatus" type="BOOLEAN" size="1" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="usuario" idMethod="native" phpName="Usuario">
+    <column name="codigo" phpName="Codigo" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="nombre" phpName="Nombre" type="VARCHAR" size="150" required="true"/>
+    <column name="correo" phpName="Correo" type="VARCHAR" size="150" required="true"/>
+    <column name="clave" phpName="Clave" type="VARCHAR" size="400" required="true"/>
+    <column name="nivel" phpName="Nivel" type="INTEGER" size="1" required="true"/>
+    <column name="estatus" phpName="Estatus" type="BOOLEAN" size="1" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+</database>
