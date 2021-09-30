@@ -41,23 +41,23 @@ class Producto {
 
         // Validaciones
         if ($Producto->departamento == '') {
-            $Producto->setError(array('departamento' =>'DEBE SELECCIONAR UN DEPARTAMENTO'));
+            $Producto->setError(array('departamento' => 'DEBE SELECCIONAR UN DEPARTAMENTO'));
         }
 
         if ($Producto->descripcion == '') {
-            $Producto->setError(array('descripcion' =>'DEBE AGREGAR UNA DESCRIPCION'));
+            $Producto->setError(array('descripcion' => 'DEBE AGREGAR UNA DESCRIPCION'));
         }
 
         if ($Producto->unidad == 0) {
-            $Producto->setError(array('unidad' =>'DEBE SELECCIONAR UNA UNIDAD DE MEDIDA'));
+            $Producto->setError(array('unidad' => 'DEBE SELECCIONAR UNA UNIDAD DE MEDIDA'));
         }
 
-        if ($Producto->tipo == 0 ){
-            $Producto->setError(array('tipo' =>'DEBE SELECCIONAR UN TIPO DE PRODUCTO'));
+        if ($Producto->tipo == 0) {
+            $Producto->setError(array('tipo' => 'DEBE SELECCIONAR UN TIPO DE PRODUCTO'));
         }
 
         if ($Producto->costo == 0) {
-            $Producto->setError(array('costo' =>'DEBE INGRESAR UN COSTO'));
+            $Producto->setError(array('costo' => 'DEBE INGRESAR UN COSTO'));
         }
 
         //Validar si hubo errores
@@ -75,7 +75,7 @@ class Producto {
         $Producto->unidad = $Producto->postIntenger('unidad');
         // Validar que exista codigo
         if (!$Producto->checkCodigo($id)) {
-            $Producto->setError(array('codigo' =>'Producto no existe'));
+            $Producto->setError(array('codigo' => 'Producto no existe'));
         }
         //Validar si hubo errores
         if ($Producto->response > 300) {
@@ -181,7 +181,7 @@ class Producto {
         $fac = $factura->listaWithProducto($cod, $where . ' AND factura.estatus > 0');
         $not = $nota->listaWithProducto($cod, $where . ' AND notasalida.estatus > 0');
         $aju = $ajuste->listaWithProducto($cod, $where);
-        $operaciones = array_merge(array($pen),$com, $fac, $not, $aju);
+        $operaciones = array_merge(array($pen), $com, $fac, $not, $aju);
         usort($operaciones, function ($a, $b) {
             return $a['orden'] - $b['orden'];
         });
@@ -201,6 +201,15 @@ class Producto {
         $producto = new \Modelos\Producto();
         $producto->cargarStock($cod);
         return json_encode($producto->calcularStock($cod));
+    }
+
+    function ajustarInventario() {
+
+        $Producto = new \Modelos\Producto();
+        $data = $Producto->lista();
+        foreach ($data as $p) {
+            $Producto->cargarStock($p['codigo']);
+        }
     }
 
 }
