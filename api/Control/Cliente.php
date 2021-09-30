@@ -116,16 +116,4 @@ class Cliente {
         return json_encode($Cliente->cancelar($id));
     }
 
-    function obtenerContribuyente($tipo, $documento, $digito) {
-
-        $objVzla = new \Modelos\Busca_VZLA($tipo, $documento, $digito);
-
-	//var_dump(  $objVzla->flCalcularDigito() );
-
-	//$objVzla->flCalcularDigito() ;
-
-	$arrTodo = $objVzla->flBuscarSENAT();
-        return json_encode($arrTodo);
-    }
-
 }

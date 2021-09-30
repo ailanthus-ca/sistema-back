@@ -1,56 +1,3 @@
--- -----------------------------------------------------
--- Placeholder table for view `factura_lista`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `factura_lista` (`codFact` INT, `fecha` INT, `cod_cliente` INT, `nombre` INT, `total` INT, `status` INT, `usuario` INT);
-SHOW WARNINGS;
-
--- -----------------------------------------------------
--- Placeholder table for view `cotizacion_lista`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cotizacion_lista` (`codFact` INT, `fecha` INT, `cod_cliente` INT, `nombre` INT, `total` INT, `status` INT, `usuario` INT, `tasa` INT);
-SHOW WARNINGS;
-
--- -----------------------------------------------------
--- Placeholder table for view `nota_lista`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `nota_lista` (`codFact` INT, `fecha` INT, `cod_cliente` INT, `nombre` INT, `total` INT, `status` INT, `usuario` INT);
-SHOW WARNINGS;
-
--- -----------------------------------------------------
--- Placeholder table for view `compra_lista`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `compra_lista` (`codFact` INT, `fecha` INT, `cod_proveedor` INT, `nombre` INT, `total` INT, `status` INT, `usuario` INT);
-SHOW WARNINGS;
-
--- -----------------------------------------------------
--- Placeholder table for view `orden_lista`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `orden_lista` (`codFact` INT, `fecha` INT, `cod_proveedor` INT, `nombre` INT, `total` INT, `status` INT, `usuario` INT);
-SHOW WARNINGS;
-
--- -----------------------------------------------------
--- Placeholder table for view `ajuste_lista`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ajuste_lista` (`codFact` INT, `tipo_ajuste` INT, `fecha` INT, `estatus` INT, `usuario` INT, `nombre` INT, `nota` INT);
-SHOW WARNINGS;
-
--- -----------------------------------------------------
--- Placeholder table for view `recibidas_lista`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `recibidas_lista` (`id` INT, `cod_documento` INT, `fecha` INT, `rif` INT, `nombre` INT, `monto` INT);
-SHOW WARNINGS;
-
--- -----------------------------------------------------
--- Placeholder table for view `emitidas_lista`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `emitidas_lista` (`id` INT, `codigo` INT, `fecha` INT, `rif` INT, `nombre` INT, `monto` INT);
-SHOW WARNINGS;
-
--- -----------------------------------------------------
--- Placeholder table for view `facturas_producto`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `facturas_producto` (`codFact` INT, `producto` INT, `fecha` INT, `telefono` INT, `correo` INT, `contacto` INT, `nombre` INT, `total` INT, `status` INT, `usuario` INT, `cantidad` INT, `precio` INT);
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- View `factura_lista`
@@ -182,72 +129,112 @@ order by fecha DESC;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- View `recibidas_lista`
+-- View `creditos_emitidos_lista`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `recibidas_lista`;
+DROP TABLE IF EXISTS `debitos_emitidos_lista`;
 SHOW WARNINGS;
-DROP VIEW IF EXISTS `recibidas_lista` ;
+DROP VIEW IF EXISTS `creditos_emitidos_lista` ;
 SHOW WARNINGS;
 
-CREATE  OR REPLACE VIEW `recibidas_lista` AS
-SELECT 
-notas_recividas.id,
-compra.cod_documento,
-notas_recividas.fecha,
-compra.cod_proveedor AS rif,
-proveedor.nombre,
-notas_recividas.monto
-FROM compra,notas_recividas,proveedor 
-WHERE	compra.codigo=notas_recividas.cod_compra 
-AND compra.cod_proveedor=proveedor.codigo 
-order by fecha desc;
+
+CREATE  OR REPLACE VIEW `debitos_emitidos_lista` AS
+SELECT DISTINCT
+debitosemitidos.codigo,
+debitosemitidos.fecha,
+cod_factura,
+nombre,
+cod_cliente,
+monto
+estado,
+debitosemitidos.usuario
+FROM debitosemitidos, factura_lista
+WHERE cod_factura=codFact
+-- -----------------------------------------------------
+-- View `creditos_emitidos_lista`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `creditos_emitidos_lista`;
+SHOW WARNINGS;
+DROP VIEW IF EXISTS `creditos_emitidos_lista` ;
 SHOW WARNINGS;
 
+
+CREATE  OR REPLACE VIEW `creditos_emitidos_lista` AS
+SELECT DISTINCT
+creditosemitidos.codigo,
+creditosemitidos.fecha,
+cod_factura,
+nombre,
+cod_cliente,
+monto
+estado,
+creditosemitidos.usuario
+FROM creditosemitidos, factura_lista
+WHERE cod_factura=codFact
 -- -----------------------------------------------------
--- View `emitidas_lista`
+-- View `ajuste_lista`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `emitidas_lista`;
+DROP TABLE IF EXISTS `creditos_emitidos_lista`;
 SHOW WARNINGS;
-DROP VIEW IF EXISTS `emitidas_lista` ;
+DROP VIEW IF EXISTS `creditos_emitidos_lista` ;
 SHOW WARNINGS;
 
-CREATE  OR REPLACE VIEW `emitidas_lista` AS
-SELECT 
-notas_emitidas.id,
-factura.codigo,
-notas_emitidas.fecha,
-factura.cod_cliente AS rif,
-cliente.nombre,
-notas_emitidas.monto
-FROM factura,notas_emitidas,cliente 
-WHERE	factura.codigo=notas_emitidas.cod_factura 
-AND factura.cod_cliente=cliente.codigo 
-order by fecha desc;
+
+CREATE  OR REPLACE VIEW `creditos_emitidos_lista` AS
+SELECT DISTINCT
+creditosemitidos.codigo,
+creditosemitidos.fecha,
+cod_factura,
+nombre,
+cod_cliente,
+monto
+estado,
+creditosemitidos.usuario
+FROM creditosemitidos, factura_lista
+WHERE cod_factura=codFact
+-- -----------------------------------------------------
+-- View `ajuste_lista`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `creditos_emitidos_lista`;
+SHOW WARNINGS;
+DROP VIEW IF EXISTS `creditos_emitidos_lista` ;
 SHOW WARNINGS;
 
--- -----------------------------------------------------
--- View `facturas_producto`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `facturas_producto`;
-SHOW WARNINGS;
-DROP VIEW IF EXISTS `facturas_producto` ;
-SHOW WARNINGS;
 
-CREATE  OR REPLACE VIEW `facturas_producto` AS
-SELECT 
-notasalida.codigo as codFact, 
-producto,
-fecha, 
-telefono,
-correo, 
-contacto,
-nombre, 
-total, 
-notasalida.estatus as status, 
-notasalida.usuario, 
-detallesNotas.cantidad, 
-detallesNotas.precio 
-FROM notasalida, detallesNotas, cliente 
-WHERE notasalida.cod_cliente = cliente.codigo 
-AND detallesNotas.nota = notasalida.codigo;
-SHOW WARNINGS;
+CREATE  OR REPLACE VIEW `creditos_emitidos_lista` AS
+SELECT DISTINCT
+creditosemitidos.codigo,
+creditosemitidos.fecha,
+cod_factura,
+nombre,
+cod_cliente,
+monto
+estado,
+creditosemitidos.usuario
+FROM creditosemitidos, factura_lista
+WHERE cod_factura=codFact
+
+
+CREATE  OR REPLACE VIEW `debitos_recibidos_lista` AS
+SELECT DISTINCT
+debitosrecibidos.codigo,
+debitosrecibidos.fecha,
+cod_compra,
+nombre,
+cod_proveedor,
+monto
+estado,
+debitosrecibidos.usuario
+FROM debitosrecibidos , compra_lista
+WHERE cod_compra=codFact;
+CREATE  OR REPLACE VIEW `creditos_recibidos_lista` AS
+SELECT DISTINCT
+creditosrecibidos.codigo,
+creditosrecibidos.fecha,
+cod_compra,
+nombre,
+cod_proveedor,
+monto
+estado,
+creditosrecibidos.usuario
+FROM creditosrecibidos , compra_lista
+WHERE cod_compra=codFact;
