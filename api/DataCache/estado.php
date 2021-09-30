@@ -1,6 +1,6 @@
 <?php 
  return array(
-    'Cliente' => 20,
+    'Cliente' => 21,
     'Compra' => 17,
     'Config' => 1,
     'Cotizacion' => 23,
@@ -14,7 +14,7 @@
     'Proveedor' => 11,
     'Tipo' => 47,
     'Unidad' => 4,
-    'Usuario' => 65,
+    'Usuario' => 68,
     'Moneda' => 14,
     'Ajuste' => 421,
 );
