@@ -207,9 +207,9 @@ class Producto {
 
         $Producto = new \Modelos\Producto();
         $data = $Producto->lista();
-        foreach ($data as $p) {
+        foreach ($data as $p)
             $Producto->cargarStock($p['codigo']);
-        }
+        return json_encode($Producto->lista());
     }
 
 }

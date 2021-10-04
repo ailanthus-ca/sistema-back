@@ -31,10 +31,10 @@ class Factura extends \conexion {
         $Factura->codigo = $Factura->postString('codigo');
 
         if ($Factura->id_nota > 0) {
-            $nota = new Nota();
+            $nota = new \Modelos\Nota();
             $Factura->user = $nota->procesar($Factura->id_nota);
         } elseif ($Factura->id_cotizacion > 0) {
-            $cotizacion = new Cotizacion();
+            $cotizacion = new \Modelos\Cotizacion();
             $Factura->user = $cotizacion->procesar($Factura->id_cotizacion);
         } else {
             $Factura->user = $_SESSION['id_usuario'];

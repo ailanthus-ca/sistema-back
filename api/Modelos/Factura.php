@@ -77,16 +77,6 @@ class Factura extends \Prototipo\Operaciones {
     }
 
     function nuevo() {
-        if ($this->id_nota > 0) {
-            $nota = new Nota();
-            $this->user = $nota->procesar($this->id_nota);
-        } elseif ($this->id_cotizacion > 0) {
-            $cotizacion = new Cotizacion();
-            $this->user = $cotizacion->procesar($this->id_cotizacion);
-        } else {
-            $this->user = $_SESSION['id_usuario'];
-        }
-
         $sql = $this->query('SELECT MAX(codigo) AS cant FROM factura');
         $row = $sql->fetch_array();
         $num_factura = $row['cant'] + 1;
