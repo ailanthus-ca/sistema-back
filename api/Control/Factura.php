@@ -295,7 +295,7 @@ class Factura extends \conexion {
     function equilibrio($ano, $mes) {
         $equilibrio = new \Modelos\Equilibrio();
         $equilibrio->pto = $equilibrio->postFloat("pto");
-        if ($equilibrio->pto != 0) {
+        if ($equilibrio->pto > 0) {
             $data = $equilibrio->set();
             return json_encode($data);
         } else {
