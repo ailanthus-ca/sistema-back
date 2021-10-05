@@ -20,7 +20,9 @@ class NotasCliente extends \conexion {
     protected $detalles;
     protected $rif;
     protected $ref;
-    public $nota='';
+    public $nota = '';
+    public $monto = 0;
+    public $iva = 0;
 
     //put your code here
     public function lista() {
@@ -34,7 +36,7 @@ class NotasCliente extends \conexion {
             }
             $pen[] = array(
                 'codigo' => (int) $row['codigo'],
-                'ref' => $row[$this->ref],                
+                'ref' => $row[$this->ref],
                 'rif' => $row[$this->rif],
                 'fecha' => $row['fecha'],
                 'nombre' => $row['nombre'],
