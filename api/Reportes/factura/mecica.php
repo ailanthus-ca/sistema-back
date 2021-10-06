@@ -36,8 +36,8 @@
         <th class="style-none"  style="width: 10%;text-align:center;" >CANTIDAD</th>
         <th class="style-none"  style="width: 45%;text-align: center;">DESCRIPCION</th>
         <th class="style-none"  style="width: 10%;text-align: center;">UND</th>
-        <th class="style-none"  style="width: 15%;text-align: center;">PRECIO</th>
-        <th class="style-none"  style="width: 20%;text-align: center;">TOTAL</th>
+        <th class="style-none"  style="width: 15%;text-align: right;">PRECIO</th>
+        <th class="style-none"  style="width: 15%;text-align: right;">TOTAL</th>
     </tr>
 </table>
 <hr>
