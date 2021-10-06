@@ -46,8 +46,8 @@
         <th class="style-none"  style="width: 10%;text-align: center;" ></th>
         <th class="style-none"  style="width: 45%;text-align: center;" ></th>
         <th class="style-none"  style="width: 10%;text-align: center;" ></th>
-        <th class="style-none"  style="width: 15%;text-align: center;" ></th>
-        <th class="style-none"  style="width: 20%;text-align: center;" ></th>
+        <th class="style-none"  style="width: 15%;text-align: right;" ></th>
+        <th class="style-none"  style="width: 15%;text-align: right;" ></th>
     </tr>    
     <?php
     $subtotal = 0;
@@ -58,7 +58,7 @@
             <td class="style-none" style=" width: 45%; max-width: 45%; overflow: hidden; text-align: left;"><?php echo $pro['descripcion']; ?></td>
             <td class="style-none" style=" width: 10%; text-align: center;"><?php echo $pro['medida']; ?></td>
             <td class="style-none" style=" width: 15%; text-align: right;"><?php echo number_format($pro['precio'], 2, ',', '.'); ?></td>
-            <td class="style-none" style=" width: 20%; text-align: right;"><?php echo number_format($pro['unidades'] * $pro['precio'], 2, ',', '.'); ?></td>
+            <td class="style-none" style=" width: 15%; text-align: right;"><?php echo number_format($pro['unidades'] * $pro['precio'], 2, ',', '.'); ?></td>
         </tr><?php    }
     ?>
 </table>
@@ -67,18 +67,18 @@
     <tr class="style-none">
         <td class="style-none" rowspan="5" style="width: 60%; text-align: left; font-size: 7pt;"><strong>OBSERVACION: <?php echo $data['nota']; ?></strong></td>
         <td class="style-none" style="width: 20%;text-align: right;"><strong> SUBTOTAL <?php echo $region['moneda']; ?>: </strong></td>
-        <td class="style-none" style="width: 20%;text-align: right;"> <?php echo number_format($subtotal, 2, ',', '.'); ?></td>
+        <td class="style-none" style="width: 15%;text-align: right;"> <?php echo number_format($subtotal, 2, ',', '.'); ?></td>
     </tr>
     <tr class="style-none">
         <td class="style-none" style="width: 20%;text-align: right;"><strong> BASE IMPONIBLE <?php echo $region['moneda']; ?>: </strong></td>
-        <td class="style-none" style="width: 20%;text-align: right;"> <?php echo number_format($subtotal, 2, ',', '.'); ?></td>
+        <td class="style-none" style="width: 15%;text-align: right;"> <?php echo number_format($subtotal, 2, ',', '.'); ?></td>
     </tr>
     <tr class="style-none">
         <td class="style-none" style="width: 20%; text-align: right;"><strong> IVA <?php echo $region['impuesto'] . "% " . $region['moneda']; ?>:</strong></td>
-        <td class="style-none" style="width: 20%; text-align: right;"> <?php echo number_format($subtotal * $region['impuesto'] / 100, 2, ',', '.'); ?></td>
+        <td class="style-none" style="width: 15%; text-align: right;"> <?php echo number_format($subtotal * $region['impuesto'] / 100, 2, ',', '.'); ?></td>
     </tr>
     <tr class="style-none">
         <td class="style-none" style="width: 20%; text-align: right;"><strong> TOTAL <?php echo $region['moneda']; ?>:</strong></td>
-        <td class="style-none" style="width: 20%; text-align: right;"> <?php echo number_format($subtotal * (1 + $region['impuesto'] / 100), 2, ',', '.'); ?></td>
+        <td class="style-none" style="width: 15%; text-align: right;"> <?php echo number_format($subtotal * (1 + $region['impuesto'] / 100), 2, ',', '.'); ?></td>
     </tr>
 </table>
