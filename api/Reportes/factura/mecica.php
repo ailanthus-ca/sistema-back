@@ -53,12 +53,12 @@
     $subtotal = 0;
     foreach ($data['detalles'] as $pro) {
         $subtotal += $pro['unidades'] * $pro['precio'];
-        ?><tr>
-            <td style=" width: 10%; text-align: center;"><?php echo $pro['unidades']; ?></td>
-            <td style=" width: 45%; max-width: 45%; overflow: hidden; text-align: left;"><?php echo $pro['descripcion']; ?></td>
-            <td style=" width: 10%; text-align: center;"><?php echo $pro['medida']; ?></td>
-            <td style=" width: 15%; text-align: right;"><?php echo number_format($pro['precio'], 2, ',', '.'); ?></td>
-            <td style=" width: 20%; text-align: right;"><?php echo number_format($pro['unidades'] * $pro['precio'], 2, ',', '.'); ?></td>
+        ?><tr class="style-none">
+            <td class="style-none" style=" width: 10%; text-align: center;"><?php echo $pro['unidades']; ?></td>
+            <td class="style-none" style=" width: 45%; max-width: 45%; overflow: hidden; text-align: left;"><?php echo $pro['descripcion']; ?></td>
+            <td class="style-none" style=" width: 10%; text-align: center;"><?php echo $pro['medida']; ?></td>
+            <td class="style-none" style=" width: 15%; text-align: right;"><?php echo number_format($pro['precio'], 2, ',', '.'); ?></td>
+            <td class="style-none" style=" width: 20%; text-align: right;"><?php echo number_format($pro['unidades'] * $pro['precio'], 2, ',', '.'); ?></td>
         </tr><?php    }
     ?>
 </table>
@@ -74,11 +74,7 @@
         <td class="style-none" style="width: 20%;text-align: right;"> <?php echo number_format($subtotal, 2, ',', '.'); ?></td>
     </tr>
     <tr class="style-none">
-        <td class="style-none" style="width: 20%;text-align: right;"><strong> DESCUENTO <?php echo $region['moneda']; ?>: </strong></td>
-        <td class="style-none" style="width: 20%;text-align: right;"> <?php echo number_format(0, 2, ',', '.'); ?></td>
-    </tr>
-    <tr class="style-none">
-        <td class="style-none" style="width: 20%; text-align: right;"><strong> IVA <?php echo $data['impuesto'] . "% " . $region['moneda']; ?>:</strong></td>
+        <td class="style-none" style="width: 20%; text-align: right;"><strong> IVA <?php echo $region['impuesto'] . "% " . $region['moneda']; ?>:</strong></td>
         <td class="style-none" style="width: 20%; text-align: right;"> <?php echo number_format($subtotal * $region['impuesto'] / 100, 2, ',', '.'); ?></td>
     </tr>
     <tr class="style-none">
