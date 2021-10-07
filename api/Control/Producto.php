@@ -212,4 +212,33 @@ class Producto {
         return json_encode($Producto->lista());
     }
 
+    function pruebaStock($cod) {
+        $fac = new \Modelos\Factura();
+        $not = new \Modelos\Nota();
+        $com = new \Modelos\Compra();
+        $aju = new \Modelos\Ajuste();
+        $Producto = new \Modelos\Producto();
+        $Producto->cargarStock($cod);
+        $stock = $Producto->ver($cod);
+        //salidas
+        $factu = $fac->salidasValidas($cod);
+        $notas = $not->salidasValidas($cod);
+        $ajuSa = $aju->salidasValidas($cod);
+        //entradas
+        $ajuEn = $aju->entradasValidas($cod);
+        $compr = $com->entradasValidas($cod);
+
+        return json_encode([
+            'fact' => $factu,
+            'nota' => $notas,
+            'sali' => $ajuSa,
+            'totalSalidas' => ($factu + $notas + $ajuSa),
+            'comp' => $compr,
+            'entr' => $ajuEn,
+            'totalEntradas' => ($ajuEn + $compr),
+            'stock' => ($ajuEn + $compr) - ($factu + $notas + $ajuSa),
+            'cantidad' => $stock['cantidad']
+        ]);
+    }
+
 }

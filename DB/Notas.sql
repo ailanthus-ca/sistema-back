@@ -7,6 +7,7 @@ cod_factura,
 nombre,
 cod_cliente,
 debitosemitidos.monto,
+debitosemitidos.iva,
 debitosemitidos.estado,
 debitosemitidos.usuario
 FROM debitosemitidos, factura_lista
@@ -21,6 +22,7 @@ cod_factura,
 nombre,
 cod_cliente,
 monto,
+creditosemitidos.iva,
 estado,
 creditosemitidos.usuario
 FROM creditosemitidos, factura_lista
@@ -34,6 +36,7 @@ cod_compra,
 nombre,
 cod_proveedor,
 monto,
+debitosrecibidos.iva,
 estado,
 debitosrecibidos.usuario
 FROM debitosrecibidos , compra_lista
@@ -47,6 +50,7 @@ nombre,
 cod_proveedor,
 monto,
 estado,
+creditosrecibidos.iva,
 creditosrecibidos.usuario
 FROM creditosrecibidos , compra_lista
 WHERE cod_compra=codFact;

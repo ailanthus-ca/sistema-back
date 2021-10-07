@@ -264,7 +264,7 @@ class Nota extends \Prototipo\Operaciones {
                 . "SUM( cantidad ) as cantidad "
                 . "FROM detallesNotas, notasalida WHERE "
                 . "producto = '$codigo' AND $where "
-                . "codigo = nota AND "
+                . "codigo = detallesNotas.nota AND "
                 . "estatus = 1");
         while ($row = $query->fetch_array()) {
             return (float) $row['cantidad'];

@@ -317,4 +317,16 @@ class Factura extends \conexion {
         return json_encode(array('mejor' => $factura->mejor_mes(), 'actual' => $total));
     }
 
+    function creditos() {
+        
+    }
+
+    function nuevoCredito() {
+        
+    }
+
+    function eliminarCredito() {
+        
+    }
+
 }
