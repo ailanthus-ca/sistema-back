@@ -11,7 +11,7 @@ RewriteCond %{REQUEST_FILENAME} !-l
 
 RewriteRule ^(.+)$ index.php?url=$1 [QSA,e]
 #
-## Disable ETags
+# Disable ETags
 <IfModule mod_headers.c>
     Header unset ETag
     Header set Connection keep-alive

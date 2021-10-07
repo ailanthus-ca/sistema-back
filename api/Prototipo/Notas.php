@@ -66,13 +66,7 @@ class Notas extends \conexion {
         $sql = "SELECT * FROM $this->tabla where codigo = $id";
         $query = $this->query($sql);
         if ($row = $query->fetch_array()) {
-            $sql = $this->query("SELECT producto FROM $this->detalle WHERE nota = " . $row['codigo']);
-            while ($row = $sql->fetch_array()) {
-                $detalle = $producto->ver($row['producto']);
-                $detalle['unidades'] = (float) $row['cantidad'];
-                $detalle['precio'] = (float) $row['precio'];
-            }
-            return array(
+            $nota = array(
                 'codigo' => (int) $row['codigo'],
                 'ref' => $row[$this->ref],
                 'rif' => $row[$this->rif],
@@ -81,8 +75,17 @@ class Notas extends \conexion {
                 'monto' => (float) $row['monto'],
                 'usuario' => (int) $row['usuario'],
                 'estado' => (int) $row['estado'],
-                $detalle
+                'detalles' => array()
             );
+            $producto = new \Modelos\Producto();
+            $sql = $this->query("SELECT * FROM $this->detalle WHERE nota = " . $row['codigo']);
+            while ($p = $sql->fetch_array()) {
+                $detalle = $producto->ver($p['producto']);
+                $detalle['unidades'] = (float) $p['cantidad'];
+                $detalle['precio'] = (float) $p['precio'];
+                $nota['detalles'][] = $detalle;
+            }
+            return $nota;
         } else {
             return $this->getNotFount('nota no encontrada');
         }
@@ -143,7 +146,7 @@ class Notas extends \conexion {
                 . "SUM( cantidad ) as cantidad "
                 . "FROM $this->detalle, $this->tabla WHERE "
                 . "producto = '$codigo' AND $where "
-                . "codigo = nota AND "
+                . "codigo = $this->tabla.nota AND "
                 . "estatus > 0");
         while ($row = $query->fetch_array()) {
             return (float) $row['cantidad'];

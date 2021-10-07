@@ -34,7 +34,7 @@ class Factura extends \conexion {
             $nota = new \Modelos\Nota();
             $Factura->user = $nota->procesar($Factura->id_nota);
         } elseif ($Factura->id_cotizacion > 0) {
-            $cotizacion = new \Modelos\Cotizacion();
+            $dotizacion = new \Modelos\Cotizacion();
             $Factura->user = $cotizacion->procesar($Factura->id_cotizacion);
         } else {
             $Factura->user = $_SESSION['id_usuario'];
@@ -318,15 +318,44 @@ class Factura extends \conexion {
     }
 
     function creditos() {
-        
+        $c = new \Modelos\CreditoEmitido;
+        return json_encode($c->lista());
+    }
+
+    function detallesCredito($cod) {
+        $c = new \Modelos\CreditoEmitido;
+        return json_encode($c->detalles($cod));
     }
 
     function nuevoCredito() {
-        
+        $c = new \Modelos\CreditoEmitido;
+        $c->recibir();
+        return json_encode($c->nuevo());
     }
 
-    function eliminarCredito() {
-        
+    function eliminarCredito($cod) {
+        $c = new \Modelos\CreditoEmitido;
+        return json_encode($c->cancelar($cod));
+    }
+    function debitos() {
+        $d = new \Modelos\CreditoEmitido;
+        return json_encode($d->lista());
+    }
+
+    function detallesDebito($dod) {
+        $d = new \Modelos\DebitoEmitido;
+        return json_encode($d->detalles($dod));
+    }
+
+    function nuevoDebito() {
+        $d = new \Modelos\DebitoEmitido;
+        $d->recibir();
+        return json_encode($d->nuevo());
+    }
+
+    function eliminarDebito($cod) {
+        $d = new \Modelos\DebitoEmitido;
+        return json_encode($d->cancelar($cod));
     }
 
 }

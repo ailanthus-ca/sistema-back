@@ -247,5 +247,46 @@ class Compra {
         }
         return json_encode($data);
     }
+
+    function creditos() {
+        $c = new \Modelos\CreditoRecibido;
+        return json_encode($c->lista());
+    }
+
+    function detallesCredito($cod) {
+        $c = new \Modelos\CreditoRecibido;
+        return json_encode($c->detalles($cod));
+    }
+
+    function nuevoCredito() {
+        $c = new \Modelos\CreditoRecibido;
+        $c->recibir();
+        return json_encode($c->nuevo());
+    }
+
+    function eliminarCredito($cod) {
+        $c = new \Modelos\CreditoRecibido;
+        return json_encode($c->cancelar($cod));
+    }
+    function debitos() {
+        $d = new \Modelos\CreditoRecibido;
+        return json_encode($d->lista());
+    }
+
+    function detallesDebito($dod) {
+        $d = new \Modelos\DebitoRecibido;
+        return json_encode($d->detalles($dod));
+    }
+
+    function nuevoDebito() {
+        $d = new \Modelos\DebitoRecibido;
+        $d->recibir();
+        return json_encode($d->nuevo());
+    }
+
+    function eliminarDebito($cod) {
+        $d = new \Modelos\DebitoRecibido;
+        return json_encode($d->cancelar($cod));
+    }
     
 }
