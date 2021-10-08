@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit5aa6a0cea401d85512ee343ec354ad54
+class ComposerStaticInit687a71067b08aeccb7ce567accb8b63d
 {
     public static $prefixLengthsPsr4 = array (
         'S' => 
@@ -21,7 +21,6 @@ class ComposerStaticInit5aa6a0cea401d85512ee343ec354ad54
     );
 
     public static $classMap = array (
-        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Datamatrix' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/datamatrix.php',
         'PDF417' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/pdf417.php',
         'QRcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/qrcode.php',
@@ -41,9 +40,9 @@ class ComposerStaticInit5aa6a0cea401d85512ee343ec354ad54
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit5aa6a0cea401d85512ee343ec354ad54::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit5aa6a0cea401d85512ee343ec354ad54::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit5aa6a0cea401d85512ee343ec354ad54::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit687a71067b08aeccb7ce567accb8b63d::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit687a71067b08aeccb7ce567accb8b63d::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit687a71067b08aeccb7ce567accb8b63d::$classMap;
 
         }, null, ClassLoader::class);
     }
