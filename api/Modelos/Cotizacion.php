@@ -157,7 +157,7 @@ class Cotizacion extends \Prototipo\Operaciones {
         return $this->getResponse($this->detalles($id));
     }
 
-    function procesar($id) {
+    public function procesar($id) {
         $query = $this->query("UPDATE `cotizacion` SET `estatus`= 2 WHERE codigo = $id");
         $sql = $this->query("select usuario from cotizacion WHERE codigo = $id");
         if ($row = $sql->fetch_array()) {

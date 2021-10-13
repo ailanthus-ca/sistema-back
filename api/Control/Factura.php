@@ -34,7 +34,7 @@ class Factura extends \conexion {
             $nota = new \Modelos\Nota();
             $Factura->user = $nota->procesar($Factura->id_nota);
         } elseif ($Factura->id_cotizacion > 0) {
-            $dotizacion = new \Modelos\Cotizacion();
+            $cotizacion = new \Modelos\Cotizacion();
             $Factura->user = $cotizacion->procesar($Factura->id_cotizacion);
         } else {
             $Factura->user = $_SESSION['id_usuario'];
@@ -57,19 +57,6 @@ class Factura extends \conexion {
         // Validar total
         if ($Factura->total == 0) {
             $Factura->setError('NO SE MANDO EL TOTAL');
-        }
-        $producto = new \Modelos\Producto();
-        foreach ($Factura->detalles as $pro) {
-            $producto->cargar($pro->codigo);
-            if (!$producto->checkCosto($pro->precio)) {
-                $Factura->setError($producto->descripcion . 'NO SE PUEDE VENDER POR DEBAJO DEL COSTO');
-            }
-            if (!$producto->checkPrecio($pro->precio)) {
-                $Factura->setError($producto->descripcion . 'NO SE PUEDE VENDER POR DEBAJO DEL PRECIO 1');
-            }
-            if (!$producto->checkStock($pro->unidades)) {
-                $Factura->setError($producto->descripcion . 'NO TIENE STOCK SUFICIENTE PARA REALIZAR LA VENTA');
-            }
         }
         //Validar si hubo errores
         if ($Factura->response > 300) {
