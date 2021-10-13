@@ -23,7 +23,7 @@ class Ajuste extends \conexion {
 
     public function lista() {
         $data = array();
-        $query = $this->query("SELECT ajusteinv.codigo as codFact, tipo_ajuste, fecha, ajusteinv.estatus, usuario, usuario.nombre as nombre, nota FROM `ajusteinv`, `usuario` WHERE ajusteinv.usuario = usuario.codigo");
+        $query = $this->query("SELECT * FROM ajuste_lista");
         while ($row = $query->fetch_array()) {
             $detalle = array();
             $sql = $this->query("SELECT cod_producto FROM detalleajusteinv WHERE cod_ajuste = " . $row['codFact']);

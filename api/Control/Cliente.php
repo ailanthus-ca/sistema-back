@@ -27,29 +27,32 @@ class Cliente {
 
         // Validar que exista el codigo
         if ($Cliente->codigo == '') {
-            $Cliente->setError('No se mando RIF/cédula');
+            $Cliente->setError(array('codigo' => 'No se mando RIF/cédula'));
+        }
+        if ($Cliente->checkCodigo($Cliente->codigo)) {
+            $Cliente->setError(array('codigo' => 'ya existe este RIF/cédula'));
         }
         // Validar que exista el nombre
         if ($Cliente->nombre == '') {
-            $Cliente->setError('No se mando el nombre');
+            $Cliente->setError(array('nombre' => 'No se mando el nombre'));
         }
         // Validar que exista el correo
-        if ($Cliente->email == '') {
-            $Cliente->setError('No se mando un email');
+        if ($Cliente->telefono == '') {
+            $Cliente->setError(array('telefono' => 'No se mando un telefono'));
         }
         // Validar que exista el contacto
         if ($Cliente->contacto == '') {
-            $Cliente->setError('No se mando un contacto');
+            $Cliente->setError(array('contacto' => 'No se mando un contacto'));
         }
         // Validar que exista el contacto
         if ($Cliente->tipo_contribuyente == '') {
-            $Cliente->setError('No se mando un tipo de contribuyente');
+            $Cliente->setError(array('tipo_contribuyente' => 'No se mando un tipo de contribuyente'));
         }
         // Validar que exista el contacto
         if ($Cliente->tipo_contribuyente == 'ESPECIAL') {
             // Validar que exista una retencion
             if ($Cliente->retencion == 0) {
-                $Cliente->setError('No se mando ninguna retención');
+                $Cliente->setError(array('retencion' => 'No se mando ninguna retención'));
             }
         }
         //Validar si hubo errores
@@ -74,25 +77,32 @@ class Cliente {
         $Cliente->tipo_contribuyente = $Cliente->postString("tipo_contribuyente");
         $Cliente->retencion = $Cliente->postFloat('retencion');
 
-        // Validar que exista codigo
-        if (!$Cliente->checkCodigo($id)) {
-            $Cliente->setError('Cliente no existe');
+        // Validar que exista el codigo
+        if ($Cliente->codigo == '') {
+            $Cliente->setError(array('codigo' => 'No se mando RIF/cédula'));
         }
         // Validar que exista el nombre
         if ($Cliente->nombre == '') {
-            $Cliente->setError('No se mando el nombre');
+            $Cliente->setError(array('nombre' => 'No se mando el nombre'));
         }
         // Validar que exista el correo
         if ($Cliente->email == '') {
-            $Cliente->setError('No se mando un email');
+            $Cliente->setError(array('email' => 'No se mando un email'));
         }
         // Validar que exista el contacto
         if ($Cliente->contacto == '') {
-            $Cliente->setError('No se mando un contacto');
+            $Cliente->setError(array('contacto' => 'No se mando un contacto'));
         }
         // Validar que exista el contacto
         if ($Cliente->tipo_contribuyente == '') {
-            $Cliente->setError('No se mando un tipo de contribuyente');
+            $Cliente->setError(array('tipo_contribuyente' => 'No se mando un tipo de contribuyente'));
+        }
+        // Validar que exista el contacto
+        if ($Cliente->tipo_contribuyente == 'ESPECIAL') {
+            // Validar que exista una retencion
+            if ($Cliente->retencion == 0) {
+                $Cliente->setError(array('retencion' => 'No se mando ninguna retención'));
+            }
         }
         //Validar si hubo errores
         if ($Cliente->response > 300) {

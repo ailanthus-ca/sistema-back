@@ -15,7 +15,7 @@ class Factura extends \Prototipo\Operaciones {
 
     function lista() {
         $pen = array();
-        $sql = "SELECT factura.codigo as codFact, fecha,cod_cliente,nombre,total,factura.estatus as status,factura.usuario  FROM factura,cliente WHERE factura.cod_cliente = cliente.codigo order by fecha DESC ";
+        $sql = "SELECT * FROM factura_lista";
         $query = $this->query($sql);
         while ($row = $query->fetch_array()) {
             $detalle = array();
@@ -77,16 +77,6 @@ class Factura extends \Prototipo\Operaciones {
     }
 
     function nuevo() {
-        if ($this->id_nota > 0) {
-            $nota = new Nota();
-            $this->user = $nota->procesar($this->id_nota);
-        } elseif ($this->id_cotizacion > 0) {
-            $cotizacion = new Cotizacion();
-            $this->user = $cotizacion->procesar($this->id_cotizacion);
-        } else {
-            $this->user = $_SESSION['id_usuario'];
-        }
-
         $sql = $this->query('SELECT MAX(codigo) AS cant FROM factura');
         $row = $sql->fetch_array();
         $num_factura = $row['cant'] + 1;
@@ -234,7 +224,7 @@ class Factura extends \Prototipo\Operaciones {
                 . "codProducto = '$codigo' AND $where "
                 . "codigo = codFactura AND "
                 . "estatus > 0");
-        while ($row = $query->fetch_array()) {
+        if ($row = $query->fetch_array()) {
             return (float) $row['cantidad'];
         }
         return 0;
@@ -269,16 +259,10 @@ class Factura extends \Prototipo\Operaciones {
     }
 
     public function ventaAno($ano) {
-        $query = $this->query("SELECT "
-                . "SUM(subtotal) AS r,"
-                . "MONTH(fecha) AS mes "
-                . "FROM factura WHERE "
-                . "YEAR(fecha)=$ano AND "
-                . "estatus = 2 "
-                . "GROUP BY mes");
+        $query = $this->query("SELECT equilibrio.mes as mes,r as monto,equilibrio.monto as equi FROM equilibrio, (SELECT SUM(subtotal) AS r,MONTH(fecha) AS mes FROM factura WHERE YEAR(fecha)=$ano AND estatus = 2 GROUP BY mes) as f WHERE f.mes=equilibrio.mes AND equilibrio.ano=$ano");
         $pen = array();
         while ($row = $query->fetch_array()) {
-            $pen[(int) $row['mes']] = (float) $row['r'];
+            $pen[] = array((int) $row['mes'], (float) $row['monto'], (float) $row['equi']);
         }
         return $this->getResponse($pen);
     }
@@ -309,15 +293,18 @@ class Factura extends \Prototipo\Operaciones {
     }
 
     public function utilidad($ano, $mes) {
-        $query = $this->query("SELECT SUM(subtotal) as ventas, SUM(costo) as costos 
+        $query = $this->query("SELECT 
+            SUM(((subtotal/costo) - 1) * 100) as uti, 
+            COUNT(costo) as con
             FROM factura
             WHERE MONTH(fecha) = $mes
             AND estatus = 2
             AND YEAR(fecha) = $ano");
+        $prom = 0;
         while ($row = $query->fetch_array()) {
-            $ventas = $row['ventas'];
-            $costos = $row['costos'];
-            $prom = round((($ventas - $costos) * 100) / $costos);
+            $uti =(float) $row['uti'];
+            $con =(float) $row['con'];
+            $prom = round($uti/$con);
         }
         return $this->getResponse($prom);
     }

@@ -1,5 +1,12 @@
 {
-    "name": "sisapi-v2",
+    "name": "victo/api",
+    "description": "sistema administrativo",
+    "authors": [
+        {
+            "name": "Victor Alfonso Requena Soto",
+            "email": "victorequena22@gmail.com"
+        }
+    ],
     "require": {
         "spipu/html2pdf": "^5.2"
     }

@@ -9,7 +9,7 @@ class Orden extends \Prototipo\Operaciones {
 
     function lista() {
         $pen = array();
-        $sql = "SELECT ordencompra.codigo as codFact,fecha,cod_proveedor,nombre,total,ordencompra.estatus as status,usuario FROM ordencompra,proveedor WHERE ordencompra.cod_proveedor = proveedor.codigo order by fecha DESC ";
+        $sql = "SELECT * FROM orden_lista";
         $query = $this->query($sql);
         while ($row = $query->fetch_array()) {
             $detalle = array();

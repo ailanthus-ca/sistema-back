@@ -41,23 +41,23 @@ class Producto {
 
         // Validaciones
         if ($Producto->departamento == '') {
-            $Producto->setError('DEBE SELECCIONAR UN DEPARTAMENTO');
+            $Producto->setError(array('departamento' => 'DEBE SELECCIONAR UN DEPARTAMENTO'));
         }
 
         if ($Producto->descripcion == '') {
-            $Producto->setError('DEBE AGREGAR UNA DESCRIPCION');
+            $Producto->setError(array('descripcion' => 'DEBE AGREGAR UNA DESCRIPCION'));
         }
 
-        if ($Producto->unidad == '') {
-            $Producto->setError('DEBE SELECCIONAR UNA UNIDAD DE MEDIDA');
+        if ($Producto->unidad == 0) {
+            $Producto->setError(array('unidad' => 'DEBE SELECCIONAR UNA UNIDAD DE MEDIDA'));
         }
 
-        if ($Producto->tipo == '') {
-            $Producto->setError('DEBE SELECCIONAR UN TIPO DE PRODUCTO');
+        if ($Producto->tipo == 0) {
+            $Producto->setError(array('tipo' => 'DEBE SELECCIONAR UN TIPO DE PRODUCTO'));
         }
 
-        if ($Producto->costo == '') {
-            $Producto->setError('DEBE INGRESAR UN COSTO');
+        if ($Producto->costo == 0) {
+            $Producto->setError(array('costo' => 'DEBE INGRESAR UN COSTO'));
         }
 
         //Validar si hubo errores
@@ -75,7 +75,7 @@ class Producto {
         $Producto->unidad = $Producto->postIntenger('unidad');
         // Validar que exista codigo
         if (!$Producto->checkCodigo($id)) {
-            $Producto->setError('Producto no existe');
+            $Producto->setError(array('codigo' => 'Producto no existe'));
         }
         //Validar si hubo errores
         if ($Producto->response > 300) {
@@ -107,11 +107,11 @@ class Producto {
                 $titulo .= ' PARA LA VENTA';
         }
         if ($min !== "-1") {
-            $where .= " and cantidad > $min";
+            $where .= " and cantidad >= $min";
             $titulo .= " COM ESTOCK MAYOR A $min";
         }
         if ($max !== "-1") {
-            $where .= " and cantidad > $max";
+            $where .= " and cantidad <= $max";
             $titulo .= " COM ESTOCK MENOR A $max";
         }
         if ($tipo !== "-1") {
@@ -181,7 +181,7 @@ class Producto {
         $fac = $factura->listaWithProducto($cod, $where . ' AND factura.estatus > 0');
         $not = $nota->listaWithProducto($cod, $where . ' AND notasalida.estatus > 0');
         $aju = $ajuste->listaWithProducto($cod, $where);
-        $operaciones = array_merge(array($pen),$com, $fac, $not, $aju);
+        $operaciones = array_merge(array($pen), $com, $fac, $not, $aju);
         usort($operaciones, function ($a, $b) {
             return $a['orden'] - $b['orden'];
         });
@@ -197,23 +197,48 @@ class Producto {
         $pdf->ouput('Compra.pdf', $content);
     }
 
-    function costo($cod, $pre) {
-        $config = new \Config('costo');
-        $costo = $config->get();
+    function ForceStock($cod) {
+        $producto = new \Modelos\Producto();
+        $producto->cargarStock($cod);
+        return json_encode($producto->calcularStock($cod));
+    }
+
+    function ajustarInventario() {
+
         $Producto = new \Modelos\Producto();
-        $Producto->cargar($cod);
-        $dolar = new \Modelos\Dolares();
-        $tasa = $dolar->valor();
-        return json_encode(array(
-            'costoDolarNuevo' => number_format($pre / $tasa, 2, ',', '.'),
-            'costoNuevo' => number_format($pre, 2, ',', '.'),
-            'costoAnte' => number_format($Producto->costo, 2, ',', '.'),
-            'costoDolarAnte' => number_format($Producto->costo / $Producto->dolar, 2, ',', '.'),
-            'tasaProducto' => number_format($Producto->dolar, 2, ',', '.'),
-            'tasaActual' => number_format($tasa, 2, ',', '.'),
-            'funtion' => $Producto->checkCosto($pre, $tasa),
-            'validacion' => ($costo['costo'] === 2 && $Producto->checkCosto($pre, $tasa))
-        ));
+        $data = $Producto->lista();
+        foreach ($data as $p)
+            $Producto->cargarStock($p[0]);
+        return json_encode($Producto->lista());
+    }
+
+    function pruebaStock($cod) {
+        $fac = new \Modelos\Factura();
+        $not = new \Modelos\Nota();
+        $com = new \Modelos\Compra();
+        $aju = new \Modelos\Ajuste();
+        $Producto = new \Modelos\Producto();
+        $Producto->cargarStock($cod);
+        $stock = $Producto->ver($cod);
+        //salidas
+        $factu = $fac->salidasValidas($cod);
+        $notas = $not->salidasValidas($cod);
+        $ajuSa = $aju->salidasValidas($cod);
+        //entradas
+        $ajuEn = $aju->entradasValidas($cod);
+        $compr = $com->entradasValidas($cod);
+
+        return json_encode([
+            'fact' => $factu,
+            'nota' => $notas,
+            'sali' => $ajuSa,
+            'totalSalidas' => ($factu + $notas + $ajuSa),
+            'comp' => $compr,
+            'entr' => $ajuEn,
+            'totalEntradas' => ($ajuEn + $compr),
+            'stock' => ($ajuEn + $compr) - ($factu + $notas + $ajuSa),
+            'cantidad' => $stock['cantidad']
+        ]);
     }
 
 }

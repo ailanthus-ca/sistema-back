@@ -33,14 +33,14 @@ class Equilibrio extends \conexion {
 	public function get($ano, $mes){
 		$sql_equi = $this->query("SELECT * from equilibrio WHERE ano = $ano AND mes = $mes");
 		if ($row = $sql_equi->fetch_array()) {
-			$equi = $row['monto'];
+			$equi = (float) $row['monto'];
 		} else
 		$equi = 0;
 		$sql_ventas = $this->query("SELECT SUM(subtotal) AS ventas FROM factura WHERE estatus = 2 AND MONTH(fecha)=$mes AND YEAR(fecha)='$ano'");
 		if ($row2 = $sql_ventas->fetch_array()) {
-			$ventas = $row2['ventas'];
+			$ventas = (float) $row2['ventas'];
 		}
-		$data = array(0 => $equi, 1 => $ventas);
+		$data = array(0 =>(float)  $equi, 1 =>(float)  $ventas);
 		return $this->getResponse($data);
 	}
 

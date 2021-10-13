@@ -22,17 +22,7 @@ class Nota extends \Prototipo\Operaciones {
 
     function lista() {
         $pen = array();
-        $sql = "SELECT "
-                . "notasalida.codigo as codFact,"
-                . " fecha,"
-                . "cod_cliente,"
-                . "nombre,"
-                . "total,"
-                . "notasalida.estatus as status,"
-                . "notasalida.usuario "
-                . "FROM notasalida,cliente WHERE "
-                . "notasalida.cod_cliente = cliente.codigo "
-                . "order by fecha DESC ";
+        $sql = "SELECT * FROM nota_lista";
         $query = $this->query($sql);
         while ($row = $query->fetch_array()) {
             $detalle = array();
@@ -77,8 +67,8 @@ class Nota extends \Prototipo\Operaciones {
             $notasalida['detalles'] = array();
             $sql = "SELECT * from detallesNotas where nota = '" . $notasalida['codigo'] . "'";
             $query = $this->query($sql);
+            $producto = new Producto();
             while ($row = $query->fetch_array()) {
-                $producto = new Producto();
                 $detalle = $producto->ver($row['producto']);
                 $detalle['unidades'] = (float) $row['cantidad'];
                 $detalle['precio'] = (float) $row['precio'];
@@ -274,7 +264,7 @@ class Nota extends \Prototipo\Operaciones {
                 . "SUM( cantidad ) as cantidad "
                 . "FROM detallesNotas, notasalida WHERE "
                 . "producto = '$codigo' AND $where "
-                . "codigo = nota AND "
+                . "codigo = detallesNotas.nota AND "
                 . "estatus = 1");
         while ($row = $query->fetch_array()) {
             return (float) $row['cantidad'];

@@ -31,10 +31,10 @@ class Factura extends \conexion {
         $Factura->codigo = $Factura->postString('codigo');
 
         if ($Factura->id_nota > 0) {
-            $nota = new Nota();
+            $nota = new \Modelos\Nota();
             $Factura->user = $nota->procesar($Factura->id_nota);
         } elseif ($Factura->id_cotizacion > 0) {
-            $cotizacion = new Cotizacion();
+            $dotizacion = new \Modelos\Cotizacion();
             $Factura->user = $cotizacion->procesar($Factura->id_cotizacion);
         } else {
             $Factura->user = $_SESSION['id_usuario'];
@@ -295,7 +295,7 @@ class Factura extends \conexion {
     function equilibrio($ano, $mes) {
         $equilibrio = new \Modelos\Equilibrio();
         $equilibrio->pto = $equilibrio->postFloat("pto");
-        if ($equilibrio->pto != 0) {
+        if ($equilibrio->pto > 0) {
             $data = $equilibrio->set();
             return json_encode($data);
         } else {
@@ -315,6 +315,47 @@ class Factura extends \conexion {
         $total = $factura->mes_actual() + $nota->mes_actual();
         $factura->guardar_mes();
         return json_encode(array('mejor' => $factura->mejor_mes(), 'actual' => $total));
+    }
+
+    function creditos() {
+        $c = new \Modelos\CreditoEmitido;
+        return json_encode($c->lista());
+    }
+
+    function detallesCredito($cod) {
+        $c = new \Modelos\CreditoEmitido;
+        return json_encode($c->detalles($cod));
+    }
+
+    function nuevoCredito() {
+        $c = new \Modelos\CreditoEmitido;
+        $c->recibir();
+        return json_encode($c->nuevo());
+    }
+
+    function eliminarCredito($cod) {
+        $c = new \Modelos\CreditoEmitido;
+        return json_encode($c->cancelar($cod));
+    }
+    function debitos() {
+        $d = new \Modelos\CreditoEmitido;
+        return json_encode($d->lista());
+    }
+
+    function detallesDebito($dod) {
+        $d = new \Modelos\DebitoEmitido;
+        return json_encode($d->detalles($dod));
+    }
+
+    function nuevoDebito() {
+        $d = new \Modelos\DebitoEmitido;
+        $d->recibir();
+        return json_encode($d->nuevo());
+    }
+
+    function eliminarDebito($cod) {
+        $d = new \Modelos\DebitoEmitido;
+        return json_encode($d->cancelar($cod));
     }
 
 }

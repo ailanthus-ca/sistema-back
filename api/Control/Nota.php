@@ -34,7 +34,7 @@ class Nota extends \conexion {
         $Nota->total = $Nota->postFloat("total");
         $Nota->detalles = $Nota->postArray("detalles");
         if ($Nota->id_cotizacion > 0) {
-            $cotizacion = new Cotizacion();
+            $cotizacion = new \Modelos\Cotizacion();
             $Nota->user = $cotizacion->procesar($Nota->id_cotizacion);
         } else {
             $Nota->user = $_SESSION['id_usuario'];
