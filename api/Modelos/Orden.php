@@ -77,6 +77,8 @@ class Orden extends \Prototipo\Operaciones {
     }
 
     function nuevo() {
+        $dolar = new \Modelos\Dolares();
+        $tasa = $dolar->valor();
         $user = $_SESSION['id_usuario'];
         $sql = $this->query("INSERT INTO ordencompra VALUES ("
                 . "null,"
@@ -90,7 +92,8 @@ class Orden extends \Prototipo\Operaciones {
                 . ", UPPER('$this->validez'), "
                 . "UPPER('$this->nota'),"
                 . "$user, "
-                . "1)");
+                . "1,"
+                . "$tasa)");
         $id_orden = $this->con->insert_id;
 
         foreach ($this->detalles as $pro) {

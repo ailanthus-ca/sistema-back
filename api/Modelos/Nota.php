@@ -116,6 +116,9 @@ class Nota extends \Prototipo\Operaciones {
     }
 
     function nuevo() {
+        
+        $dolar = new \Modelos\Dolares();
+        $tasa = $dolar->valor();
         $sql = $this->query("INSERT INTO `notasalida` VALUES ("
                 . "null,"
                 . "'$this->cod_cliente',"
@@ -123,7 +126,8 @@ class Nota extends \Prototipo\Operaciones {
                 . "$this->total,"
                 . "'$this->nota',"
                 . "1,"
-                . "$this->user)");
+                . "$this->user,"
+                . "$tasa)");
         $nota = $this->con->insert_id;
         $producto = new Producto();
         foreach ($this->detalles as $pro) {
