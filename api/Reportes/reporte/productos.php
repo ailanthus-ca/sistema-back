@@ -16,7 +16,7 @@
             <td  class="col-1" style="text-align: center"><?php echo $c['codigo'] ?></td>
             <td  class="col-8"><?php echo $c['descripcion']  ?></td>
             <td  class="col-1" style="text-align: center"><?php echo $c['medida']  ?></td>
-            <td  class="col-1"><?php echo $c['cantidad']  ?></td>
+            <td  class="col-1"><?php echo($c['inventario']===1)?'NO APLICA': $c['cantidad']  ?></td>
             <th  class="col-1"></th>
         </tr>
     <?php } ?>

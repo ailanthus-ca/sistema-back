@@ -94,6 +94,24 @@ class Nota extends \conexion {
         $pdf->ouput('Compra.pdf', $content);
     }
 
+    function PDFD($id) {
+        $Nota = new \Modelos\Nota();
+        $data = $Nota->detalles($id);
+        $d = $data['detalles'];
+        $data['detalles'] = array();
+        $detalle = array();
+        foreach ($d as $row) {
+            $detalle = $row;
+            $detalle['precio'] = $row['precio'] / $data['tasa'];
+            $data['detalles'][] = $detalle;
+        }
+        $pdf = new \PDF\Nota();
+        ob_start();
+        $pdf->ver($data);
+        $content = ob_get_clean();
+        $pdf->ouput('Compra.pdf', $content);
+    }
+
     function reporte($rango, $p1, $p2) {
         $Factura = new \Modelos\Nota();
         switch ($rango) {

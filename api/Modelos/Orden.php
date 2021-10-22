@@ -55,6 +55,8 @@ class Orden extends \Prototipo\Operaciones {
             $orden['impuesto'] = (float) $row['impuesto'];
             $orden['total'] = (float) $row['total'];
             $orden['estatus'] = (int) $row['estatus'];
+            $orden['dolar'] = (float) $row['dolar'];
+            $orden['tasa'] = (float) $row['dolar'];
             //detalle de la orden de compra
             $orden['detalles'] = array();
             $sql = $this->query("SELECT * from detalleordencompra where cod_orden = $id");

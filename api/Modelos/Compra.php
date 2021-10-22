@@ -56,9 +56,10 @@ class Compra extends \Prototipo\Operaciones {
             $compra['nun_control'] = $row['nun_control'];
             $compra['fecha_documento'] = $row['fecha_documento'];
             $compra['nota'] = $row['nota'];
-            $compra['dolar'] = $row['dolar'];
+            $compra['dolar'] = (float) $row['dolar'];
             $compra['estatus'] = (int) $row['estatus'];
             $compra['impuesto'] = (float) $row['impuesto'];
+            $compra['tasa'] = (float) $row['dolar'];
             //Detalle de la compra
             $compra['detalles'] = array();
             $sql = "SELECT * from detallecompra where cod_compra = '" . $compra['codigo'] . "'";
