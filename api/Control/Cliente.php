@@ -77,10 +77,6 @@ class Cliente {
         $Cliente->tipo_contribuyente = $Cliente->postString("tipo_contribuyente");
         $Cliente->retencion = $Cliente->postFloat('retencion');
 
-        // Validar que exista el codigo
-        if ($Cliente->codigo == '') {
-            $Cliente->setError(array('codigo' => 'No se mando RIF/cédula'));
-        }
         // Validar que exista el nombre
         if ($Cliente->nombre == '') {
             $Cliente->setError(array('nombre' => 'No se mando el nombre'));

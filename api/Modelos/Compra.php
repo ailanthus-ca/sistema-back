@@ -56,7 +56,7 @@ class Compra extends \Prototipo\Operaciones {
             $compra['nun_control'] = $row['nun_control'];
             $compra['fecha_documento'] = $row['fecha_documento'];
             $compra['nota'] = $row['nota'];
-            $compra['dolar'] = $row['dolar'];
+            $compra['tasa'] = (float) $row['dolar'];
             $compra['estatus'] = (int) $row['estatus'];
             $compra['impuesto'] = (float) $row['impuesto'];
             //Detalle de la compra

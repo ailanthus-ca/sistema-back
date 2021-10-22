@@ -63,6 +63,7 @@ class Nota extends \Prototipo\Operaciones {
             $notasalida['fecha'] = $row['fecha'];
             $notasalida['nota'] = $row['nota'];
             $notasalida['status'] = (int) $row['estatus'];
+            $notasalida['tasa'] = (float) $row['dolar'];
             //detalle de nota de entrega
             $notasalida['detalles'] = array();
             $sql = "SELECT * from detallesNotas where nota = '" . $notasalida['codigo'] . "'";
@@ -116,7 +117,7 @@ class Nota extends \Prototipo\Operaciones {
     }
 
     function nuevo() {
-        
+
         $dolar = new \Modelos\Dolares();
         $tasa = $dolar->valor();
         $sql = $this->query("INSERT INTO `notasalida` VALUES ("
