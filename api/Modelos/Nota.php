@@ -63,6 +63,7 @@ class Nota extends \Prototipo\Operaciones {
             $notasalida['fecha'] = $row['fecha'];
             $notasalida['nota'] = $row['nota'];
             $notasalida['status'] = (int) $row['estatus'];
+            $notasalida['dolar'] = (float) $row['dolar'];
             $notasalida['tasa'] = (float) $row['dolar'];
             //detalle de nota de entrega
             $notasalida['detalles'] = array();

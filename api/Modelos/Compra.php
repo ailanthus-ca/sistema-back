@@ -59,6 +59,7 @@ class Compra extends \Prototipo\Operaciones {
             $compra['tasa'] = (float) $row['dolar'];
             $compra['estatus'] = (int) $row['estatus'];
             $compra['impuesto'] = (float) $row['impuesto'];
+            $compra['tasa'] = (float) $row['dolar'];
             //Detalle de la compra
             $compra['detalles'] = array();
             $sql = "SELECT * from detallecompra where cod_compra = '" . $compra['codigo'] . "'";

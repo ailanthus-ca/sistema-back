@@ -97,6 +97,24 @@ class Compra {
         $pdf->ouput('Compra.pdf', $content);
     }
 
+    function PDFD($id) {
+        $compras = new \Modelos\Compra();
+        $data = $compras->detalles($id);
+        if( $data['tasa']==0) return "<h1>ESTA COMPRA NO POSEE MONTO EN DOLARES</h1>";        
+        $d = $data['detalles'];
+        $data['detalles'] = array();
+        $detalle = array();
+        foreach ($d as $row) {
+            $detalle = $row;
+            $detalle['precio'] = $row['precio'] / $data['tasa'];
+            $data['detalles'][] = $detalle;
+        }
+        $pdf = new \PDF\Compra();
+        ob_start();
+        $pdf->ver($data);
+        $content = ob_get_clean();
+        $pdf->ouput('Compra.pdf', $content);
+    }
     function reporte($rango, $p1, $p2) {
         $Factura = new \Modelos\Compra();
         $where = " AND factura.estatus = 2";

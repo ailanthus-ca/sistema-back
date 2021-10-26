@@ -165,7 +165,10 @@ class Producto extends \conexion {
     }
 
     public function cargarStock($cod) {
-        $cant = $this->calcularStock($cod);
+        $pro = $this->ver($cod);
+        $cant = 0;
+        if ($pro['inventario'] !== 1)
+            $cant = $this->calcularStock($cod);
         $this->query("UPDATE producto set cantidad = $cant WHERE codigo = '$cod'");
         $this->actualizarEstado();
     }
@@ -209,7 +212,10 @@ class Producto extends \conexion {
 
     public function listaWhere($where) {
         $pro = array();
-        $sql = $this->query("SELECT producto.*, unidad.descripcion as medida FROM producto,unidad WHERE producto.unidad=unidad.codigo $where");
+        $sql = $this->query('SELECT producto.*, unidad.descripcion as medida, tipo_producto.inventario as inventario '
+                . 'FROM producto,unidad, tipo_producto '
+                . 'WHERE producto.unidad=unidad.codigo AND tipo_producto.codigo = producto.tipo '
+                . "$where");
         while ($row = $sql->fetch_array()) {
             $pro[] = array(
                 'codigo' => $row['codigo'],
@@ -225,6 +231,7 @@ class Producto extends \conexion {
                 'precio2' => (float) $row['precio2'],
                 'precio3' => (float) $row['precio3'],
                 'cantidad' => (float) $row['cantidad'],
+                'inventario' => (int) $row['inventario'],
                 'fecha' => $row['fecha_creacion'],
             );
         }
