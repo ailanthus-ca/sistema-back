@@ -56,6 +56,7 @@ class Factura extends \Prototipo\Operaciones {
             $factura['impuesto'] = $row['iva'];
             $factura['condicion'] = $row['condicion'];
             $factura['nota'] = $row['observacion'];
+            $factura['tasa'] = 0;
             //detalle de la factura observacion
             $query = $this->query("SELECT * from detallefactura where codFactura = '$id'");
             $producto = new Producto();
@@ -302,9 +303,9 @@ class Factura extends \Prototipo\Operaciones {
             AND YEAR(fecha) = $ano");
         $prom = 0;
         while ($row = $query->fetch_array()) {
-            $uti =(float) $row['uti'];
-            $con =(float) $row['con'];
-            $prom = round($uti/$con);
+            $uti = (float) $row['uti'];
+            $con = (float) $row['con'];
+            $prom = round($uti / $con);
         }
         return $this->getResponse($prom);
     }

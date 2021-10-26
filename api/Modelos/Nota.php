@@ -118,7 +118,7 @@ class Nota extends \Prototipo\Operaciones {
     }
 
     function nuevo() {
-        
+
         $dolar = new \Modelos\Dolares();
         $tasa = $dolar->valor();
         $sql = $this->query("INSERT INTO `notasalida` VALUES ("
