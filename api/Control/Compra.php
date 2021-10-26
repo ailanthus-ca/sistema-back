@@ -100,6 +100,7 @@ class Compra {
     function PDFD($id) {
         $compras = new \Modelos\Compra();
         $data = $compras->detalles($id);
+        if( $data['tasa']==0) return "<h1>ESTA COMPRA NO POSEE MONTO EN DOLARES</h1>";        
         $d = $data['detalles'];
         $data['detalles'] = array();
         $detalle = array();

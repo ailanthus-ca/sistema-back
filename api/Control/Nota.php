@@ -96,7 +96,8 @@ class Nota extends \conexion {
 
     function PDFD($id) {
         $Nota = new \Modelos\Nota();
-        $data = $Nota->detalles($id);
+        $data = $Nota->detalles($id);        
+        if( $data['tasa']==0) return "<h1>ESTA NOTA DE ENTREGA NO POSEE MONTO EN DOLARES</h1>";    
         $d = $data['detalles'];
         $data['detalles'] = array();
         $detalle = array();

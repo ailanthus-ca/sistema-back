@@ -1,14 +1,14 @@
 <?php 
  return array(
-    'Cliente' => 21,
+    'Cliente' => 23,
     'Compra' => 17,
     'Config' => 1,
-    'Cotizacion' => 24,
+    'Cotizacion' => 25,
     'Departamento' => 14,
     'Dolares' => 10,
     'Factura' => 12,
-    'Nota' => 4,
-    'Orden' => 2,
+    'Nota' => 5,
+    'Orden' => 3,
     'Plantilla' => 4,
     'Producto' => 131,
     'Proveedor' => 11,

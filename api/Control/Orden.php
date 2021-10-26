@@ -84,6 +84,24 @@ class Orden {
         $content = ob_get_clean();
         $pdf->ouput('Orden.pdf', $content);
     }
+    function PDFD($id) {
+        $orden = new \Modelos\Orden();
+        $data = $orden->detalles($id);        
+        if( $data['tasa']==0) return "<h1>ESTA ORDEN DE COMPRA NO POSEE MONTO EN DOLARES</h1>";    
+        $d = $data['detalles'];
+        $data['detalles'] = array();
+        $detalle = array();
+        foreach ($d as $row) {
+            $detalle = $row;
+            $detalle['precio'] = $row['precio'] / $data['tasa'];
+            $data['detalles'][] = $detalle;
+        }
+        $pdf = new \PDF\Orden();
+        ob_start();
+        $pdf->ver($data);
+        $content = ob_get_clean();
+        $pdf->ouput('Compra.pdf', $content);
+    }
 
     function reporte($rango, $p1, $p2) {
         $orden = new \Modelos\Orden();
@@ -153,23 +171,6 @@ class Orden {
         );
         $pdf = new \PDF\Reportes();
         $pdf->version = 'ordenPor';
-        ob_start();
-        $pdf->ver($data);
-        $content = ob_get_clean();
-        $pdf->ouput('Compra.pdf', $content);
-    }
-    function PDFD($id) {
-        $orden = new \Modelos\Orden();
-        $data = $orden->detalles($id);
-        $d = $data['detalles'];
-        $data['detalles'] = array();
-        $detalle = array();
-        foreach ($d as $row) {
-            $detalle = $row;
-            $detalle['precio'] = $row['precio'] / $data['tasa'];
-            $data['detalles'][] = $detalle;
-        }
-        $pdf = new \PDF\Orden();
         ob_start();
         $pdf->ver($data);
         $content = ob_get_clean();
