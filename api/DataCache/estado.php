@@ -1,7 +1,7 @@
 <?php 
  return array(
     'Cliente' => 23,
-    'Compra' => 17,
+    'Compra' => 20,
     'Config' => 1,
     'Cotizacion' => 25,
     'Departamento' => 14,

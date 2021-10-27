@@ -21,7 +21,7 @@ class Compra {
 
     function facturar($id) {
         $compras = new \Modelos\Compra();
-        $compras->cod_documento = $compras->postString('cod_documento');
+        $compras->cod_documento = $compras->postString('cod_doc');
         $compras->num_con = $compras->postString('num_con');
         $fecha = (isset($_POST['fecha_doc']) && $_POST['fecha_doc'] != NULL) ? $_POST['fecha_doc'] : '';
         //fecha valida

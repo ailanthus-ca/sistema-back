@@ -154,10 +154,6 @@ class Compra extends \Prototipo\Operaciones {
                 . "`cod_documento`='$this->cod_documento',`"
                 . "fecha_documento`='$this->fecha_doc',"
                 . "`estatus`= $this->etatus WHERE codigo = $id");
-        $estado = new \Config('estado');
-        $data = $estado->get();
-        $data['Compra'] = $data['Compra'] + 1;
-        $data->setMany($data);
         $this->actualizarEstado();
         return 1;
     }
