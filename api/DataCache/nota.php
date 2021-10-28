@@ -4,7 +4,7 @@
     'margen_inf' => 15,
     'margen_izq' => 15,
     'margen_der' => 20,
-    'nota' => '',
+    'nota' => 'HOLA',
     'tipo_papel' => 'LETTER',
     'version' => 'nuevo',
     'encabezado' => true,

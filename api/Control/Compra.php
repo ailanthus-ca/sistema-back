@@ -46,8 +46,8 @@ class Compra {
         $compras->total = $compras->postFloat("total");
         $compras->detalles = $compras->postArray("detalles");
         $compras->cod_documento = $compras->postString('cod_documento');
-        $compras->num_con = $compras->postString('num_con');
-        $fecha = (isset($_POST['fecha_doc']) && $_POST['fecha_doc'] != NULL) ? $_POST['fecha_doc'] : '';
+        $compras->num_con = $compras->postString('num_control');
+        $fecha = (isset($_POST['fecha_documento']) && $_POST['fecha_documento'] != NULL) ? $_POST['fecha_documento'] : '';
         //fecha valida
         $compras->fecha_doc = date("Y-m-d", strtotime($fecha));
         //factura ingresada
