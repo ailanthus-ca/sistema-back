@@ -1,138 +1,160 @@
 <?php
 
-use Spipu\Html2Pdf\Html2Pdf;
-use Spipu\Html2Pdf\Exception\Html2PdfException;
-use Spipu\Html2Pdf\Exception\ExceptionFormatter;
-
-class dataFech {
-
+class dataFech
+{
     private $data;
 
-    function __construct($data) {
+    public function __construct($data)
+    {
         $this->data = $data;
     }
 
-    function fetch_array() {
-        if ($this->data === 'error')
-            return array();
+    public function fetch_array()
+    {
+        if ($this->data === 'error') {
+            return [];
+        }
+
         return $this->data->fetch_array();
     }
-
 }
 
-class conexion {
-
+class conexion
+{
     protected $con;
     //trasa de errores para devolucion
     public $response = 200;
-    private $errores = array();
-    var $estado = '';
+    private $errores = [];
+    public $estado = '';
 
-    public function postString($data) {
-        $return = (isset($_REQUEST[$data]) && $_REQUEST[$data] != null) ? $_REQUEST[$data] : "";
+    public function postString($data)
+    {
+        $return = (isset($_REQUEST[$data]) && $_REQUEST[$data] != null) ? $_REQUEST[$data] : '';
+
         return $this->con->real_escape_string(strip_tags($return, ENT_QUOTES));
     }
 
-    public function postFloat($data) {
+    public function postFloat($data)
+    {
         $return = (isset($_REQUEST[$data]) && $_REQUEST[$data] != null) ? $_REQUEST[$data] : 0;
+
         return floatval($return);
     }
 
-    public function postIntenger($data) {
+    public function postIntenger($data)
+    {
         $return = (isset($_REQUEST[$data]) && $_REQUEST[$data] != null) ? $_REQUEST[$data] : 0;
+
         return intval($return);
     }
 
-    public function postArray($data) {
+    public function postArray($data)
+    {
         $detalles = (isset($_REQUEST[$data]) && $_REQUEST[$data] != null) ? $_REQUEST[$data] : '';
+
         return json_decode($detalles);
     }
 
-    protected function getNotFount() {
+    protected function getNotFount()
+    {
         $this->response = 404;
     }
 
-    protected function getErrorServer() {
-        return array('msn' => $this->errores);
+    protected function getErrorServer()
+    {
+        return ['msn' => $this->errores];
     }
 
-    public function setError($msn) {
+    public function setError($msn)
+    {
         $this->response = 500;
         $this->errores[] = $msn;
     }
 
-    public function query($sql) {
+    public function query($sql)
+    {
         if ($row = $this->con->query($sql)) {
             return new dataFech($row);
         } else {
             return new dataFech('error');
-            $this->setError(array('sql' => array($sql, $this->con->error)));
+            $this->setError(['sql' => [$sql, $this->con->error]]);
         }
     }
 
-    function insertId() {
+    public function insertId()
+    {
         return $this->con->insert_id;
     }
 
-    public function __construct() {
+    public function __construct()
+    {
         $config = new \Config('BD');
         $data = $config->get();
-        $this->con = mysqli_connect($data["server"], $data["user"], $data["clave"], $data["DB"]);
+        $this->con = mysqli_connect($data['server'], $data['user'], $data['clave'], $data['DB']);
         $this->con->set_charset('utf8');
         date_default_timezone_set('America/Caracas');
     }
 
-    public function __destruct() {
+    public function __destruct()
+    {
         $this->con->close();
     }
 
-    public function getResponse($response = '') {
+    public function getResponse($response = '')
+    {
         if ($this->response < 300) {
             header("HTTP/1.0 $this->response Success");
+
             return $response;
-        } else if ($this->response < 500) {
+        } elseif ($this->response < 500) {
             header("HTTP/1.0 $this->response Not Found");
-            return array('errores' => "ELEMENTO NO ENCONTRADO");
+
+            return ['errores' => 'ELEMENTO NO ENCONTRADO'];
         } else {
             header("HTTP/1.0 $this->response Server Error");
-            return array('errores' => $this->errores);
+
+            return ['errores' => $this->errores];
         }
     }
 
-    function actualizarEstado() {
-        $estado = new \Config('estado');
-        $data = $estado->get();
-        $data[$this->estado] = $data[$this->estado] + 1;
-        $estado->setMany($data);
+    public function actualizarEstado()
+    {
+        $s=$this->estado;
+        $e = (new \Config('estado'))->get();
+        $e[$s] = $e[$s] + 1;
+        $e->setMany($e);
+        //firebase
+        $empresa = (new \Config('empresa'))->get();
+        (new \Firebase($empresa['numero_fiscal']))->update($s,$e[$s]);
     }
 
-    function numberToMes($m) {
+    public function numberToMes($m)
+    {
         switch ($m) {
             case '1':
-                return "ENERO";
+                return 'ENERO';
             case '2':
-                return "FEBRERO";
+                return 'FEBRERO';
             case '3':
-                return "MARZO";
+                return 'MARZO';
             case '4':
-                return "ABRIL";
+                return 'ABRIL';
             case '5':
-                return "MAYO";
+                return 'MAYO';
             case '6':
-                return "JUNIO";
+                return 'JUNIO';
             case '7':
-                return "JULIO";
+                return 'JULIO';
             case '8':
-                return "AGOSTO";
+                return 'AGOSTO';
             case '9':
-                return "SEPTIEMBRE";
+                return 'SEPTIEMBRE';
             case '10':
-                return "OCTUBRE";
+                return 'OCTUBRE';
             case '11':
-                return "NOVIEMBRE";
+                return 'NOVIEMBRE';
             case '12':
-                return "DICIEMBRE";
+                return 'DICIEMBRE';
         }
     }
-
 }
