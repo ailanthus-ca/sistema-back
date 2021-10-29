@@ -95,8 +95,11 @@ class Usuario extends \conexion {
         $mi = new \Middleware();
         // $clave = \crypt($this->clave, $mi->key);
         $clave = \crypt($this->clave);
+        $sql = $this->query('SELECT MAX(codigo) AS cant FROM usuario');
+        $row = $sql->fetch_array();
+        $cod = $row['cant'] + 1;
         $this->query("INSERT INTO usuario VALUES("
-                . "null,"
+                . "$cod,"
                 . "UPPER('$this->nombre'), "
                 . "UPPER('$this->correo'), "
                 . "'$clave', "
@@ -108,16 +111,6 @@ class Usuario extends \conexion {
     }
 
     function actualizar($id) {
-        $this->query("UPDATE usuario SET " .
-                "nombre = UPPER('$this->nombre'), " .
-                "correo = UPPER('$this->correo'), " .
-                "nivel = '$this->nivel'" .
-                "WHERE codigo = $id ");
-        $this->actualizarEstado();
-        return $this->getResponse($this->detalles($id));
-    }
-
-    function CambiarClave() {
         $this->query("UPDATE usuario SET " .
                 "nombre = UPPER('$this->nombre'), " .
                 "correo = UPPER('$this->correo'), " .
