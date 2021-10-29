@@ -19,7 +19,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'f9575e8424828a32beaa7b57c1105f71c91daf21',
+    'reference' => 'd134fa79c71954c888f03dfb5c27baf4072cdf74',
     'name' => 'victo/api',
   ),
   'versions' => 
@@ -279,12 +279,12 @@ private static $installed = array (
     ),
     'spipu/html2pdf' => 
     array (
-      'pretty_version' => 'v5.2.2',
-      'version' => '5.2.2.0',
+      'pretty_version' => 'v5.2.3',
+      'version' => '5.2.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'e6d8ca22347b6691bb8c2652212b1be2c89b3eff',
+      'reference' => '119d660876546c6b496f8aa6490f1ab8111350f9',
     ),
     'symfony/deprecation-contracts' => 
     array (
@@ -329,7 +329,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'f9575e8424828a32beaa7b57c1105f71c91daf21',
+      'reference' => 'd134fa79c71954c888f03dfb5c27baf4072cdf74',
     ),
   ),
 );
