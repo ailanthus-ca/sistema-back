@@ -1,24 +1,20 @@
 <?php
 
-namespace App\Models;
-
 use Kreait\Firebase\Factory;
 
-class Firebase
-{
+class Firebase {
+
     protected $database;
     protected $dbname;
 
-    public function __construct($data)
-    {
+    public function __construct($data) {
         $this->dbname = $data;
 
-        $factory = (new Factory())->withServiceAccount(__DIR__.'/credentials.json');
+        $factory = (new Factory())->withServiceAccount(__DIR__ . '/firebase.json');
         $this->database = $factory->createDatabase();
     }
 
-    public function get(string $tableID = null)
-    {
+    public function get(string $tableID = null) {
         if (empty($tableID) || !isset($tableID)) {
             return false;
         }
@@ -29,27 +25,27 @@ class Firebase
         }
     }
 
-
-    public function update(string $tableID = null,string $data = null)
-    {
+    public function update(string $tableID = null, string $data = null) {
         if ((empty($tableID) || !isset($tableID)) &&
-            (empty($data) || !isset($data))) {
+                (empty($data) || !isset($data))) {
             return false;
         }
-        $this->database->getReference()->getChild($tableID)->set($data);
-        return true;
+        $this->database->getReference($this->dbname)->getChild($tableID)->set($data);
     }
 
-    public function delete(int $tableID)
-    {
-        if (empty($tableID) || !isset($tableID)) return false;
-                if ($this->database->getReference($this->dbname)->getSnapshot()->hasChild($tableID)) {
+    public function delete(int $tableID) {
+        if (empty($tableID) || !isset($tableID)) {
+            return false;
+        }
+
+        if ($this->database->getReference($this->dbname)->getSnapshot()->hasChild($tableID)) {
             $this->database->getReference($this->dbname)->getChild($tableID)->remove();
             return true;
         } else {
             return false;
         }
     }
+
 }
 
 // $firebase = new Firebase('services');

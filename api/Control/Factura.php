@@ -32,7 +32,7 @@ class Factura extends \conexion {
 
         if ($Factura->id_nota > 0) {
             $nota = new \Modelos\Nota();
-            $Factura->user = $nota->procesar($Factura->id_nota);
+            $Factura->user = $nota->facturar($Factura->id_nota);
         } elseif ($Factura->id_cotizacion > 0) {
             $cotizacion = new \Modelos\Cotizacion();
             $Factura->user = $cotizacion->procesar($Factura->id_cotizacion);

@@ -1,78 +1,69 @@
 <?php
 
-class dataFech
-{
+class dataFech {
+
     private $data;
 
-    public function __construct($data)
-    {
+    public function __construct($data) {
         $this->data = $data;
     }
 
-    public function fetch_array()
-    {
+    public function fetch_array() {
         if ($this->data === 'error') {
             return [];
         }
 
         return $this->data->fetch_array();
     }
+
 }
 
-class conexion
-{
+class conexion {
+
     protected $con;
     //trasa de errores para devolucion
     public $response = 200;
     private $errores = [];
     public $estado = '';
 
-    public function postString($data)
-    {
+    public function postString($data) {
         $return = (isset($_REQUEST[$data]) && $_REQUEST[$data] != null) ? $_REQUEST[$data] : '';
 
         return $this->con->real_escape_string(strip_tags($return, ENT_QUOTES));
     }
 
-    public function postFloat($data)
-    {
+    public function postFloat($data) {
         $return = (isset($_REQUEST[$data]) && $_REQUEST[$data] != null) ? $_REQUEST[$data] : 0;
 
         return floatval($return);
     }
 
-    public function postIntenger($data)
-    {
+    public function postIntenger($data) {
         $return = (isset($_REQUEST[$data]) && $_REQUEST[$data] != null) ? $_REQUEST[$data] : 0;
 
         return intval($return);
     }
 
-    public function postArray($data)
-    {
+    public function postArray($data) {
         $detalles = (isset($_REQUEST[$data]) && $_REQUEST[$data] != null) ? $_REQUEST[$data] : '';
 
         return json_decode($detalles);
     }
 
-    protected function getNotFount()
-    {
+    protected function getNotFount() {
         $this->response = 404;
     }
 
-    protected function getErrorServer()
-    {
+    protected function getErrorServer() {
         return ['msn' => $this->errores];
     }
 
-    public function setError($msn)
-    {
+    public function setError($msn) {
         $this->response = 500;
         $this->errores[] = $msn;
     }
 
-    public function query($sql)
-    {
+    public function query($sql) {
         if ($row = $this->con->query($sql)) {
             return new dataFech($row);
         } else {
@@ -81,13 +72,11 @@ class conexion
         }
     }
 
-    public function insertId()
-    {
+    public function insertId() {
         return $this->con->insert_id;
     }
 
-    public function __construct()
-    {
+    public function __construct() {
         $config = new \Config('BD');
         $data = $config->get();
         $this->con = mysqli_connect($data['server'], $data['user'], $data['clave'], $data['DB']);
@@ -95,13 +84,11 @@ class conexion
         date_default_timezone_set('America/Caracas');
     }
 
-    public function __destruct()
-    {
+    public function __destruct() {
         $this->con->close();
     }
 
-    public function getResponse($response = '')
-    {
+    public function getResponse($response = '') {
         if ($this->response < 300) {
             header("HTTP/1.0 $this->response Success");
 
@@ -117,20 +104,19 @@ class conexion
         }
     }
 
-    public function actualizarEstado()
-    {
-        $s=$this->estado;
+    public function actualizarEstado() {
+        $s = $this->estado;
         $est = new \Config('estado');
-        $e=$est->get();
+        $e = $est->get();
         $e[$s] = $e[$s] + 1;
         $est->setMany($e);
         //firebase
-        // $empresa = (new \Config('empresa'))->get();
-        // (new \Firebase($empresa['numero_fiscal']))->update($s,$e[$s]);
+        $rif = (new \Config('empresa'))->get()['numero_fiscal'];
+        $fire = new \Firebase($rif);
+        $fire->update($s, $e[$s]);
     }
 
-    public function numberToMes($m)
-    {
+    public function numberToMes($m) {
         switch ($m) {
             case '1':
                 return 'ENERO';
@@ -158,4 +144,5 @@ class conexion
                 return 'DICIEMBRE';
         }
     }
+
 }

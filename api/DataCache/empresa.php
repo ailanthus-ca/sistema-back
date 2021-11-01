@@ -1,7 +1,7 @@
 <?php 
  return array(
     'nombre' => 'AILANTHUS SISTEMS, C.A.',
-    'numero_fiscal' => 'J-40031173-0',
+    'numero_fiscal' => 'J-40031173-9',
     'direccion' => 'CARRERA 4, ESQUINA CALLE 18, ZONA INDUSTIAL I, GALPON MANPEG, PISO. 1 OFC.2 Y 3, BARQUISIMETO, ESTADO LARA.',
     'telefono' => '(58) 251-2378406 (TELEFAX) / 4826705, (58) 414-5088735 / 416-6506831',
     'correo' => 'VENTAS@AILANTHUS-SISTEMS.COM',
