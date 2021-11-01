@@ -120,12 +120,13 @@ class conexion
     public function actualizarEstado()
     {
         $s=$this->estado;
-        $e = (new \Config('estado'))->get();
+        $est = new \Config('estado');
+        $e=$est->get();
         $e[$s] = $e[$s] + 1;
-        $e->setMany($e);
+        $est->setMany($e);
         //firebase
-        $empresa = (new \Config('empresa'))->get();
-        (new \Firebase($empresa['numero_fiscal']))->update($s,$e[$s]);
+        // $empresa = (new \Config('empresa'))->get();
+        // (new \Firebase($empresa['numero_fiscal']))->update($s,$e[$s]);
     }
 
     public function numberToMes($m)
