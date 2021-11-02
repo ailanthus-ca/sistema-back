@@ -24,6 +24,7 @@ class conexion {
     //trasa de errores para devolucion
     public $response = 200;
     private $errores = [];
+    private $firabase;
     public $estado = '';
 
     public function postString($data) {
@@ -82,6 +83,9 @@ class conexion {
         $this->con = mysqli_connect($data['server'], $data['user'], $data['clave'], $data['DB']);
         $this->con->set_charset('utf8');
         date_default_timezone_set('America/Caracas');
+        //firebase
+        $rif = (new \Config('empresa'))->get()['numero_fiscal'];
+        $this->firabase = new \Firebase($rif);
     }
 
     public function __destruct() {
@@ -110,10 +114,7 @@ class conexion {
         $e = $est->get();
         $e[$s] = $e[$s] + 1;
         $est->setMany($e);
-        //firebase
-        $rif = (new \Config('empresa'))->get()['numero_fiscal'];
-        $fire = new \Firebase($rif);
-        $fire->update($s, $e[$s]);
+        $this->firabase->update($s, $e[$s]);
     }
 
     public function numberToMes($m) {

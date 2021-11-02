@@ -31,6 +31,9 @@ class Firebase {
             return false;
         }
         $this->database->getReference($this->dbname)->getChild($tableID)->set($data);
+        
+        $data = new \Config('firebase');
+        $data->setMany($this->database->getReference($this->dbname)->getValue());
     }
 
     public function delete(int $tableID) {
