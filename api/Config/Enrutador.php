@@ -59,6 +59,7 @@ class Enrutador {
         }
         echo $clase->$operacion($parametro, $parametro2, $parametro3, $parametro4, $parametro5, $parametro6);
         unset($clase);
+        exec('php ' . DR . '/Jobs/firebase.php');
     }
 
 }
