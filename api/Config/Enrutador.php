@@ -58,6 +58,13 @@ class Enrutador {
             }
         }
         echo $clase->$operacion($parametro, $parametro2, $parametro3, $parametro4, $parametro5, $parametro6);
+        unset($clase);
+        $e = (new \Config('estado'))->get();
+        $fire = new \Firebase((new \Config('empresa'))->get()['numero_fiscal']);
+        foreach (array_keys($e) as $s) {
+            $fire->update($s, $e[$s]);
+        }
+        unset($fire);
     }
 
 }
