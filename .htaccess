@@ -14,7 +14,7 @@ RewriteRule ^(.+)$ index.php?url=$1 [QSA,e]
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresDefault A2592000
-<FilesMatch "\.(txt|xml|js)$">
+<FilesMatch "\.(txt|js)$">
   ExpiresDefault A2592000
 </FilesMatch>
 <FilesMatch "\.(css)$">
@@ -27,11 +27,11 @@ RewriteRule ^(.+)$ index.php?url=$1 [QSA,e]
   ExpiresDefault A2592000
 </FilesMatch>
 </IfModule>
-<FilesMatch "\.(pdf)$">
+<FilesMatch "\.(xml|pdf)$">
   ExpiresDefault A1
 </FilesMatch>
 <IfModule mod_headers.c>
-<FilesMatch "\.(txt|xml|js)$">
+<FilesMatch "\.(txt|js)$">
   Header set Cache-Control "max-age=2592000"
 </FilesMatch>
 <FilesMatch "\.(css)$">
@@ -40,7 +40,7 @@ RewriteRule ^(.+)$ index.php?url=$1 [QSA,e]
 <FilesMatch "\.(flv|ico|avi|mov|ppt|doc|mp3|wmv|wav|mp4|m4v|ogg|webm|aac)$">
   Header set Cache-Control "max-age=2592000"
 </FilesMatch>
-<FilesMatch "\.(pdf)$">
+<FilesMatch "\.(xml|pdf)$">
   Header set Cache-Control "max-age=1"
 </FilesMatch>
 <FilesMatch "\.(jpg|jpeg|png|gif|swf|webp)$">
