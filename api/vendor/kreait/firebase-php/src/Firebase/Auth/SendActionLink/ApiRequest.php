@@ -8,6 +8,7 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Utils;
 use Kreait\Firebase\Auth\SendActionLink;
 use Kreait\Firebase\Http\WrappedPsr7Request;
+use Kreait\Firebase\Util\JSON;
 use Psr\Http\Message\RequestInterface;
 
 final class ApiRequest implements RequestInterface
@@ -18,20 +19,21 @@ final class ApiRequest implements RequestInterface
     {
         $uri = Utils::uriFor('https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode');
 
-        $data = [
+        $data = \array_filter([
             'requestType' => $action->type(),
             'email' => $action->email(),
-        ] + $action->settings()->toArray();
+            'tenantId' => $action->tenantId(),
+        ]) + $action->settings()->toArray();
 
         if ($idTokenString = $action->idTokenString()) {
             $data['idToken'] = $idTokenString;
         }
 
-        $body = Utils::streamFor(\json_encode($data));
+        $body = Utils::streamFor(JSON::encode($data, JSON_FORCE_OBJECT));
 
         $headers = \array_filter([
             'Content-Type' => 'application/json; charset=UTF-8',
-            'Content-Length' => $body->getSize(),
+            'Content-Length' => (string) $body->getSize(),
             'X-Firebase-Locale' => $action->locale(),
         ]);
 

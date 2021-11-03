@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'cbccf7f11f761db435bf4c019681caf687c690ee',
+    'reference' => '4ca5f6ce0290ad573c274ec961d53479b0e626c2',
     'name' => 'victo/api',
   ),
   'versions' => 
@@ -28,24 +28,6 @@
       array (
       ),
       'reference' => 'd2113d9b2e0e349796e72d2a63cf9319100382d2',
-    ),
-    'giggsey/libphonenumber-for-php' => 
-    array (
-      'pretty_version' => '8.12.36',
-      'version' => '8.12.36.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '385660e434e7ad4bf023dde39302e561199b9bb4',
-    ),
-    'giggsey/locale' => 
-    array (
-      'pretty_version' => '2.0',
-      'version' => '2.0.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'f28e0fa55e842afe034a7671df79757731467031',
     ),
     'google/auth' => 
     array (
@@ -103,12 +85,12 @@
     ),
     'guzzlehttp/psr7' => 
     array (
-      'pretty_version' => '1.8.3',
-      'version' => '1.8.3.0',
+      'pretty_version' => '2.1.0',
+      'version' => '2.1.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '1afdd860a2566ed3c2b0b4a3de6e23434a79ec85',
+      'reference' => '089edd38f5b8abba6cb01567c2a8aaa47cec4c72',
     ),
     'kreait/clock' => 
     array (
@@ -121,12 +103,12 @@
     ),
     'kreait/firebase-php' => 
     array (
-      'pretty_version' => '5.11.0',
-      'version' => '5.11.0.0',
+      'pretty_version' => '5.25.0',
+      'version' => '5.25.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '83380a3a0f15415b1eab03d3a3db19578e3bb5c5',
+      'reference' => '94cc2699471896ec36ff9abe86af4263d10c45c6',
     ),
     'kreait/firebase-tokens' => 
     array (
@@ -137,14 +119,23 @@
       ),
       'reference' => '595ad06cb5f75c188d8fbfdefc9078c3ec8aa5e8',
     ),
-    'lcobucci/jwt' => 
+    'lcobucci/clock' => 
     array (
-      'pretty_version' => '3.4.6',
-      'version' => '3.4.6.0',
+      'pretty_version' => '2.0.0',
+      'version' => '2.0.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '3ef8657a78278dfeae7707d51747251db4176240',
+      'reference' => '353d83fe2e6ae95745b16b3d911813df6a05bfb3',
+    ),
+    'lcobucci/jwt' => 
+    array (
+      'pretty_version' => '4.0.4',
+      'version' => '4.0.4.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '55564265fddf810504110bd68ca311932324b0e9',
     ),
     'monolog/monolog' => 
     array (
@@ -183,6 +174,22 @@
       'reference' => '2dfb5f6c5eff0e91e20e913f8c5452ed95b86621',
     ),
     'psr/http-client-implementation' => 
+    array (
+      'provided' => 
+      array (
+        0 => '1.0',
+      ),
+    ),
+    'psr/http-factory' => 
+    array (
+      'pretty_version' => '1.0.1',
+      'version' => '1.0.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '12ac7fcd07e5b077433f5f2bee95b3a771bf61be',
+    ),
+    'psr/http-factory-implementation' => 
     array (
       'provided' => 
       array (
@@ -284,6 +291,15 @@
       ),
       'reference' => '9174a3d80210dca8daa7f31fec659150bbeabfc6',
     ),
+    'symfony/polyfill-php80' => 
+    array (
+      'pretty_version' => 'v1.23.1',
+      'version' => '1.23.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '1100343ed1a92e3a38f9ae122fc0eb21602547be',
+    ),
     'tecnickcom/tcpdf' => 
     array (
       'pretty_version' => '6.4.2',
@@ -300,7 +316,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'cbccf7f11f761db435bf4c019681caf687c690ee',
+      'reference' => '4ca5f6ce0290ad573c274ec961d53479b0e626c2',
     ),
   ),
 );

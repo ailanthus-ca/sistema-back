@@ -10,6 +10,6 @@
     "require": {
         "php": "^7.2.5",
         "spipu/html2pdf": "^5.2",
-        "kreait/firebase-php": "5.11"
+        "kreait/firebase-php": "^5.11"
     }
 }
