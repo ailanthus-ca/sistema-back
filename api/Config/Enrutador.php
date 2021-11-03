@@ -57,26 +57,8 @@ class Enrutador {
                 return;
             }
         }
-        $after = (new \Config('estado'))->get();
         echo $clase->$operacion($parametro, $parametro2, $parametro3, $parametro4, $parametro5, $parametro6);
-        $data = (new \Config('estado'))->get();
-        $up = false;
-        foreach (array_keys($after) as $key) {
-            if ($after[$key] !== $data[$key]) {
-                $up = true;
-                break;
-            }
-        }
-        if ($up) {
-            $rif = (new \Config('empresa'))->get()['numero_fiscal'];
-            $firabase = new Firebase('');
-            $fire = $fire = $firabase->get($rif);
-            foreach (array_keys($data) as $key) {
-                if (!$fire || empty($fire[$key]) || !isset($fire[$key]) || ($data[$key] !== $fire[$key])) {
-                    $fire = $firabase->update("$rif/$key", (int) $data[$key]);
-                }
-            }
-        }
+        unset($clase);
     }
 
 }
