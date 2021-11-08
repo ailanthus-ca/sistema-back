@@ -38,11 +38,6 @@ class Auth {
         return 1;
     }
 
-    function estado() {
-        $estado = new \Config('estado');
-        return json_encode($estado->get());
-    }
-
     function migracion() {
         $c = new \Modelos\Configuracion();
         $factura = new \Config('factura');
@@ -58,9 +53,18 @@ class Auth {
     function getConfig() {
         $empresa = new \Config('empresa');
         return json_encode($empresa->get());
-        
     }
-    
+
+    function getEstado() {
+        $empresa = new \Config('estado');
+        return json_encode($empresa->get());
+    }
+
+    function estado($tabla) {
+        $empresa = new \Config('estado');
+        return json_encode($empresa->get()[$tabla]);
+    }
+
     function syncFirebase() {
         $e = (new \Config('estado'))->get();
         $fire = new \Firebase((new \Config('empresa'))->get()['numero_fiscal']);
@@ -69,4 +73,5 @@ class Auth {
         }
         return json_encode($e);
     }
+
 }
