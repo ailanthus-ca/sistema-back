@@ -2,23 +2,24 @@
 
 namespace Control;
 
-class Cotizacion
-{
+class Cotizacion {
 
-    public function lista()
-    {
+    public function cambios($fecha, $hora) {
+        $Cotizacion = new \Modelos\Cotizacion();
+        return json_encode($Cotizacion->cambios($fecha, $hora));
+    }
+
+    public function lista() {
         $Cotizacion = new \Modelos\Cotizacion();
         return json_encode($Cotizacion->lista());
     }
 
-    public function detalles($id)
-    {
+    public function detalles($id) {
         $Cotizacion = new \Modelos\Cotizacion();
         return json_encode($Cotizacion->detalles($id));
     }
 
-    public function nuevo()
-    {
+    public function nuevo() {
         $Cotizacion = new \Modelos\Cotizacion();
         $Cotizacion->cod_cliente = $Cotizacion->postString('cod_cliente');
         $Cotizacion->forma_pago = $Cotizacion->postString("forma_pago");
@@ -61,27 +62,23 @@ class Cotizacion
         return json_encode($Cotizacion->nuevo());
     }
 
-    public function cancelar($id)
-    {
+    public function cancelar($id) {
         $Cotizacion = new \Modelos\Cotizacion();
         return json_encode($Cotizacion->cancelar($id));
     }
 
-    public function seguimiento($id)
-    {
+    public function seguimiento($id) {
         $Cotizacion = new \Modelos\Cotizacion();
         return json_encode($Cotizacion->seguimiento($id));
     }
 
-    public function seguimiento_nuevo($id)
-    {
+    public function seguimiento_nuevo($id) {
         $Cotizacion = new \Modelos\Cotizacion();
         $descripcion = $Cotizacion->postString('descripcion');
         return json_encode($Cotizacion->seguimiento_nuevo($id, $descripcion));
     }
 
-    public function PDF($id)
-    {
+    public function PDF($id) {
         $Cotizacion = new \Modelos\Cotizacion();
         $data = $Cotizacion->detalles($id);
         $pdf = new \PDF\Cotizacion();
@@ -91,11 +88,11 @@ class Cotizacion
         $pdf->ouput('Compra.pdf', $content);
     }
 
-    public function PDFD($id)
-    {
+    public function PDFD($id) {
         $Cotizacion = new \Modelos\Cotizacion();
-        $data = $Cotizacion->detalles($id);        
-        if( $data['tasa']==0) return "<h1>ESTA COTIZACION NO POSEE MONTO EN DOLARES</h1>";    
+        $data = $Cotizacion->detalles($id);
+        if ($data['tasa'] == 0)
+            return "<h1>ESTA COTIZACION NO POSEE MONTO EN DOLARES</h1>";
         $d = $data['detalles'];
         $data['detalles'] = array();
         $detalle = array();
@@ -111,8 +108,7 @@ class Cotizacion
         $pdf->ouput('Compra.pdf', $content);
     }
 
-    public function guardar()
-    {
+    public function guardar() {
         $Cotizacion = new \Modelos\Plantilla();
         $Cotizacion->cod_cliente = $Cotizacion->postString('cod_cliente');
         $Cotizacion->forma_pago = $Cotizacion->postString("forma_pago");
@@ -126,20 +122,17 @@ class Cotizacion
         return json_encode($Cotizacion->guardar($Cotizacion->postIntenger("plantilla")));
     }
 
-    public function cargar($id)
-    {
+    public function cargar($id) {
         $Cotizacion = new \Modelos\Plantilla();
         return json_encode($Cotizacion->detalle($id));
     }
 
-    public function plantillas()
-    {
+    public function plantillas() {
         $Cotizacion = new \Modelos\Plantilla();
         return json_encode($Cotizacion->lista());
     }
 
-    public function reporte($rango, $p1, $p2)
-    {
+    public function reporte($rango, $p1, $p2) {
         $cotizacion = new \Modelos\Cotizacion();
         switch ($rango) {
             case 'ano':
@@ -175,8 +168,7 @@ class Cotizacion
         $pdf->ouput('Compra.pdf', $content);
     }
 
-    public function de($cod, $rango, $p1, $p2)
-    {
+    public function de($cod, $rango, $p1, $p2) {
         $cotizacion = new \Modelos\Cotizacion();
         switch ($rango) {
             case 'ano':
@@ -214,8 +206,7 @@ class Cotizacion
         $pdf->ouput('Compra.pdf', $content);
     }
 
-    public function productos($dpt, $rango, $p1, $p2)
-    {
+    public function productos($dpt, $rango, $p1, $p2) {
         $cotizacion = new \Modelos\Cotizacion();
         switch ($rango) {
             case 'ano':
@@ -257,8 +248,7 @@ class Cotizacion
         $pdf->ouput('Compra.pdf', $content);
     }
 
-    public function torta($rango, $p1, $p2)
-    {
+    public function torta($rango, $p1, $p2) {
         $cotizacion = new \Modelos\Cotizacion();
         $data = array();
         switch ($rango) {
@@ -280,8 +270,7 @@ class Cotizacion
         return json_encode($data);
     }
 
-    public function linea($rango, $p1, $p2)
-    {
+    public function linea($rango, $p1, $p2) {
         $cotizacion = new \Modelos\Cotizacion();
         $data = array();
         switch ($rango) {

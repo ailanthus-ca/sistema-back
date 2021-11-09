@@ -13,6 +13,42 @@ class Factura extends \Prototipo\Operaciones {
     var $id_nota = 0;
     var $user = 0;
 
+    function fechaCambios() {
+        $sql = $this->query('SELECT MAX(actualizado) AS cant FROM factura_lista');
+        while ($row = $sql->fetch_array()) {
+            return $row['cant'];
+        }
+        return '';
+    }
+
+    public function cambios($fecha, $hora) {
+        $pen = array();
+        $sol = ($fecha !== '') ? "WHERE `actualizado` > '$fecha $hora'" : '';
+        $query = $this->query("SELECT * FROM factura_lista $sol");
+        $query = $this->query($sql);
+        while ($row = $query->fetch_array()) {
+            $detalle = array();
+            $sql = $this->query('SELECT codProducto FROM detallefactura WHERE codFactura = ' . $row['codFact']);
+            while ($row2 = $sql->fetch_array()) {
+                $detalle[] = $row2['codProducto'];
+            }
+            $pen[] = array(
+                (int) $row['codFact'],
+                $row['cod_cliente'],
+                $row['nombre'],
+                $row['fecha'],
+                (float) $row['total'],
+                (int) $row['usuario'],
+                (int) $row['status'],
+                $detalle
+            );
+        }
+        return $this->getResponse([
+                    'fecha' => $this->fechaCambios(),
+                    'data' => $pen
+        ]);
+    }
+
     function lista() {
         $pen = array();
         $sql = "SELECT * FROM factura_lista";
@@ -84,6 +120,7 @@ class Factura extends \Prototipo\Operaciones {
         $sql = $this->query("INSERT into factura values("
                 . "$num_factura,"
                 . "UPPER('$this->cod_cliente'),"
+                . " NOW(),"
                 . " NOW(),"
                 . " '$this->condicion',"
                 . " $this->porc_impuesto,"

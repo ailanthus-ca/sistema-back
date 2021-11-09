@@ -4,6 +4,11 @@ namespace Control;
 
 class Orden {
 
+    public function cambios($fecha, $hora) {
+        $Orden = new \Modelos\Orden();
+        return json_encode($Orden->cambios($fecha, $hora));
+    }
+
     function lista() {
         $Orden = new \Modelos\Orden();
         return json_encode($Orden->lista());
@@ -84,10 +89,12 @@ class Orden {
         $content = ob_get_clean();
         $pdf->ouput('Orden.pdf', $content);
     }
+
     function PDFD($id) {
         $orden = new \Modelos\Orden();
-        $data = $orden->detalles($id);        
-        if( $data['tasa']==0) return "<h1>ESTA ORDEN DE COMPRA NO POSEE MONTO EN DOLARES</h1>";    
+        $data = $orden->detalles($id);
+        if ($data['tasa'] == 0)
+            return "<h1>ESTA ORDEN DE COMPRA NO POSEE MONTO EN DOLARES</h1>";
         $d = $data['detalles'];
         $data['detalles'] = array();
         $detalle = array();
@@ -218,4 +225,5 @@ class Orden {
         $content = ob_get_clean();
         $pdf->ouput('Compra.pdf', $content);
     }
+
 }

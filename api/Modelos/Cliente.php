@@ -19,6 +19,35 @@ class Cliente extends \Prototipo\Entidades {
     var $tipo_contribuyente = 'ORDINARIO';
     var $retencion = 0;
 
+    function fechaCambios() {
+        $sql = $this->query('SELECT MAX(actualizado) AS cant FROM cliente');
+        while ($row = $sql->fetch_array()) {
+            return $row['cant'];
+        }
+        return '';
+    }
+    public function cambios($fecha, $hora) {
+        $cl = array();
+        $sol = ($fecha !== '') ? "WHERE `actualizado` > '$fecha $hora'" : '';
+        $sql = $this->query("SELECT * FROM cliente $sol");
+        while ($row = $sql->fetch_array()) {
+            $cl[] = array(
+                $row['codigo'],
+                $row['nombre'],
+                $row['telefono'],
+                $row['correo'],
+                $row['contacto'],
+                $row['direccion'],
+                $row['tipo_contribuyente'],
+                (float) $row['retencion'],
+                (int) $row['estatus']);
+        }
+        return $this->getResponse([
+                    'fecha' => $this->fechaCambios(),
+                    'data' => $cl
+        ]);
+    }
+
     public function lista() {
         $cl = array();
         $sql = $this->query('SELECT * FROM cliente');

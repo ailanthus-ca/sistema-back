@@ -7,10 +7,44 @@ class Orden extends \Prototipo\Operaciones {
     var $estado = 'Orden';
     var $cod_proveedor;
 
+    function fechaCambios() {
+        $sql = $this->query('SELECT MAX(actualizado) AS cant FROM orden_lista');
+        while ($row = $sql->fetch_array()) {
+            return $row['cant'];
+        }
+        return '';
+    }
+    function cambios($fecha, $hora) {
+        $pen = array();
+        $sol = ($fecha !== '') ? "WHERE `actualizado` > '$fecha $hora'" : '';
+        $sql = "SELECT * FROM orden_lista $sol";
+        $query = $this->query($sql);
+        while ($row = $query->fetch_array()) {
+            $detalle = array();
+            $sql = $this->query('SELECT cod_producto FROM detalleordencompra WHERE cod_orden = ' . $row['codFact']);
+            while ($row2 = $sql->fetch_array()) {
+                $detalle[] = $row2['cod_producto'];
+            }
+            $pen[] = array(
+                (int) $row['codFact'],
+                $row['cod_proveedor'],
+                $row['nombre'],
+                $row['fecha'],
+                (float) $row['total'],
+                (int) $row['usuario'],
+                (int) $row['status'],
+                $detalle
+            );
+        }
+        return $this->getResponse([
+                    'fecha' => $this->fechaCambios(),
+                    'data' => $pen
+        ]);
+    }
+
     function lista() {
         $pen = array();
-        $sql = "SELECT * FROM orden_lista";
-        $query = $this->query($sql);
+        $query = $this->query("SELECT * FROM orden_lista");
         while ($row = $query->fetch_array()) {
             $detalle = array();
             $sql = $this->query('SELECT cod_producto FROM detalleordencompra WHERE cod_orden = ' . $row['codFact']);
@@ -86,6 +120,7 @@ class Orden extends \Prototipo\Operaciones {
                 . "null,"
                 . "UPPER('$this->cod_proveedor'),"
                 . "NOW(),"
+                . " NOW(),"
                 . "$this->subtotal,"
                 . "$this->impuesto,"
                 . "$this->total, "

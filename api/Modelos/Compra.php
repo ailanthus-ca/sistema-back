@@ -12,6 +12,41 @@ class Compra extends \Prototipo\Operaciones {
     var $num_con = '';
     var $dolar = 0;
 
+    function fechaCambios() {
+        $sql = $this->query('SELECT MAX(actualizado) AS cant FROM compra_lista');
+        while ($row = $sql->fetch_array()) {
+            return $row['cant'];
+        }
+        return '';
+    }
+
+    public function cambios($fecha, $hora) {
+        $pen = array();
+        $sol = ($fecha !== '') ? "WHERE `actualizado` > '$fecha $hora'" : '';
+        $query = $this->query("SELECT * FROM compra_lista $sol");
+        while ($row = $query->fetch_array()) {
+            $detalle = array();
+            $sql = $this->query("SELECT cod_producto FROM detallecompra WHERE cod_compra = " . $row['codFact']);
+            while ($row2 = $sql->fetch_array()) {
+                $detalle[] = $row2['cod_producto'];
+            }
+            $pen[] = array(
+                (int) $row['codFact'],
+                $row['cod_proveedor'],
+                $row['nombre'],
+                $row['fecha'],
+                (float) $row['total'],
+                (int) $row['usuario'],
+                (int) $row['status'],
+                $detalle
+            );
+        }
+        return $this->getResponse([
+                    'fecha' => $this->fechaCambios(),
+                    'data' => $pen
+        ]);
+    }
+
     public function lista() {
         $pen = array();
         $query = $this->query("SELECT * FROM compra_lista");
@@ -97,6 +132,7 @@ class Compra extends \Prototipo\Operaciones {
                 . "'$this->cod_proveedor',"
                 . "'$this->cod_documento',"
                 . "'$this->num_con',"
+                . "NOW()," 
                 . "NOW(),"
                 . "'$this->fecha_doc',"
                 . "$this->subtotal, "

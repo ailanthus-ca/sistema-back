@@ -21,6 +21,41 @@ class Ajuste extends \conexion {
     var $nota = '';
     var $usuario = 0;
 
+    function fechaCambios() {
+        $sql = $this->query('SELECT MAX(actualizado) AS cant FROM ajuste_lista');
+        while ($row = $sql->fetch_array()) {
+            return $row['cant'];
+        }
+        return '';
+    }
+
+    public function cambios($fecha, $hora) {
+        $data = array();
+        $sol = ($fecha !== '') ? "WHERE `actualizado` > '$fecha $hora'" : '';
+        $query = $this->query("SELECT * FROM ajuste_lista $sol");
+        while ($row = $query->fetch_array()) {
+            $detalle = array();
+            $sql = $this->query("SELECT cod_producto FROM detalleajusteinv WHERE cod_ajuste = " . $row['codFact']);
+            while ($row2 = $sql->fetch_array()) {
+                $detalle[] = $row2['cod_producto'];
+            }
+            $data[] = array(
+                (int) $row['codFact'],
+                (int) $row['usuario'],
+                $row['nombre'],
+                $row['tipo_ajuste'],
+                $row['fecha'],
+                $row['nota'],
+                (int) $row['estatus'],
+                $detalle
+            );
+        }
+        return $this->getResponse([
+                    'fecha' => $this->fechaCambios(),
+                    'data' => $data
+        ]);
+    }
+
     public function lista() {
         $data = array();
         $query = $this->query("SELECT * FROM ajuste_lista");
@@ -198,13 +233,8 @@ class Ajuste extends \conexion {
         $producto = new Producto();
         foreach ($detalles as $pro) {
             $producto->cargar($pro['codigo']);
-            if ($producto->igualUtilidad($pro['data']->previo->precio1,
-                            $pro['data']->previo->precio2,
-                            $pro['data']->previo->precio3))
-                $producto->utilidad($pro['codigo'],
-                        $pro['data']->previo->precio1,
-                        $pro['data']->previo->precio2,
-                        $pro['data']->previo->precio3);
+            if ($producto->igualUtilidad($pro['data']->previo->precio1, $pro['data']->previo->precio2, $pro['data']->previo->precio3))
+                $producto->utilidad($pro['codigo'], $pro['data']->previo->precio1, $pro['data']->previo->precio2, $pro['data']->previo->precio3);
         }
     }
 

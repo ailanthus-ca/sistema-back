@@ -19,6 +19,47 @@ class Producto extends \conexion {
     var $dolar = 0;
     var $inventario = 1;
 
+    function fechaCambios() {
+        $sql = $this->query('SELECT MAX(actualizado) AS cant FROM producto');
+        while ($row = $sql->fetch_array()) {
+            return $row['cant'];
+        }
+        return '';
+    }
+
+    public function cambios($fecha, $hora) {
+        $pro = array();
+        $sol = ($fecha !== '') ? " AND `actualizado` > '$fecha $hora'" : '';
+        $sql = $this->query('SELECT producto.*, unidad.descripcion as medida, tipo_producto.inventario as inventario '
+                . 'FROM producto,unidad, tipo_producto '
+                . "WHERE producto.unidad=unidad.codigo AND tipo_producto.codigo = producto.tipo $sol");
+        while ($row = $sql->fetch_array()) {
+            $pro[] = array(
+                $row['codigo'],
+                $row['departamento'],
+                $row['descripcion'],
+                (int) $row['estatus'],
+                (int) $row['enser'],
+                (int) $row['tipo'],
+                (int) $row['unidad'],
+                $row['medida'],
+                (float) $row['costo'],
+                (float) $row['precio1'],
+                (float) $row['precio2'],
+                (float) $row['precio3'],
+                (float) $row['cantidad'],
+                $row['fecha_creacion'],
+                (int) $row['inventario'],
+                (boolean) $row['exento'],
+                (float) $row['dolar'],
+            );
+        }
+        return $this->getResponse([
+                    'fecha' => $this->fechaCambios(),
+                    'data' => $pro,
+        ]);
+    }
+
     public function lista() {
         $pro = array();
         $sql = $this->query('SELECT producto.*, unidad.descripcion as medida, tipo_producto.inventario as inventario '
@@ -134,22 +175,23 @@ class Producto extends \conexion {
     }
 
     public function nuevo() {
-        $query = $this->query("INSERT INTO producto VALUES (
-              UPPER('$this->codigo'),"
-                . "'$this->departamento',"
-                . "UPPER('$this->descripcion'),"
+        $query = $this->query("INSERT INTO producto VALUES ("
+                . "UPPER('$this->codigo'), "
+                . "'$this->departamento', "
+                . "UPPER('$this->descripcion'), "
                 . "UPPER('$this->tipo'), "
-                . "'$this->enser' ,"
-                . "UPPER('$this->unidad'),"
-                . "$this->costo,"
-                . "$this->precio1,"
-                . "$this->precio2,"
-                . "$this->precio3,"
-                . "0,"
-                . "'',"
-                . "1,"
-                . " NOW(),"
-                . "'$this->exento',"
+                . "'$this->enser', "
+                . "UPPER('$this->unidad'), "
+                . "$this->costo, "
+                . "$this->precio1, "
+                . "$this->precio2, "
+                . "$this->precio3, "
+                . "0, "
+                . "'', "
+                . "1, "
+                . " NOW(), " 
+                . " NOW(), "
+                . "'$this->exento', "
                 . "$this->dolar)");
         $this->actualizarEstado();
         return $this->getResponse($this->ver($this->codigo));
@@ -174,7 +216,7 @@ class Producto extends \conexion {
     }
 
     public function costo($cod, $pre, $tasa) {
-        $this->query("UPDATE producto set costo = $pre, dolar=$tasa  WHERE codigo = '$cod'");
+        $this->query("UPDATE producto set costo = $pre, dolar = $tasa WHERE codigo = '$cod'");
         $this->actualizarEstado();
     }
 
@@ -194,7 +236,7 @@ class Producto extends \conexion {
     }
 
     public function cancelar($id) {
-        $sql = $this->query("SELECT * FROM producto WHERE codigo= '$id' ");
+        $sql = $this->query("SELECT * FROM producto WHERE codigo = '$id' ");
         if ($row = $sql->fetch_array()) {
             if ($row['estatus'] === '1') {
                 $this->query("UPDATE producto SET "

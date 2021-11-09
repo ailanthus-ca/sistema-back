@@ -4,6 +4,11 @@ namespace Control;
 
 class Proveedor {
 
+    public function cambios($fecha, $hora) {
+        $Proveedor = new \Modelos\Proveedor;
+        return json_encode($Proveedor->cambios($fecha, $hora));
+    }
+
     function lista() {
         $Proveedor = new \Modelos\Proveedor();
         return json_encode($Proveedor->lista());

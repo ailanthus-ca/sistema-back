@@ -7,6 +7,41 @@ class Cotizacion extends \Prototipo\Operaciones {
     var $estado = 'Cotizacion';
     var $cod_cliente = '';
 
+    function fechaCambios() {
+        $sql = $this->query('SELECT MAX(actualizado) AS cant FROM cotizacion_lista');
+        while ($row = $sql->fetch_array()) {
+            return $row['cant'];
+        }
+        return '';
+    }
+    public function cambios($fecha, $hora) {
+        $pen = array();
+        $sol = ($fecha !== '') ? "WHERE `actualizado` > '$fecha $hora'" : '';
+        $query = $this->query("SELECT * FROM cotizacion_lista $sol");
+        while ($row = $query->fetch_array()) {
+            $detalle = array();
+            $sql = $this->query('SELECT codProducto FROM detallecotizacion WHERE codCotizacion = ' . $row['codFact']);
+            while ($row2 = $sql->fetch_array()) {
+                $detalle[] = $row2['codProducto'];
+            }
+            $pen[] = array(
+                (int) $row['codFact'],
+                $row['cod_cliente'],
+                $row['nombre'],
+                $row['fecha'],
+                (float) $row['total'],
+                (int) $row['usuario'],
+                (int) $row['status'],
+                $detalle,
+                (float) $row['tasa'],
+            );
+        }
+        return $this->getResponse([
+                    'fecha' => $this->fechaCambios(),
+                    'data' => $pen
+        ]);
+    }
+
     public function lista() {
         $pen = array();
         $query = $this->query("SELECT * FROM cotizacion_lista");
@@ -90,6 +125,7 @@ class Cotizacion extends \Prototipo\Operaciones {
         $query = $this->query("INSERT into cotizacion values("
                 . "null,"
                 . "UPPER('$this->cod_cliente'),"
+                . " NOW(),"
                 . " NOW(),"
                 . " $this->impuesto,"
                 . " $this->subtotal,"

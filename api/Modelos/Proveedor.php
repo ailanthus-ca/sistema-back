@@ -17,6 +17,34 @@ class Proveedor extends \Prototipo\Entidades {
 
     var $estado = 'Proveedor';
 
+    function fechaCambios() {
+        $sql = $this->query('SELECT MAX(actualizado) AS cant FROM proveedor');
+        while ($row = $sql->fetch_array()) {
+            return $row['cant'];
+        }
+        return '';
+    }
+
+    function cambios($fecha, $hora) {
+        $cl = array();
+        $sol = ($fecha !== '') ? "WHERE `actualizado` > '$fecha $hora'" : '';
+        $sql = $this->con->query("SELECT * FROM proveedor $sol");
+        while ($row = $sql->fetch_array()) {
+            $cl[] = array(
+                $row['codigo'],
+                $row['nombre'],
+                $row['telefono'],
+                $row['correo'],
+                $row['contacto'],
+                $row['direccion'],
+                (int) $row['estatus']);
+        }
+        return $this->getResponse([
+                    'fecha' => $this->fechaCambios(),
+                    'data' => $cl
+        ]);
+    }
+
     function lista() {
         $cl = array();
         $sql = $this->con->query('SELECT * FROM proveedor');
@@ -43,7 +71,7 @@ class Proveedor extends \Prototipo\Entidades {
                 'correo' => $row['correo'],
                 'contacto' => $row['contacto'],
                 'direccion' => $row['direccion'],
-                'estatus' => (int)  $row['estatus']);
+                'estatus' => (int) $row['estatus']);
         }
         return $this->getResponse($data);
     }

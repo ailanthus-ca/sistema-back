@@ -4,6 +4,11 @@ namespace Control;
 
 class Compra {
 
+    public function cambios($fecha, $hora) {
+        $compras = new \Modelos\Compra();
+        return json_encode($compras->cambios($fecha, $hora));
+    }
+
     function lista() {
         $compras = new \Modelos\Compra();
         return json_encode($compras->lista());
@@ -100,7 +105,8 @@ class Compra {
     function PDFD($id) {
         $compras = new \Modelos\Compra();
         $data = $compras->detalles($id);
-        if( $data['tasa']==0) return "<h1>ESTA COMPRA NO POSEE MONTO EN DOLARES</h1>";        
+        if ($data['tasa'] == 0)
+            return "<h1>ESTA COMPRA NO POSEE MONTO EN DOLARES</h1>";
         $d = $data['detalles'];
         $data['detalles'] = array();
         $detalle = array();
@@ -115,6 +121,7 @@ class Compra {
         $content = ob_get_clean();
         $pdf->ouput('Compra.pdf', $content);
     }
+
     function reporte($rango, $p1, $p2) {
         $Factura = new \Modelos\Compra();
         $where = " AND factura.estatus = 2";
@@ -286,6 +293,7 @@ class Compra {
         $c = new \Modelos\CreditoRecibido;
         return json_encode($c->cancelar($cod));
     }
+
     function debitos() {
         $d = new \Modelos\CreditoRecibido;
         return json_encode($d->lista());
@@ -306,5 +314,5 @@ class Compra {
         $d = new \Modelos\DebitoRecibido;
         return json_encode($d->cancelar($cod));
     }
-    
+
 }

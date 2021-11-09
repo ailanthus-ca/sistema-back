@@ -4,6 +4,11 @@ namespace Control;
 
 class Ajuste {
 
+    public function cambios($fecha) {
+        $ajuste = new \Modelos\Ajuste;
+        return json_encode($ajuste->cambios($fecha));
+    }
+
     public function lista() {
         $ajuste = new \Modelos\Ajuste;
         return json_encode($ajuste->lista());

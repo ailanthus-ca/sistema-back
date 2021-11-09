@@ -4,6 +4,11 @@ namespace Control;
 
 class Cliente {
 
+    public function cambios($fecha, $hora) {
+        $Cliente = new \Modelos\Cliente();
+        return json_encode($Cliente->cambios($fecha, $hora));
+    }
+
     function lista() {
         $Cliente = new \Modelos\Cliente();
         return json_encode($Cliente->lista());

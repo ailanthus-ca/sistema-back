@@ -4,6 +4,11 @@ namespace Control;
 
 class Factura extends \conexion {
 
+    public function cambios($fecha, $hora) {
+        $Factura = new \Modelos\Factura();
+        return json_encode($Factura->cambios($fecha, $hora));
+    }
+
     function lista() {
         $Factura = new \Modelos\Factura();
         return json_encode($Factura->lista());
@@ -324,6 +329,7 @@ class Factura extends \conexion {
         $c = new \Modelos\CreditoEmitido;
         return json_encode($c->cancelar($cod));
     }
+
     function debitos() {
         $d = new \Modelos\CreditoEmitido;
         return json_encode($d->lista());

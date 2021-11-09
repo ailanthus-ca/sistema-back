@@ -15,6 +15,11 @@ namespace Control;
  */
 class Nota extends \conexion {
 
+    public function cambios($fecha, $hora) {
+        $Nota = new \Modelos\Nota();
+        return json_encode($Nota->cambios($fecha, $hora));
+    }
+
     function lista() {
         $Nota = new \Modelos\Nota();
         return json_encode($Nota->lista());
@@ -45,13 +50,13 @@ class Nota extends \conexion {
             $Nota->setError('Debe mandar un cliente');
         }
         // Validar cliente
-        $Cliente=new \Modelos\Cliente();
+        $Cliente = new \Modelos\Cliente();
         $Cliente->detalles($Nota->cod_cliente);
-        if($Cliente->response==404){
-            $Nota->setError('El cliente mandado no existe');         
+        if ($Cliente->response == 404) {
+            $Nota->setError('El cliente mandado no existe');
         }
         // Validar si existe al menos un item(producto)
-        if (count($Nota->detalles)==0) {
+        if (count($Nota->detalles) == 0) {
             $Nota->setError('No se mandaron productos');
         }
         // Validar total
@@ -84,20 +89,22 @@ class Nota extends \conexion {
         $content = ob_get_clean();
         $pdf->ouput('Compra.pdf', $content);
     }
+
     function PDFSP($id) {
         $Nota = new \Modelos\Nota();
         $data = $Nota->detalles($id);
         $pdf = new \PDF\Nota();
         ob_start();
-        $pdf->ver($data,false);
+        $pdf->ver($data, false);
         $content = ob_get_clean();
         $pdf->ouput('Compra.pdf', $content);
     }
 
     function PDFD($id) {
         $Nota = new \Modelos\Nota();
-        $data = $Nota->detalles($id);        
-        if( $data['tasa']==0) return "<h1>ESTA NOTA DE ENTREGA NO POSEE MONTO EN DOLARES</h1>";    
+        $data = $Nota->detalles($id);
+        if ($data['tasa'] == 0)
+            return "<h1>ESTA NOTA DE ENTREGA NO POSEE MONTO EN DOLARES</h1>";
         $d = $data['detalles'];
         $data['detalles'] = array();
         $detalle = array();

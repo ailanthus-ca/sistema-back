@@ -4,6 +4,11 @@ namespace Control;
 
 class Producto {
 
+    public function cambios($fecha, $hora) {
+        $Producto = new \Modelos\Producto();
+        return json_encode($Producto->cambios($fecha, $hora));
+    }
+
     function lista() {
         $Producto = new \Modelos\Producto();
         return json_encode($Producto->lista());

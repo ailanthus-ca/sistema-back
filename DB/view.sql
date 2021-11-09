@@ -11,6 +11,7 @@ CREATE  OR REPLACE VIEW `factura_lista` AS
 SELECT DISTINCT 
 factura.codigo as codFact, 
 fecha,cod_cliente,
+factura.actualizado,
 nombre,
 total,
 factura.estatus as status,
@@ -34,6 +35,7 @@ cotizacion.codigo as codFact,
 fecha,cod_cliente,
 nombre,
 total,
+cotizacion.actualizado,
 cotizacion.estatus as status, 
 usuario,tasa   
 FROM cotizacion,cliente 
@@ -55,6 +57,7 @@ notasalida.codigo as codFact,
 fecha,cod_cliente,
 nombre,
 total,
+notasalida.actualizado,
 notasalida.estatus as status,
 notasalida.usuario 
 FROM notasalida,cliente 
@@ -77,6 +80,7 @@ fecha,
 cod_proveedor, 
 nombre,
 total,
+compra.actualizado,
 compra.estatus as status,
 compra.usuario  
 FROM compra,proveedor 
@@ -99,6 +103,7 @@ fecha,
 cod_proveedor,
 nombre,
 total,
+ordencompra.actualizado,
 ordencompra.estatus as status,
 usuario 
 FROM ordencompra,proveedor 
@@ -119,6 +124,7 @@ SELECT DISTINCT
 ajusteinv.codigo as codFact,
 tipo_ajuste, 
 fecha, 
+ajusteinv.actualizado,
 ajusteinv.estatus, 
 usuario, 
 usuario.nombre as nombre, 
@@ -127,114 +133,3 @@ FROM `ajusteinv`, `usuario`
 WHERE ajusteinv.usuario = usuario.codigo
 order by fecha DESC;
 SHOW WARNINGS;
-
--- -----------------------------------------------------
--- View `creditos_emitidos_lista`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `debitos_emitidos_lista`;
-SHOW WARNINGS;
-DROP VIEW IF EXISTS `creditos_emitidos_lista` ;
-SHOW WARNINGS;
-
-
-CREATE  OR REPLACE VIEW `debitos_emitidos_lista` AS
-SELECT DISTINCT
-debitosemitidos.codigo,
-debitosemitidos.fecha,
-cod_factura,
-nombre,
-cod_cliente,
-monto
-estado,
-debitosemitidos.usuario
-FROM debitosemitidos, factura_lista
-WHERE cod_factura=codFact
--- -----------------------------------------------------
--- View `creditos_emitidos_lista`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `creditos_emitidos_lista`;
-SHOW WARNINGS;
-DROP VIEW IF EXISTS `creditos_emitidos_lista` ;
-SHOW WARNINGS;
-
-
-CREATE  OR REPLACE VIEW `creditos_emitidos_lista` AS
-SELECT DISTINCT
-creditosemitidos.codigo,
-creditosemitidos.fecha,
-cod_factura,
-nombre,
-cod_cliente,
-monto
-estado,
-creditosemitidos.usuario
-FROM creditosemitidos, factura_lista
-WHERE cod_factura=codFact
--- -----------------------------------------------------
--- View `ajuste_lista`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `creditos_emitidos_lista`;
-SHOW WARNINGS;
-DROP VIEW IF EXISTS `creditos_emitidos_lista` ;
-SHOW WARNINGS;
-
-
-CREATE  OR REPLACE VIEW `creditos_emitidos_lista` AS
-SELECT DISTINCT
-creditosemitidos.codigo,
-creditosemitidos.fecha,
-cod_factura,
-nombre,
-cod_cliente,
-monto
-estado,
-creditosemitidos.usuario
-FROM creditosemitidos, factura_lista
-WHERE cod_factura=codFact
--- -----------------------------------------------------
--- View `ajuste_lista`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `creditos_emitidos_lista`;
-SHOW WARNINGS;
-DROP VIEW IF EXISTS `creditos_emitidos_lista` ;
-SHOW WARNINGS;
-
-
-CREATE  OR REPLACE VIEW `creditos_emitidos_lista` AS
-SELECT DISTINCT
-creditosemitidos.codigo,
-creditosemitidos.fecha,
-cod_factura,
-nombre,
-cod_cliente,
-monto
-estado,
-creditosemitidos.usuario
-FROM creditosemitidos, factura_lista
-WHERE cod_factura=codFact
-
-
-CREATE  OR REPLACE VIEW `debitos_recibidos_lista` AS
-SELECT DISTINCT
-debitosrecibidos.codigo,
-debitosrecibidos.fecha,
-cod_compra,
-nombre,
-cod_proveedor,
-monto
-estado,
-debitosrecibidos.usuario
-FROM debitosrecibidos , compra_lista
-WHERE cod_compra=codFact;
-CREATE  OR REPLACE VIEW `creditos_recibidos_lista` AS
-SELECT DISTINCT
-creditosrecibidos.codigo,
-creditosrecibidos.fecha,
-cod_compra,
-nombre,
-cod_proveedor,
-monto
-estado,
-creditosrecibidos.usuario
-FROM creditosrecibidos , compra_lista
-WHERE cod_compra=codFact;

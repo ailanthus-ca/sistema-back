@@ -20,10 +20,42 @@ class Nota extends \Prototipo\Operaciones {
     var $cod_cliente = '';
     var $user = 0;
 
+    function fechaCambios() {
+        $sql = $this->query('SELECT MAX(actualizado) AS cant FROM nota_lista');
+        while ($row = $sql->fetch_array()) {
+            return $row['cant'];
+        }
+        return '';
+    }
+    public function cambios($fecha, $hora) {
+        $pen = array();
+        $sol = ($fecha !== '') ? "WHERE `actualizado` > '$fecha $hora'" : '';
+        $query = $this->query("SELECT * FROM nota_lista $sol");
+        while ($row = $query->fetch_array()) {
+            $detalle = array();
+            $sql = $this->query('SELECT producto FROM detallesNotas WHERE nota = ' . $row['codFact']);
+            while ($row2 = $sql->fetch_array()) {
+                $detalle[] = $row2['producto'];
+            }
+            $pen[] = array(
+                (int) $row['codFact'],
+                $row['cod_cliente'],
+                $row['nombre'],
+                $row['fecha'],
+                (float) $row['total'],
+                (int) $row['usuario'],
+                (int) $row['status'],
+                $detalle
+            );
+        }
+        return $this->getResponse([
+                    'fecha' => $this->fechaCambios(),
+                    'data' => $pen
+        ]);
+    }
     function lista() {
         $pen = array();
-        $sql = "SELECT * FROM nota_lista";
-        $query = $this->query($sql);
+        $query = $this->query("SELECT * FROM nota_lista");
         while ($row = $query->fetch_array()) {
             $detalle = array();
             $sql = $this->query('SELECT producto FROM detallesNotas WHERE nota = ' . $row['codFact']);
@@ -128,6 +160,7 @@ class Nota extends \Prototipo\Operaciones {
                 . "$this->total,"
                 . "'$this->nota',"
                 . "1,"
+                . " NOW(),"
                 . "$this->user,"
                 . "$tasa)");
         $nota = $this->con->insert_id;
