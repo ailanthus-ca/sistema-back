@@ -25,7 +25,6 @@ class Factura extends \Prototipo\Operaciones {
         $pen = array();
         $sol = ($fecha !== '') ? "WHERE `actualizado` > '$fecha $hora'" : '';
         $query = $this->query("SELECT * FROM factura_lista $sol");
-        $query = $this->query($sql);
         while ($row = $query->fetch_array()) {
             $detalle = array();
             $sql = $this->query('SELECT codProducto FROM detallefactura WHERE codFactura = ' . $row['codFact']);
