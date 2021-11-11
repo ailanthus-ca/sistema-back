@@ -1,13 +1,13 @@
 <?php 
  return array(
-    'Cliente' => 36,
+    'Cliente' => 40,
     'Compra' => 3,
     'Config' => 1,
     'Cotizacion' => 3,
     'Departamento' => 1,
     'Dolares' => 2,
     'Factura' => 1,
-    'Nota' => 1,
+    'Nota' => 3,
     'Orden' => 1,
     'Plantilla' => 1,
     'Producto' => 76,
