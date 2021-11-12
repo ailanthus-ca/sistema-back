@@ -56,7 +56,7 @@ class Notas extends \conexion {
                 'monto' => (float) $row['monto'],
                 'usuario' => (int) $row['usuario'],
                 'estado' => (int) $row['estado'],
-                $detalle
+                'detalles' => $detalle
             );
         }
         return $this->getResponse($pen);
@@ -92,7 +92,6 @@ class Notas extends \conexion {
     }
 
     function nuevo() {
-        //usuario
         $user = $_SESSION['id_usuario'];
         $sql = $this->query("SELECT COUNT(*) as cant FROM `$this->insert`");
         $row = $sql->fetch_array();
@@ -111,7 +110,6 @@ class Notas extends \conexion {
                 . "$this->total,"
                 . "2,"
                 . "$user)");
-        //;
         $productos = new \Modelos\Producto();
         foreach ($this->detalles as $iten) {
             $monto = $iten->unidades * $iten->precio;
