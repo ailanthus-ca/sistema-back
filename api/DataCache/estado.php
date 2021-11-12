@@ -5,7 +5,7 @@
     'Config' => 1,
     'Cotizacion' => 3,
     'Departamento' => 1,
-    'Dolares' => 2,
+    'Dolares' => 3,
     'Factura' => 1,
     'Nota' => 1,
     'Orden' => 1,
