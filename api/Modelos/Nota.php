@@ -29,6 +29,7 @@ class Nota extends \Prototipo\Operaciones {
     }
     public function cambios($fecha, $hora) {
         $pen = array();
+        $act = $this->fechaCambios();
         $sol = ($fecha !== '') ? "WHERE `actualizado` > '$fecha $hora'" : '';
         $query = $this->query("SELECT * FROM nota_lista $sol");
         while ($row = $query->fetch_array()) {
@@ -49,7 +50,7 @@ class Nota extends \Prototipo\Operaciones {
             );
         }
         return $this->getResponse([
-                    'fecha' => $this->fechaCambios(),
+                    'fecha' => $act,
                     'data' => $pen
         ]);
     }

@@ -16,9 +16,9 @@ class Orden extends \Prototipo\Operaciones {
     }
     function cambios($fecha, $hora) {
         $pen = array();
+        $act = $this->fechaCambios();
         $sol = ($fecha !== '') ? "WHERE `actualizado` > '$fecha $hora'" : '';
-        $sql = "SELECT * FROM orden_lista $sol";
-        $query = $this->query($sql);
+        $query = $this->query("SELECT * FROM orden_lista $sol");
         while ($row = $query->fetch_array()) {
             $detalle = array();
             $sql = $this->query('SELECT cod_producto FROM detalleordencompra WHERE cod_orden = ' . $row['codFact']);
@@ -37,7 +37,7 @@ class Orden extends \Prototipo\Operaciones {
             );
         }
         return $this->getResponse([
-                    'fecha' => $this->fechaCambios(),
+                    'fecha' => $act,
                     'data' => $pen
         ]);
     }

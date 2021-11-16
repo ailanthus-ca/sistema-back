@@ -27,6 +27,7 @@ class Proveedor extends \Prototipo\Entidades {
 
     function cambios($fecha, $hora) {
         $cl = array();
+        $act = $this->fechaCambios();
         $sol = ($fecha !== '') ? "WHERE `actualizado` > '$fecha $hora'" : '';
         $sql = $this->con->query("SELECT * FROM proveedor $sol");
         while ($row = $sql->fetch_array()) {
@@ -40,7 +41,7 @@ class Proveedor extends \Prototipo\Entidades {
                 (int) $row['estatus']);
         }
         return $this->getResponse([
-                    'fecha' => $this->fechaCambios(),
+                    'fecha' => $act,
                     'data' => $cl
         ]);
     }

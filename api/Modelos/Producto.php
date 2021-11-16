@@ -29,6 +29,7 @@ class Producto extends \conexion {
 
     public function cambios($fecha, $hora) {
         $pro = array();
+        $act = $this->fechaCambios();
         $sol = ($fecha !== '') ? " AND `actualizado` > '$fecha $hora'" : '';
         $sql = $this->query('SELECT producto.*, unidad.descripcion as medida, tipo_producto.inventario as inventario '
                 . 'FROM producto,unidad, tipo_producto '
@@ -55,7 +56,7 @@ class Producto extends \conexion {
             );
         }
         return $this->getResponse([
-                    'fecha' => $this->fechaCambios(),
+                    'fecha' => $act,
                     'data' => $pro,
         ]);
     }

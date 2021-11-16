@@ -28,6 +28,7 @@ class Cliente extends \Prototipo\Entidades {
     }
     public function cambios($fecha, $hora) {
         $cl = array();
+        $act = $this->fechaCambios();
         $sol = ($fecha !== '') ? "WHERE `actualizado` > '$fecha $hora'" : '';
         $sql = $this->query("SELECT * FROM cliente $sol");
         while ($row = $sql->fetch_array()) {
@@ -43,7 +44,7 @@ class Cliente extends \Prototipo\Entidades {
                 (int) $row['estatus']);
         }
         return $this->getResponse([
-                    'fecha' => $this->fechaCambios(),
+                    'fecha' => $act,
                     'data' => $cl
         ]);
     }
