@@ -302,7 +302,7 @@ class Factura extends \conexion {
     }
 
     function mejor_mes() {
-        $nota = new Nota();
+        $nota = new \Modelos\Nota();
         $factura = new \Modelos\Factura();
         $total = $factura->mes_actual() + $nota->mes_actual();
         $factura->guardar_mes();

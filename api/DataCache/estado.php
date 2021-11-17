@@ -7,7 +7,7 @@
     'Departamento' => 1,
     'Dolares' => 3,
     'Factura' => 1,
-    'Nota' => 1,
+    'Nota' => 3,
     'Orden' => 1,
     'Plantilla' => 1,
     'Producto' => 105,
