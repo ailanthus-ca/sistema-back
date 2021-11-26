@@ -41,7 +41,7 @@ class Enrutador {
         }
         $validarPermiso = true;
         $publicos = new \Publicos;
-        if (in_array($per, $publicos->Modulos)) {
+        if (isset($publicos->$per)) {
             if (in_array($operacion, $publicos->$per)) {
                 $validarPermiso = false;
             }

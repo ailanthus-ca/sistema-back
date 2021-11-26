@@ -11,7 +11,7 @@ class Publicos {
     public $Modulos = array('USUARIO', 'PRODUCTO', 'MONEDA', 'CONFIG', 'DEPARTAMENTO');
     //Listas publicas
     public $USUARIO = array('lista');
-    public $PRODUCTO = array('lista', 'detalles');
+    public $PRODUCTO = array('lista', 'detalles', 'cambios');
     public $DEPARTAMENTO = array('lista', 'detalles');
     public $MONEDA = array('lista', 'detalles');
     public $CONFIG = array('get', 'contadores');
