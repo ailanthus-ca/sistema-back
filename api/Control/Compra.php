@@ -97,7 +97,7 @@ class Compra {
         $data = $compras->detalles($id);
         $pdf = new \PDF\Compra();
         ob_start();
-        $pdf->ver($data);
+        $pdf->ver($data,'BS');
         $content = ob_get_clean();
         $pdf->ouput('Compra.pdf', $content);
     }
@@ -117,7 +117,7 @@ class Compra {
         }
         $pdf = new \PDF\Compra();
         ob_start();
-        $pdf->ver($data);
+        $pdf->ver($data,'$');
         $content = ob_get_clean();
         $pdf->ouput('Compra.pdf', $content);
     }

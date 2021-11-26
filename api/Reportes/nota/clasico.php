@@ -44,8 +44,8 @@
         <th  class="border-clasico" style="width: <?php echo ($precios) ? 51 : 70 ?>%;text-align: center;">DESCRIPCION</th>
         <th  class="border-clasico" style="width: 10%;text-align: center;">UND</th>
         <?php if ($precios) { ?>
-            <th  class="border-clasico" style="width: 15%;text-align: center;">PRECIO</th>
-            <th  class="border-clasico" style="width: 15%;text-align: center;">TOTAL</th>
+            <th  class="border-clasico" style="width: 15%;text-align: center;">PRECIO <?php echo $aux ?></th>
+            <th  class="border-clasico" style="width: 15%;text-align: center;">TOTAL <?php echo $aux ?></th>
         <?php } ?>
     </tr>
     <?php
@@ -72,7 +72,7 @@
             <th  class="style-none" style="width: 15%;text-align: center;"></th>
         </tr>
         <tr  class="style-none">
-            <td  class="style-none" colspan="4" style=" text-align: right;"><strong> TOTAL: </strong></td>
+            <td  class="style-none" colspan="4" style=" text-align: right;"><strong> TOTAL <?php echo $aux ?>: </strong></td>
             <td  class="style-none" style="widtd: 15%; text-align: right;"> <?php echo number_format($subtotal, 2, ',', '.'); ?></td>
         </tr>
     </table>

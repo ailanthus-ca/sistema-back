@@ -85,7 +85,7 @@ class Orden {
         $data = $Orden->detalles($id);
         $pdf = new \PDF\Orden();
         ob_start();
-        $pdf->ver($data);
+        $pdf->ver($data, 'BS');
         $content = ob_get_clean();
         $pdf->ouput('Orden.pdf', $content);
     }
@@ -105,7 +105,7 @@ class Orden {
         }
         $pdf = new \PDF\Orden();
         ob_start();
-        $pdf->ver($data);
+        $pdf->ver($data, '$');
         $content = ob_get_clean();
         $pdf->ouput('Compra.pdf', $content);
     }

@@ -46,8 +46,8 @@
         <th class="border-clasico" style="width: 10%;text-align:center;" >CANTIDAD</th>
         <th class="border-clasico" style="width: 50%;text-align: center;">DESCRIPCION</th>
         <th class="border-clasico" style="width: 10%;text-align: center;">UND</th>
-        <th class="border-clasico" style="width: 15%;text-align: center;">PRECIO</th>
-        <th class="border-clasico" style="width: 15%;text-align: center;">TOTAL</th>
+        <th class="border-clasico" style="width: 15%;text-align: center;">PRECIO <?php echo $aux ?></th>
+        <th class="border-clasico" style="width: 15%;text-align: center;">TOTAL <?php echo $aux ?></th>
     </tr>
     <?php
     $subtotal = 0;
@@ -72,15 +72,15 @@
         <th class="style-none" style="width: 15%;text-align: center;"></th>
     </tr>
     <tr class="style-none">
-        <td class="style-none" colspan="4" style="widtd: 85%; text-align: right;"><strong> SUB TOTAL: </strong></td>
+        <td class="style-none" colspan="4" style="widtd: 85%; text-align: right;"><strong> SUB TOTAL <?php echo $aux ?>: </strong></td>
         <td class="style-none" style="widtd: 15%; text-align: right;"> <?php echo number_format($subtotal, 2, ',', '.'); ?></td>
     </tr>
     <tr class="style-none">
-        <td class="style-none" colspan="4" style="widtd: 85%; text-align: right;"><strong> IVA: </strong></td>
+        <td class="style-none" colspan="4" style="widtd: 85%; text-align: right;"><strong> IVA <?php echo $aux ?>: </strong></td>
         <td class="style-none" style="widtd: 15%; text-align: right;"> <?php echo number_format($subtotal * $region['impuesto'] / 100, 2, ',', '.'); ?></td>
     </tr>
     <tr class="style-none">
-        <td class="style-none" colspan="4" style="widtd: 85%; text-align: right;"><strong> TOTAL:</strong></td>
+        <td class="style-none" colspan="4" style="widtd: 85%; text-align: right;"><strong> TOTAL <?php echo $aux ?>:</strong></td>
         <td class="style-none" style="widtd: 15%; text-align: right;"> <?php echo number_format($subtotal * (1 + $region['impuesto'] / 100), 2, ',', '.'); ?></td>
     </tr>
 </table>

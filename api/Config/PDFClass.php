@@ -65,7 +65,7 @@ class PDFClass {
         return include DR . '/Reportes/Condiciones.php';
     }
 
-    function ver($data) {
+    function ver($data, $aux = '') {
         $config = new \Config('region');
         $region = $config->get();
         $config = new \Config('empresa');
@@ -89,4 +89,5 @@ class PDFClass {
             include DR . '/Reportes/' . $this->config . '/' . $this->version . '.php';
             ?></page><?php
     }
+
 }

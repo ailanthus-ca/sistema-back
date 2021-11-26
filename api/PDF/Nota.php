@@ -6,7 +6,7 @@ class Nota extends \PDFClass {
 
     var $config = 'nota';
 
-    function ver($data, $precios = true) {
+    function ver($data, $precios = true, $aux = '') {
         $config = new \Config('region');
         $region = $config->get();
         $config = new \Config('empresa');

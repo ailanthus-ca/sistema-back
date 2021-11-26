@@ -83,7 +83,7 @@ class Cotizacion {
         $data = $Cotizacion->detalles($id);
         $pdf = new \PDF\Cotizacion();
         ob_start();
-        $pdf->ver($data);
+        $pdf->ver($data, 'BS');
         $content = ob_get_clean();
         $pdf->ouput('Compra.pdf', $content);
     }
@@ -103,7 +103,7 @@ class Cotizacion {
         }
         $pdf = new \PDF\Cotizacion();
         ob_start();
-        $pdf->ver($data);
+        $pdf->ver($data, '$');
         $content = ob_get_clean();
         $pdf->ouput('Compra.pdf', $content);
     }

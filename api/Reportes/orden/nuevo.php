@@ -45,8 +45,8 @@
             <th class="col-5" style="text-align: center;">DESCRIPCION</th>
             <th class="col-1" style="text-align: center;">UND</th>
             <th class="col-1" style="text-align:center;" >CANT</th>
-            <th class="col-2" style="text-align: center;">PRECIO</th>
-            <th class="col-2" style="text-align: center;">TOTAL</th>
+            <th class="col-2" style="text-align: center;">PRECIO <?php echo $aux ?></th>
+            <th class="col-2" style="text-align: center;">TOTAL <?php echo $aux ?></th>
         </tr>
     </thead>
     <tbody>
@@ -80,14 +80,14 @@
                     <strong>NOTA:&nbsp; </strong><?php echo $data['nota']; ?>
                 </div>
             </td>            
-            <td style="text-align: right; "><strong> SUB TOTAL: </strong></td>
+            <td style="text-align: right; "><strong> SUB TOTAL <?php echo $aux ?>: </strong></td>
             <td style="text-align: right; "> <?php echo number_format($subtotal, 2, ',', '.'); ?></td>
         </tr>
         <tr>
-            <td style="text-align: right; "><strong> IVA <?php echo $region['impuesto']; ?>%: </strong></td>
+            <td style="text-align: right; "><strong> IVA <?php echo $region['impuesto']; ?>% <?php echo $aux ?>: </strong></td>
             <td style="text-align: right; "> <?php echo number_format($subtotal * $region['impuesto'] / 100, 2, ',', '.'); ?></td>
         </tr><tr>
-            <td style="text-align: right; "><strong> TOTAL:</strong></td>
+            <td style="text-align: right; "><strong> TOTAL <?php echo $aux ?>:</strong></td>
             <td style="text-align: right; "> <?php echo number_format($subtotal * (1 + $region['impuesto'] / 100), 2, ',', '.'); ?></td>
         </tr>
     </tfoot>

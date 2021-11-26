@@ -85,7 +85,7 @@ class Nota extends \conexion {
         $data = $Nota->detalles($id);
         $pdf = new \PDF\Nota();
         ob_start();
-        $pdf->ver($data);
+        $pdf->ver($data, true, 'BS');
         $content = ob_get_clean();
         $pdf->ouput('Compra.pdf', $content);
     }
@@ -115,7 +115,7 @@ class Nota extends \conexion {
         }
         $pdf = new \PDF\Nota();
         ob_start();
-        $pdf->ver($data);
+        $pdf->ver($data, true, '$');
         $content = ob_get_clean();
         $pdf->ouput('Compra.pdf', $content);
     }

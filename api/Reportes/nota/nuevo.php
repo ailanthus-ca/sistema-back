@@ -46,8 +46,8 @@
             <th class="col-1" style="text-align: center;">UND</th>
             <th class="col-1" style="text-align:center;" >CANT</th>
             <?php if ($precios) { ?>
-                <th class="col-2" style="text-align: center;">PRECIO</th>
-                <th class="col-2" style="text-align: center;">TOTAL</th>
+                <th class="col-2" style="text-align: center;">PRECIO <?php echo $aux ?></th>
+                <th class="col-2" style="text-align: center;">TOTAL <?php echo $aux ?></th>
             <?php } ?>
         </tr>
     </thead>
@@ -71,7 +71,7 @@
                 <strong>NOTA:&nbsp; </strong><br/><?php echo $data['nota']; ?>
             </td>
             <?php if ($precios) { ?>
-                <td class="col-2" style="text-align: right; "><strong> TOTAL: </strong></td>
+                <td class="col-2" style="text-align: right; "><strong> TOTAL <?php echo $aux ?>: </strong></td>
                 <td class="col-2" style="text-align: right; "> <?php echo number_format($subtotal, 2, ',', '.'); ?></td> 
             <?php } ?>
         </tr>
