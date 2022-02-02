@@ -27,6 +27,7 @@ class Nota extends \Prototipo\Operaciones {
         }
         return '';
     }
+
     public function cambios($fecha, $hora) {
         $pen = array();
         $act = $this->fechaCambios();
@@ -54,6 +55,7 @@ class Nota extends \Prototipo\Operaciones {
                     'data' => $pen
         ]);
     }
+
     function lista() {
         $pen = array();
         $query = $this->query("SELECT * FROM nota_lista");
@@ -169,8 +171,7 @@ class Nota extends \Prototipo\Operaciones {
         foreach ($this->detalles as $pro) {
             $this->query("INSERT INTO detallesNotas VALUES " .
                     "('$nota','$pro->codigo',$pro->unidades,$pro->precio) ");
-            if ($producto->inventario !== 1)
-                $producto->cargarStock($pro->codigo);
+            $producto->cargarStock($pro->codigo);
         }
         $this->actualizarEstado();
         return $this->getResponse($nota);

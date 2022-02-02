@@ -133,7 +133,7 @@ class Compra extends \Prototipo\Operaciones {
                 . "'$this->cod_proveedor',"
                 . "'$this->cod_documento',"
                 . "'$this->num_con',"
-                . "NOW()," 
+                . "NOW(),"
                 . "NOW(),"
                 . "'$this->fecha_doc',"
                 . "$this->subtotal, "
@@ -155,9 +155,7 @@ class Compra extends \Prototipo\Operaciones {
                     . "$monto)");
             $config = new \Config('costo');
             $productos->cargar($iten->codigo);
-            if ($productos->inventario !== 1) {
-                $productos->cargarStock($iten->codigo);
-            }
+            $productos->cargarStock($iten->codigo);
             $costo = $config->get();
             if ($costo['costo'] < 3) {
                 if ($costo['costo'] === 2 && $productos->checkCosto($iten->precio, $tasa))

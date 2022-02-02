@@ -202,6 +202,8 @@ class Producto extends \conexion {
         $this->query("UPDATE producto SET " .
                 "descripcion = UPPER('$this->descripcion'), " .
                 "unidad = UPPER('$this->unidad')" .
+                "exento = UPPER('$this->exento')" .
+                "enser = UPPER('$this->enser')" .
                 "WHERE codigo = '$id'");
         $this->actualizarEstado();
         return $this->getResponse($this->ver($id));

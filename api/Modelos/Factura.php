@@ -143,8 +143,7 @@ class Factura extends \Prototipo\Operaciones {
                     . "$pro->precio,"
                     . "$monto )");
             $producto->cargar($pro->codigo);
-            if ($producto->inventario !== 1 && $this->id_nota === 0)
-                $producto->cargarStock($pro->codigo);
+            $producto->cargarStock($pro->codigo);
         }
         $this->actualizarEstado();
         return $this->getResponse($num_factura);

@@ -78,6 +78,8 @@ class Producto {
         //datos de tipo post
         $Producto->descripcion = $Producto->postString('descripcion');
         $Producto->unidad = $Producto->postIntenger('unidad');
+        $Producto->enser = $Producto->postIntenger('enser');
+        $Producto->exento = $Producto->postIntenger('exento');
         // Validar que exista codigo
         if (!$Producto->checkCodigo($id)) {
             $Producto->setError(array('codigo' => 'Producto no existe'));
