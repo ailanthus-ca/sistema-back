@@ -50,6 +50,10 @@ class Ajuste extends \conexion {
                 $detalle
             );
         }
+        if (count($pen) > 1) {
+            $producto = new Producto();
+            $producto->actualizarUltimosMovimientos();
+        }
         return $this->getResponse([
                     'fecha' => $this->fechaCambios(),
                     'data' => $data
@@ -300,6 +304,20 @@ class Ajuste extends \conexion {
             return (float) $row['cantidad'];
         }
         return 0;
+    }
+
+    function productos($where) {
+        $query = $this->query("SELECT "
+                . "cod_producto "
+                . "FROM detalleajusteinv, ajusteinv WHERE "
+                . "codigo = cod_ajuste "
+                . "$where "
+                . "GROUP BY cod_producto");
+        $pen = array();
+        while ($row = $query->fetch_array()) {
+            $pen[] = $row['cod_producto'];
+        }
+        return $this->getResponse($pen);
     }
 
 }

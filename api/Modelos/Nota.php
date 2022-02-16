@@ -50,6 +50,10 @@ class Nota extends \Prototipo\Operaciones {
                 $detalle
             );
         }
+        if (count($pen) > 1) {
+            $producto = new Producto();
+            $producto->actualizarUltimosMovimientos();
+        }
         return $this->getResponse([
                     'fecha' => $act,
                     'data' => $pen
@@ -109,6 +113,7 @@ class Nota extends \Prototipo\Operaciones {
                 $detalle = $producto->ver($row['producto']);
                 $detalle['unidades'] = (float) $row['cantidad'];
                 $detalle['precio'] = (float) $row['precio'];
+                $detalle['serial'] = $row['serial'];
                 $notasalida['detalles'][] = $detalle;
             }
             return $this->getResponse($notasalida);
@@ -166,11 +171,11 @@ class Nota extends \Prototipo\Operaciones {
                 . " NOW(),"
                 . "$this->user,"
                 . "$tasa)");
-        $nota = $this->con->insert_id;
+        $nota = $this->insertId();
         $producto = new Producto();
         foreach ($this->detalles as $pro) {
             $this->query("INSERT INTO detallesNotas VALUES " .
-                    "('$nota','$pro->codigo',$pro->unidades,$pro->precio) ");
+                    "('$nota','$pro->codigo',$pro->unidades,$pro->precio,'$pro->comentario') ");
             $producto->cargarStock($pro->codigo);
         }
         $this->actualizarEstado();

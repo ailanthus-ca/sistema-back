@@ -71,7 +71,7 @@ class Nota extends \conexion {
         if ($Nota->checkCodigo($Nota->codigo)) {
             return $Nota->getResponse($Nota->detalles($Nota->codigo));
         }
-
+//        return json_encode($Nota);
         return json_encode($Nota->nuevo());
     }
 

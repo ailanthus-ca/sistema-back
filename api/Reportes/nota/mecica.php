@@ -48,7 +48,8 @@
     </tr>
     <?php foreach ($data['detalles'] as $pro) { ?><tr class="border-clasico" >
             <td class="border-clasico" style=" text-align: center;width: 15%; height: 15px; vertical-align: middle;"><?php echo $pro['codigo']; ?></td>
-            <td class="border-clasico" style=" width: 40%; max-width: 60%; overflow: hidden; text-align: left; height: 15px; vertical-align: middle;"><?php echo $pro['descripcion']; ?></td>
+            <td class="border-clasico" style=" width: 40%; max-width: 60%; overflow: hidden; text-align: left; height: 15px; vertical-align: middle;">
+                <?php echo $pro['descripcion']; ?><br><?php echo str_replace("\n", '<br>', $pro['serial']); ?></td>
             <td class="border-clasico" style=" text-align: center;width: 15%; height: 15px; vertical-align: middle;"><?php echo $pro['medida']; ?></td>
             <td class="border-clasico" style=" text-align: center;width: 15%; height: 15px; vertical-align: middle;"><?php echo $pro['unidades']; ?></td>
         </tr>

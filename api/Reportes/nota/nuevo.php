@@ -57,7 +57,8 @@
             $subtotal += $pro['unidades'] * $pro['precio'];
             ?><tr>
                 <td class="col-1" style=" text-align: center; ;"><?php echo $pro['codigo']; ?></td>
-                <td class="col-<?php echo ($precios) ? 5 : 9 ?>" style=" width: 40%; max-width: 40%; overflow: hidden; text-align: left; "><?php echo $pro['descripcion']; ?></td>
+                <td class="col-<?php echo ($precios) ? 5 : 9 ?>" style="width: 40%; max-width: 40%; overflow: hidden; text-align: left; ">
+                    <?php echo $pro['descripcion']; ?><br><?php echo str_replace("\n", '<br>', $pro['serial']); ?></td>
                 <td class="col-1" style=" text-align: center; ;"><?php echo $pro['medida']; ?></td>
                 <td class="col-1" style=" text-align: center; "><?php echo $pro['unidades']; ?></td>
                 <?php if ($precios) { ?>

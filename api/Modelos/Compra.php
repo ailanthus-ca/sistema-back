@@ -42,6 +42,10 @@ class Compra extends \Prototipo\Operaciones {
                 $detalle
             );
         }
+        if (count($pen) > 1) {
+            $producto = new Producto();
+            $producto->actualizarUltimosMovimientos();
+        }
         return $this->getResponse([
                     'fecha' => $act,
                     'data' => $pen

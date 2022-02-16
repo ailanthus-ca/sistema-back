@@ -28,6 +28,10 @@ class PDFClass {
         );
     }
 
+    function nullValue($value) {
+        return is_null($value) ? '' : $value;
+    }
+
     function ouput($name, $content) {
         try {
             $html2pdf = new HTML2PDF('P', $this->tipo, 'es', true, 'UTF-8', $this->margenes);

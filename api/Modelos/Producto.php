@@ -190,7 +190,7 @@ class Producto extends \conexion {
                 . "0, "
                 . "'', "
                 . "1, "
-                . " NOW(), " 
+                . " NOW(), "
                 . " NOW(), "
                 . "'$this->exento', "
                 . "$this->dolar)");
@@ -201,9 +201,9 @@ class Producto extends \conexion {
     public function actualizar($id) {
         $this->query("UPDATE producto SET " .
                 "descripcion = UPPER('$this->descripcion'), " .
-                "unidad = UPPER('$this->unidad')" .
-                "exento = UPPER('$this->exento')" .
-                "enser = UPPER('$this->enser')" .
+                "unidad = $this->unidad, " .
+                "exento = $this->exento, " .
+                "enser = $this->enser " .
                 "WHERE codigo = '$id'");
         $this->actualizarEstado();
         return $this->getResponse($this->ver($id));
@@ -320,6 +320,36 @@ class Producto extends \conexion {
         $ajuEn = $aju->entradasValidas($cod, $where);
         $compr = $com->entradasValidas($cod, $where);
         return ($ajuEn + $compr) - ($factu + $notas + $ajuSa);
+    }
+
+    public function actualizarUltimosMovimientos() {
+        $act = $this->fechaCambios();
+        $fac = new Factura();
+        $not = new Nota();
+        $com = new Compra();
+        $aju = new Ajuste();
+        $pen = array();
+        //salidas
+        $factu = $fac->productos("and factura.actualizado > '$act' ");
+        foreach ($factu as $v) {
+            $pen[] = $v['codigo'];
+        }
+        $notas = $not->productos("and notasalida.actualizado > '$act' ");
+        foreach ($notas as $v) {
+            $pen[] = $v['codigo'];
+        }
+        $compr = $com->productos("and compra.actualizado > '$act' ");
+        foreach ($compr as $v) {
+            $pen[] = $v['codigo'];
+        }
+        $ajue = $aju->productos("and ajusteinv.actualizado > '$act' ");
+        foreach ($ajue as $v) {
+            $pen[] = $v;
+        }
+        foreach ($pen as $p) {
+            $this->cargarStock($p);
+        }
+        return $pen;
     }
 
 }

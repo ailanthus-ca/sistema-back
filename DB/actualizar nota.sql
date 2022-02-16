@@ -1,0 +1,1 @@
+ALTER TABLE `detallesnotas` ADD `serial` TEXT NULL AFTER `precio`;

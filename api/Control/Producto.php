@@ -248,4 +248,10 @@ class Producto {
         ]);
     }
 
+    function actualizarUltimosMovimientos() {
+        $Producto = new \Modelos\Producto();
+        $pros = $Producto->actualizarUltimosMovimientos();
+        return json_encode($pros);
+    }
+
 }

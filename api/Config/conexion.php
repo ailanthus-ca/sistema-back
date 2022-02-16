@@ -68,8 +68,8 @@ class conexion {
         if ($row = $this->con->query($sql)) {
             return new dataFech($row);
         } else {
-            return new dataFech('error');
             $this->setError(['sql' => [$sql, $this->con->error]]);
+            return new dataFech('error');
         }
     }
 
