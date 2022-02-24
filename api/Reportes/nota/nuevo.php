@@ -15,8 +15,8 @@
     <div class="col-3" style="text-align: center">
         <strong>TELEFONO:&nbsp;</strong><?php echo $data["telefono"] ?>
     </div>
-    <div class="col-5" style="text-align: right">
-        <strong>CORREO:&nbsp;</strong><?php echo $data["correo"] ?>
+    <div class="col-5" style="text-align: right;font-size: 12px">
+        <strong>CORREO:&nbsp;</strong> <?php echo $data["correo"] ?>
     </div><br/>
     <div class="col-12">
         <strong>DIRECCIÓN:&nbsp;</strong><?php echo $data["direccion"] ?>
