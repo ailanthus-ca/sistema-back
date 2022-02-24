@@ -9,13 +9,13 @@
     <div class="col-2" style="text-align: right">
         <strong><?php echo $region['cod_fiscal'] ?>:&nbsp;</strong> <?php echo $data["cod_cliente"] ?>
     </div><br/>
-    <div class="col-4">
-        <strong>CONTACTO:&nbsp;</strong><?php echo $data["contacto"] ?>
+    <div class="col-3">
+        <strong>CONTACTO:&nbsp;</strong> <?php echo $data["contacto"] ?>
     </div>
     <div class="col-3" style="text-align: center">
-        <strong>TELEFONO:&nbsp;</strong><?php echo $data["telefono"] ?>
-    </div>
-    <div class="col-5" style="text-align: right;font-size: 12px">
+        <strong>TELEFONO:&nbsp; </strong><?php echo $data["telefono"] ?>
+    </div> 
+    <div class="col-6" style="text-align: right;font-size:10px">
         <strong>CORREO:&nbsp;</strong> <?php echo $data["correo"] ?>
     </div><br/>
     <div class="col-12">
