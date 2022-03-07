@@ -69,14 +69,6 @@ class Usuario {
         if ($Usuario->nivel < 0) {
             $Usuario->setError(array('nivel' => 'El rol es requerido'));
         }
-
-        if ($Usuario->correo == '') {
-            $Usuario->setError(array('correo' => 'El email es requerido'));
-        } elseif (!filter_var($Usuario->correo, FILTER_VALIDATE_EMAIL)) {
-            $Usuario->setError(array('correo' => 'Email mal escrito'));
-        } elseif ($Usuario->checkCorreo($Usuario->correo)) {
-            $Usuario->setError(array('correo' => 'Este email ya esta siendo usado'));
-        }
         
         //Validar si hubo errores
         if ($Usuario->response > 300) {
@@ -129,7 +121,6 @@ class Usuario {
 
     function actualizar_rol($id) {
         $role = new \Modelos\Auth();
-        $role->nombre = $role->postString("nombre");
         $role->permisos = $role->postArray("permisos");
         return json_encode($role->actualizarRol($id));
     }

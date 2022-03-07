@@ -53,6 +53,7 @@ class Factura extends \Prototipo\Operaciones {
         ]);
     }
 
+
     function lista() {
         $pen = array();
         $sql = "SELECT * FROM factura_lista";
@@ -173,6 +174,7 @@ class Factura extends \Prototipo\Operaciones {
                 . "contacto,"
                 . "nombre,"
                 . "total,"
+                . "subtotal,"
                 . "factura.estatus as status,"
                 . "factura.usuario  "
                 . "FROM factura,cliente "
@@ -188,6 +190,7 @@ class Factura extends \Prototipo\Operaciones {
                 'correo' => $row['correo'],
                 'contacto' => $row['contacto'],
                 'monto' => (float) $row['total'],
+                'imponible' => (float) $row['subtotal'],
                 'usuario' => (int) $row['usuario'],
                 'status' => (int) $row['status'],
             );

@@ -136,5 +136,19 @@ class Usuario extends \conexion {
             return $this->getResponse(true);
         }
     }
-
+    
+    public function getVendedores() {
+        $cl = array();
+        $sql = $this->query("SELECT DISTINCT usuario.* FROM `usuario`,permisos_roles,permisos WHERE nivel = id_role AND id_permiso = id AND permisos.nombre='VENDEDOR' AND usuario.estatus=1");
+        while ($row = $sql->fetch_array()) {
+            $cl[] = array(
+                'codigo' => (int) $row['codigo'],
+                'nombre' => $row['nombre'],
+                'correo' => $row['correo'],
+                'nivel' => (int) $row['nivel'],
+                'estado' => (int) $row['estatus']
+            );
+        }
+        return $this->getResponse($cl);
+    }
 }

@@ -52,9 +52,9 @@ class Auth extends \conexion {
     }
 
     public function actualizarRol($id) {
-        $this->query("UPDATE roles SET " .
-                "nombre = UPPER('$this->nombre'), " .
-                "WHERE id = 0$id");
+//        $this->query("UPDATE roles SET " .
+//                "nombre = UPPER('$this->nombre'), " .
+//                "WHERE id = 0$id");
         $this->query("DELETE FROM `permisos_roles` WHERE id_role = 0$id");
         foreach ($this->permisos as $per) {
             $this->query("INSERT INTO permisos_roles VALUES("

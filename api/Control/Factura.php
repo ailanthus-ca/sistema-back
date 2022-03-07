@@ -2,7 +2,7 @@
 
 namespace Control;
 
-class Factura extends \conexion {
+class Factura extends \Prototipo\Controller {
 
     public function cambios($fecha, $hora) {
         $Factura = new \Modelos\Factura();
@@ -12,6 +12,11 @@ class Factura extends \conexion {
     function lista() {
         $Factura = new \Modelos\Factura();
         return json_encode($Factura->lista());
+    }
+
+    function vendedores() {
+        $users = new \Modelos\Usuario();
+        return json_encode($users->getVendedores());
     }
 
     function detalles($id) {
@@ -93,27 +98,9 @@ class Factura extends \conexion {
     function reporte($rango, $p1, $p2) {
         $Factura = new \Modelos\Factura();
         $where = " AND factura.estatus = 2";
-        switch ($rango) {
-            case 'ano':
-                $where = " AND YEAR(fecha) = $p1 ";
-                $titulo = "AÑO $p1";
-                break;
-            case 'mes':
-                $where = " AND YEAR(fecha)= $p1 AND month(fecha) = $p2 ";
-                $m = $Factura->numberToMes($p2);
-                $titulo = "$m DEl $p1";
-                break;
-            case 'rango':
-                $date1 = new \DateTime($p1);
-                $date2 = new \DateTime($p2);
-                $where = " AND fecha between '$p1' AND '$p2' ";
-                $titulo = "DESDE " . $date1->format("d/m/Y") . " HASTA " . $date2->format("d/m/Y");
-                break;
-            default :
-                $where = "";
-                $titulo = "TODO";
-                break;
-        }
+        $get = $this->getRango($rango, $p1, $p2);
+        $where = $get['w'];
+        $titulo = $get['t'];
         $data = array(
             'lista' => $Factura->listaWhere($where),
             'titulo' => $titulo,
@@ -129,63 +116,54 @@ class Factura extends \conexion {
 
     function reporteVendedor($user, $rango, $p1, $p2) {
         $Factura = new \Modelos\Factura();
-        $where = " AND factura.usuario=$user AND factura.estatus > 0 ";
+        $nota = new \Modelos\Nota();
         $usuario = new \Modelos\Usuario();
         $userData = $usuario->detalles($user);
         $titulo = $userData['nombre'] . '<br>';
-        switch ($rango) {
-            case 'ano':
-                $where .= " AND YEAR(fecha) = $p1 ";
-                $titulo .= "AÑO $p1";
-                break;
-            case 'mes':
-                $where .= " AND YEAR(fecha)= $p1 AND month(fecha) = $p2 ";
-                $m = $Factura->numberToMes($p2);
-                $titulo .= " $m DEL $p1";
-                break;
-            case 'rango':
-                $date1 = new \DateTime($p1);
-                $date2 = new \DateTime($p2);
-                $where .= "AND fecha between '$p1' AND '$p2' ";
-                $titulo .= " DESDE " . $date1->format("d/m/Y") . " HASTA " . $date2->format("d/m/Y");
-                break;
-        }
+        $get = $this->getRango($rango, $p1, $p2);
         $data = array(
-            'lista' => $Factura->listaWhere($where),
+            'facturas' => $Factura->listaWhere(" AND factura.usuario=$user AND factura.estatus > 0 " . $get['w']),
+            'notas' => $nota->listaWhere(" AND notasalida.usuario=$user AND notasalida.estatus = 1 " . $get['w']),
             'operacion' => 'VENDEDOR',
-            'titulo' => $titulo
+            'titulo' => $titulo . $get['t']
         );
         $pdf = new \PDF\Reportes();
-        $pdf->version = 'factura';
+        $pdf->version = 'vendedor';
         ob_start();
         $pdf->ver($data);
         $content = ob_get_clean();
         $pdf->ouput('Compra.pdf', $content);
     }
 
+    function reporteVendedores($rango, $p1, $p2) {
+        $get = $this->getRango($rango, $p1, $p2);
+        $usuario = new \Modelos\Usuario();
+        $vendedores = $usuario->getVendedores();
+        $Factura = new \Modelos\Factura();
+        $nota = new \Modelos\Nota();
+        $comiciones = [];
+        $pdf = new \PDF\Reportes();
+        $pdf->version = 'vendedor';
+        ob_start();
+        foreach ($vendedores as $v) {
+            $fac = $Factura->listaWhere(" AND factura.usuario=" . $v['codigo'] . " AND factura.estatus > 0 " . $get['w']);
+            $not = $nota->listaWhere(" AND notasalida.usuario=" . $v['codigo'] . " AND notasalida.estatus = 1 " . $get['w']);
+            if (count($fac) > 0 || count($not) > 0)
+                $pdf->ver(array(
+                    'operacion' => 'VENDEDOR',
+                    'titulo' => $v['nombre'] . '<br>' . $get['t'],
+                    'facturas' => $fac, 'notas' => $not
+                ));
+        }
+        $content = ob_get_clean();
+        $pdf->ouput('Compra.pdf', $content);
+    }
+
     function de($cod, $rango, $p1, $p2) {
         $facturas = new \Modelos\Factura();
-        switch ($rango) {
-            case 'ano':
-                $where = " AND YEAR(fecha) = $p1 ";
-                $titulo = "AÑO $p1";
-                break;
-            case 'mes':
-                $where = " AND YEAR(fecha)= $p1 AND month(fecha) = $p2 ";
-                $m = $facturas->numberToMes($p2);
-                $titulo = "$m DEL $p1";
-                break;
-            case 'rango':
-                $date1 = new \DateTime($p1);
-                $date2 = new \DateTime($p2);
-                $where = " AND fecha between '$p1' AND '$p2' ";
-                $titulo = "DESDE " . $date1->format("d/m/Y") . " HASTA " . $date2->format("d/m/Y");
-                break;
-            default :
-                $where = "";
-                $titulo = "TODO";
-                break;
-        }
+        $get = $this->getRango($rango, $p1, $p2);
+        $where = $get['w'];
+        $titulo = $get['t'];
         $producto = new \Modelos\Producto();
         $pro = $producto->ver($cod);
         $data = array(
@@ -203,27 +181,9 @@ class Factura extends \conexion {
 
     function productos($dpt, $rango, $p1, $p2) {
         $facturas = new \Modelos\Factura();
-        switch ($rango) {
-            case 'ano':
-                $where = " AND YEAR(fecha) = $p1 ";
-                $titulo = "AÑO $p1";
-                break;
-            case 'mes':
-                $where = " AND YEAR(fecha)= $p1 AND month(fecha) = $p2 ";
-                $m = $facturas->numberToMes($p2);
-                $titulo = "$m DEL $p1";
-                break;
-            case 'rango':
-                $date1 = new \DateTime($p1);
-                $date2 = new \DateTime($p2);
-                $where = " AND fecha between '$p1' AND '$p2' ";
-                $titulo = "DESDE " . $date1->format("d/m/Y") . " HASTA " . $date2->format("d/m/Y");
-                break;
-            default :
-                $where = "";
-                $titulo = "TODO";
-                break;
-        }
+        $get = $this->getRango($rango, $p1, $p2);
+        $where = $get['w'];
+        $titulo = $get['t'];
         if ($dpt !== 'TODO') {
             $where .= " and departamento = '$dpt'";
             $dp = new \Modelos\Departamento();
@@ -245,21 +205,9 @@ class Factura extends \conexion {
 
     function torta($rango, $p1, $p2) {
         $factura = new \Modelos\Factura();
-        switch ($rango) {
-            case 'ano':
-                $where = " YEAR(fecha) = $p1 ";
-                $titulo = "AÑO $p1";
-                break;
-            case 'mes':
-                $where = " YEAR(fecha)= $p1 AND month(fecha) = $p2 ";
-                $m = $factura->numberToMes($p2);
-                $titulo = "$m DEl $p1";
-                break;
-            default :
-                $where = "";
-                $titulo = "TODO";
-                break;
-        }
+        $get = $this->getRango($rango, $p1, $p2);
+        $where = $get['w'];
+        $titulo = $get['t'];
         $data = $factura->torta($where);
         return json_encode($data);
     }

@@ -28,7 +28,7 @@
 </div><br>
 <div class="col-12 bordered"  >
     <div class="col-8">
-        <strong>ATENCION:&nbsp;</strong><?php echo $data["usuario"] ?>
+        <strong>ATENDIDO POR:&nbsp;</strong><?php echo $data["usuario"] ?>
     </div>
     <div class="col-2">
         <strong >NUMERO:&nbsp;</strong> <?php echo str_pad($data['codigo'], 6, "0", STR_PAD_LEFT) ?>
