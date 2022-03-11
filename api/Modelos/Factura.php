@@ -287,11 +287,11 @@ class Factura extends \Prototipo\Operaciones {
 
     public function torta($where) {
         $query = $this->query("SELECT "
-                . "estatus AS RANK, "
-                . "COUNT(estatus) AS CANT "
-                . "FROM factura "
-                . "WHERE $where "
-                . "GROUP BY estatus");
+                . "status AS RANK, "
+                . "COUNT(status) AS CANT "
+                . "FROM factura_lista "
+                . "WHERE true $where "
+                . "GROUP BY status");
         $pen = array();
         while ($row = $query->fetch_array()) {
             $pen[] = array(

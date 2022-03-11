@@ -9,7 +9,7 @@
             href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
             />
         <link href="/static/font-awesome/css/all.min.css" rel="stylesheet" />
-        <link href="/static/bootstrap.css" rel="stylesheet" />
+        <!--<link href="/static/bootstrap.css" rel="stylesheet" />-->
         <link href="/static/Adminlte.css" rel="stylesheet" />
         <link href="/static/style.css" rel="stylesheet" />
     </head>
