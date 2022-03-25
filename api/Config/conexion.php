@@ -94,15 +94,15 @@ class conexion {
 
     public function getResponse($response = '') {
         if ($this->response < 300) {
-            header("HTTP/1.0 $this->response Success");
+            //header("HTTP/1.0 $this->response Success");
 
             return $response;
         } elseif ($this->response < 500) {
-            header("HTTP/1.0 $this->response Not Found");
+            //header("HTTP/1.0 $this->response Not Found");
 
             return ['errores' => 'ELEMENTO NO ENCONTRADO'];
         } else {
-            header("HTTP/1.0 $this->response Server Error");
+            //header("HTTP/1.0 $this->response Server Error");
 
             return ['errores' => $this->errores];
         }
