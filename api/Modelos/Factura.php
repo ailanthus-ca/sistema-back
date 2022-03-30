@@ -379,7 +379,8 @@ class Factura extends \Prototipo\Operaciones {
     }
 
     public function mejor_mes() {
-        $query = $this->query("SELECT ventas,mes,año FROM mejor_mes,(SELECT MAX(ventas) as v FROM mejor_mes) as m WHERE v=ventas");
+        $ano = date("Y");
+        $query = $this->query("SELECT ventas,mes,año FROM mejor_mes,(SELECT MAX(ventas) as v FROM mejor_mes) as m WHERE v=ventas and año=$ano");
         $mejor = array('ventas' => 0, 'mes' => 0, 'ano' => 0);
         if ($row = $query->fetch_array()) {
             $mejor = array('ventas' => (int) $row['ventas'], 'mes' => $this->numberToMes($row['mes']), 'ano' => (int) $row['año']);
